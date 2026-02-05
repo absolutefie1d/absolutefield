@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Absolute Field</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%234a6741'/><path d='M50 25 C35 40, 30 60, 50 75 C70 60, 65 40, 50 25' fill='%23d4e4cf'/><path d='M50 35 L50 65' stroke='%232d3f28' stroke-width='3' stroke-linecap='round'/><path d='M50 45 L40 55' stroke='%232d3f28' stroke-width='2' stroke-linecap='round'/><path d='M50 55 L60 50' stroke='%232d3f28' stroke-width='2' stroke-linecap='round'/></svg>" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #faf9f7; --color-bg-alt: #f4f2ed; --color-text: #2c3029;
+      --color-text-muted: #6b7265; --color-text-light: #9aa093;
+      --color-green: #4a6741; --color-green-light: #6b8a5e;
+      --color-green-pale: #d4e4cf; --color-green-dark: #2d3f28;
+      --color-brown: #8b7355; --color-brown-light: #c4a882;
+      --color-cream: #f5f1e8; --color-white: #ffffff;
+      --color-border: #e2ded6;
+      --shadow-sm: 0 2px 8px rgba(45, 63, 40, 0.06);
+      --shadow-md: 0 4px 20px rgba(45, 63, 40, 0.08);
+      --radius: 12px; --radius-sm: 6px; --transition: 0.3s ease;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Source Sans 3', sans-serif; font-weight: 300; background: var(--color-bg); color: var(--color-text); line-height: 1.7; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(250, 249, 247, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--color-border); padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: var(--color-green-dark); cursor: pointer; }
+    .nav-links { display: flex; gap: 8px; list-style: none; }
+    .nav-links a { color: var(--color-text-muted); font-size: 0.9rem; padding: 8px 16px; border-radius: 50px; transition: all var(--transition); cursor: pointer; text-decoration: none; }
+    .nav-links a:hover { color: var(--color-green); background: var(--color-green-pale); }
+    .nav-links a.active { color: var(--color-white); background: var(--color-green); }
+
+    main { padding-top: 80px; min-height: 100vh; }
+    .page { display: none; animation: fadeIn 0.4s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .container { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
+
+    .page-header { text-align: center; margin-bottom: 48px; }
+    .page-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-brown); margin-bottom: 12px; }
+    .page-title { font-family: 'Great Vibes', cursive; font-size: clamp(2.5rem, 6vw, 3.5rem); color: var(--color-green-dark); }
+
+    .hero { min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px; background: radial-gradient(ellipse at 30% 20%, rgba(212, 228, 207, 0.4) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(196, 168, 130, 0.2) 0%, transparent 50%); }
+    .hero-content { max-width: 700px; }
+    .hero-greeting { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--color-brown); margin-bottom: 16px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 5rem); color: var(--color-green-dark); line-height: 1.1; margin-bottom: 24px; }
+    .hero h1 em { font-style: italic; color: var(--color-green); }
+    .hero-tagline { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; color: var(--color-brown); margin-bottom: 32px; }
+    .hero-description { font-size: 1.1rem; color: var(--color-text-muted); max-width: 500px; margin: 0 auto 40px; }
+    .hobby-pills { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .hobby-pill { padding: 10px 20px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: 50px; font-size: 0.9rem; color: var(--color-text-muted); cursor: pointer; transition: all var(--transition); }
+    .hobby-pill:hover { border-color: var(--color-green); color: var(--color-green); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .card { background: var(--color-white); border-radius: var(--radius); padding: 28px; border: 1px solid var(--color-border); transition: all var(--transition); }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--color-green-dark); margin-bottom: 8px; }
+    .card-subtitle { font-style: italic; color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 16px; }
+    .card ul { list-style: none; }
+    .card li { position: relative; padding-left: 16px; margin-bottom: 6px; font-size: 0.9rem; color: var(--color-text-muted); }
+    .card li::before { content: '♪'; position: absolute; left: 0; color: var(--color-green-light); }
+
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
+    .stat-card { text-align: center; padding: 28px 20px; background: var(--color-white); border-radius: var(--radius); border: 1px solid var(--color-border); }
+    .stat-number { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--color-green); line-height: 1; margin-bottom: 8px; }
+    .stat-label { font-size: 0.8rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    .reading-goal { background: var(--color-white); border-radius: var(--radius); padding: 32px; margin-bottom: 40px; border: 1px solid var(--color-border); text-align: center; }
+    .goal-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-brown); margin-bottom: 12px; }
+    .goal-number { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--color-green-dark); margin-bottom: 8px; }
+    .goal-number span { color: var(--color-green); }
+    .progress-bar { background: var(--color-border); height: 8px; border-radius: 4px; max-width: 400px; margin: 16px auto; overflow: hidden; }
+    .progress-fill { background: linear-gradient(90deg, var(--color-green) 0%, var(--color-green-light) 100%); height: 100%; width: 20%; border-radius: 4px; }
+    .goal-subtitle { font-size: 0.9rem; color: var(--color-text-muted); }
+
+    .book-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+    .book-card { background: var(--color-white); border-radius: var(--radius); padding: 16px; border: 1px solid var(--color-border); transition: all var(--transition); }
+    .book-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .book-title { font-weight: 600; color: var(--color-text); font-size: 0.9rem; margin-bottom: 4px; }
+    .book-author { font-size: 0.8rem; color: var(--color-text-muted); }
+    .book-status { font-size: 0.75rem; color: var(--color-text-light); margin-top: 8px; }
+    .section-title { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: var(--color-green-dark); margin-bottom: 20px; }
+
+    .carousel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; margin-top: 48px; }
+    .carousel-nav { display: flex; align-items: center; gap: 12px; }
+    .carousel-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-white); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition); }
+    .carousel-btn:hover { background: var(--color-green); border-color: var(--color-green); }
+    .carousel-btn:hover svg { stroke: var(--color-white); }
+    .carousel-btn svg { stroke: var(--color-text-muted); }
+    .carousel-indicator { font-size: 0.85rem; color: var(--color-text-muted); }
+    .carousel-slide { display: none; }
+    .carousel-slide.active { display: block; animation: fadeIn 0.3s ease; }
+    .slide-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border); cursor: pointer; transition: opacity var(--transition); }
+    .slide-header:hover { opacity: 0.7; }
+    .rating-stars { font-size: 1.2rem; color: var(--color-brown); }
+    .rating-label { font-family: 'Great Vibes', cursive; font-size: 1.4rem; color: var(--color-green-dark); }
+    .rating-count { font-size: 0.8rem; color: var(--color-text-muted); background: var(--color-bg-alt); padding: 4px 12px; border-radius: 50px; }
+    .view-all-hint { font-size: 0.75rem; color: var(--color-green); margin-left: auto; }
+    .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-border); cursor: pointer; transition: all var(--transition); }
+    .dot:hover { background: var(--color-green-light); }
+    .dot.active { background: var(--color-green); width: 24px; border-radius: 4px; }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--color-white); border-radius: var(--radius); max-width: 700px; width: 100%; max-height: 80vh; overflow: hidden; animation: modalIn 0.3s ease; }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    .modal-header { padding: 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-family: 'Great Vibes', cursive; font-size: 2rem; color: var(--color-green-dark); }
+    .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--color-bg-alt); cursor: pointer; font-size: 1.2rem; color: var(--color-text-muted); transition: all var(--transition); }
+    .modal-close:hover { background: var(--color-green); color: var(--color-white); }
+    .modal-body { padding: 24px; overflow-y: auto; max-height: calc(80vh - 80px); }
+    .modal-book-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .modal-book { padding: 12px; background: var(--color-bg-alt); border-radius: var(--radius-sm); }
+    .modal-book-title { font-weight: 600; font-size: 0.9rem; color: var(--color-text); }
+    .modal-book-author { font-size: 0.8rem; color: var(--color-text-muted); }
+
+    .fitness-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .fitness-card { background: var(--color-white); border-radius: var(--radius); padding: 28px; border: 1px solid var(--color-border); }
+    .fitness-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--color-green-dark); margin-bottom: 20px; }
+    .goal-item { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--color-border); }
+    .goal-item:last-child { border-bottom: none; }
+    .goal-icon { width: 40px; height: 40px; background: var(--color-green-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .goal-icon svg { width: 18px; height: 18px; stroke: var(--color-green); }
+    .goal-text { flex: 1; }
+    .goal-title { font-weight: 600; color: var(--color-text); font-size: 0.95rem; }
+    .goal-detail { font-size: 0.85rem; color: var(--color-text-muted); }
+    .workout-entry { padding: 14px 0; border-bottom: 1px solid var(--color-border); }
+    .workout-entry:last-child { border-bottom: none; }
+    .workout-date { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-brown); margin-bottom: 4px; }
+    .workout-name { font-weight: 600; color: var(--color-text); font-size: 0.95rem; }
+    .workout-details { font-size: 0.85rem; color: var(--color-text-muted); }
+
+    .photo-gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 180px; gap: 16px; }
+    .photo-item { background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 50%, var(--color-brown-light) 100%); border-radius: var(--radius); cursor: pointer; transition: all var(--transition); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .photo-item:hover { transform: scale(1.02); box-shadow: 0 12px 40px rgba(45, 63, 40, 0.12); }
+    .photo-item.large { grid-column: span 2; grid-row: span 2; }
+    .photo-item.tall { grid-row: span 2; }
+
+    .journal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .journal-entry { background: var(--color-white); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--color-border); transition: all var(--transition); }
+    .journal-entry:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .journal-image { height: 160px; background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 100%); display: flex; align-items: center; justify-content: center; }
+    .journal-image svg { width: 40px; height: 40px; stroke: var(--color-green); opacity: 0.5; }
+    .journal-content { padding: 24px; }
+    .journal-date { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-brown); margin-bottom: 8px; }
+    .journal-title { font-family: 'Great Vibes', cursive; font-size: 1.5rem; color: var(--color-green-dark); margin-bottom: 10px; line-height: 1.3; }
+    .journal-excerpt { font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 16px; }
+    .journal-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag { font-size: 0.75rem; padding: 4px 12px; background: var(--color-green-pale); color: var(--color-green-dark); border-radius: 50px; }
+
+    .footer-note { text-align: center; padding: 40px; color: var(--color-text-muted); font-size: 0.9rem; }
+    .footer-note a { color: var(--color-green); }
+
+    @media (max-width: 768px) {
+      nav { padding: 12px 20px; }
+      .nav-links { gap: 4px; }
+      .nav-links a { padding: 6px 12px; font-size: 0.8rem; }
+      .container { padding: 40px 20px; }
+      .stats-row, .fitness-grid { grid-template-columns: 1fr; }
+      .photo-gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-logo" onclick="showPage('home')">My Absolute Field</span>
+    <ul class="nav-links">
+      <li><a onclick="showPage('home')" class="active" data-page="home">Home</a></li>
+      <li><a onclick="showPage('piano')" data-page="piano">Piano</a></li>
+      <li><a onclick="showPage('reading')" data-page="reading">Reading</a></li>
+      <li><a onclick="showPage('fitness')" data-page="fitness">Fitness</a></li>
+      <li><a onclick="showPage('photography')" data-page="photography">Photography</a></li>
+      <li><a onclick="showPage('journal')" data-page="journal">Journal</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-content">
+          <p class="hero-greeting">Welcome to</p>
+          <h1>My <em>Absolute</em> Field</h1>
+          <p class="hero-tagline">Where passions grow & progress unfolds</p>
+          <p class="hero-description">A personal space documenting my journey through music, books, fitness, and the art of capturing moments.</p>
+          <div class="hobby-pills">
+            <span class="hobby-pill" onclick="showPage('piano')">🎹 Piano</span>
+            <span class="hobby-pill" onclick="showPage('reading')">📚 Reading</span>
+            <span class="hobby-pill" onclick="showPage('fitness')">💪 Fitness</span>
+            <span class="hobby-pill" onclick="showPage('photography')">📷 Photography</span>
+            <span class="hobby-pill" onclick="showPage('journal')">✍️ Journal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-piano">
+      <div class="container">
+        <header class="page-header">
+          <p class="page-label">Worship Keys Journey</p>
+          <h1 class="page-title">Piano Training</h1>
+          <p style="color: var(--color-text-muted); margin-top: 12px;">30–45 minutes daily · Goal: Playing at church</p>
+        </header>
+
+        <!-- Phase 1: Foundation (Weeks 1-4) -->
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Phase 1: Foundation <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Weeks 1–4</span></h2>
+        
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <div class="card">
+            <h3>Week 1 — Foundation</h3>
+            <p class="card-subtitle">Getting comfortable in common worship keys and basic chord shapes</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Keys to Learn: G and C</p>
+            <ul>
+              <li>G Major: G, C, D, Em (I, IV, V, vi)</li>
+              <li>C Major: C, F, G, Am (I, IV, V, vi)</li>
+              <li>Practice transitions at 70 bpm, 4 beats per chord</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Songs to Learn</p>
+            <ul>
+              <li>"Good Good Father" (G)</li>
+              <li>"Way Maker" (C)</li>
+            </ul>
+            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
+              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min chord transitions · 20 min songs</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Week 2 — Smoother Movement</h3>
+            <p class="card-subtitle">Inversions and voice leading for seamless transitions</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">New Concepts</p>
+            <ul>
+              <li>First and second inversions of I, IV, V, vi</li>
+              <li>Voice leading — move each note shortest distance</li>
+              <li>Keep hand in one area of keyboard</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Add New Key: D Major</p>
+            <ul>
+              <li>D, G, A, Bm</li>
+            </ul>
+            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
+              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min inversions · 10 min transitions · 20 min songs</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Week 3 — Adding Color</h3>
+            <p class="card-subtitle">Extensions and accompaniment patterns for that worship sound</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">New Chord Types</p>
+            <ul>
+              <li>Sus4 — Gsus4, Dsus4 (add tension)</li>
+              <li>Sus2 — Asus2, Dsus2 (dreamy feel)</li>
+              <li>Add9 — Cadd9, Gadd9 (fullness)</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Rhythm Patterns</p>
+            <ul>
+              <li>Whole-note pads for verses/bridges</li>
+              <li>Eighth-note patterns for choruses</li>
+            </ul>
+            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
+              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min voicings · 10 min rhythm · 20 min play-along</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Week 4 — Integration</h3>
+            <p class="card-subtitle">Dynamics, transitions, and playing like you're in a band</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Skills to Develop</p>
+            <ul>
+              <li>Dynamic control — soft verses, big choruses</li>
+              <li>Smooth transitions between sections</li>
+              <li>Clean starts and endings</li>
+              <li>Playing through full song sets</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Add New Key: A Major</p>
+            <ul>
+              <li>A, D, E, F#m</li>
+            </ul>
+            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
+              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min technique · 30 min full run-throughs</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 2: Growth -->
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Phase 2: Growth <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Weeks 5–8</span></h2>
+
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <div class="card">
+            <h3>Week 5–6 — Expand Keys</h3>
+            <p class="card-subtitle">Becoming comfortable in more keys</p>
+            <ul>
+              <li>Add E Major: E, A, B, C#m</li>
+              <li>Add B Major: B, E, F#, G#m</li>
+              <li>Practice transposing familiar songs</li>
+              <li>Learn Nashville Number System basics</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Week 7–8 — Musicality</h3>
+            <p class="card-subtitle">Making music, not just playing notes</p>
+            <ul>
+              <li>Intro/outro patterns for songs</li>
+              <li>Fills between chord changes</li>
+              <li>Reading the room — when to play less</li>
+              <li>Following a worship leader's cues</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Ongoing Practice -->
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Ongoing Growth <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Lifetime habits</span></h2>
+
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <div class="card">
+            <h3>Weekly Habits</h3>
+            <p class="card-subtitle">Consistency over intensity</p>
+            <ul>
+              <li>Learn 1 new song per week</li>
+              <li>Practice scales in one new key</li>
+              <li>Play along with worship recordings</li>
+              <li>Record yourself and listen back</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Monthly Challenges</h3>
+            <p class="card-subtitle">Push your boundaries</p>
+            <ul>
+              <li>Master one complex song</li>
+              <li>Learn a song by ear (no charts)</li>
+              <li>Practice with a metronome at new tempos</li>
+              <li>Try improvising over a progression</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Ear Training</h3>
+            <p class="card-subtitle">Develop your musical ear</p>
+            <ul>
+              <li>Identify chord progressions by sound</li>
+              <li>Pick out melodies from recordings</li>
+              <li>Recognize common worship patterns</li>
+              <li>Sing while you play (builds connection)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Music Theory</h3>
+            <p class="card-subtitle">Understand the "why"</p>
+            <ul>
+              <li>Learn why I-IV-V-I works</li>
+              <li>Understand relative minor keys</li>
+              <li>Study chord substitutions</li>
+              <li>Explore modes (start with Mixolydian)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Quick Reference -->
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Quick Reference</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px;">
+          <div class="card">
+            <h3>Chords by Key</h3>
+            <table style="width: 100%; font-size: 0.9rem; border-collapse: collapse; margin-top: 12px;">
+              <thead><tr style="border-bottom: 2px solid var(--color-border);"><th style="text-align: left; padding: 8px 4px; color: var(--color-green-dark);">Key</th><th style="padding: 8px 4px;">I</th><th style="padding: 8px 4px;">IV</th><th style="padding: 8px 4px;">V</th><th style="padding: 8px 4px;">vi</th></tr></thead>
+              <tbody style="color: var(--color-text-muted);">
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">G</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">C</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">Em</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">C</td><td style="padding: 8px 4px; text-align: center;">C</td><td style="padding: 8px 4px; text-align: center;">F</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">Am</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">D</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">Bm</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">A</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">F#m</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">E</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">B</td><td style="padding: 8px 4px; text-align: center;">C#m</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">B</td><td style="padding: 8px 4px; text-align: center;">B</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">F#</td><td style="padding: 8px 4px; text-align: center;">G#m</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>Songs for Practice</h3>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 8px 0;">Beginner-Friendly</p>
+            <ul>
+              <li>Good Good Father (G)</li>
+              <li>Way Maker (C)</li>
+              <li>10,000 Reasons (G)</li>
+              <li>What A Beautiful Name (D)</li>
+              <li>Goodness of God (A)</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Next Level</p>
+            <ul>
+              <li>Build My Life (G)</li>
+              <li>King of Kings (D)</li>
+              <li>The Blessing (A)</li>
+              <li>Great Are You Lord (G)</li>
+              <li>O Come to the Altar (A)</li>
+            </ul>
+          </div>
+        </div>
+
+        <p style="text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--color-brown); padding: 32px 0;">"Keep showing up. Consistency beats intensity."</p>
+      </div>
+    </div>
+
+    <div class="page" id="page-reading">
+      <div class="container">
+        <header class="page-header">
+          <p class="page-label">Currently Exploring</p>
+          <h1 class="page-title">Reading List</h1>
+        </header>
+        <div class="reading-goal">
+          <p class="goal-label">2026 Reading Goal</p>
+          <p class="goal-number"><span>6</span> / 30 books</p>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+          <p class="goal-subtitle">20% complete · 24 books to go</p>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><p class="stat-number">164</p><p class="stat-label">Books Read</p></div>
+          <div class="stat-card"><p class="stat-number">5</p><p class="stat-label">Currently Reading</p></div>
+          <div class="stat-card"><p class="stat-number">232</p><p class="stat-label">To Be Read</p></div>
+        </div>
+        <h3 class="section-title">Currently Reading</h3>
+        <div class="book-list" style="margin-bottom: 32px;">
+          <div class="book-card"><p class="book-title">Fahrenheit 451</p><p class="book-author">Ray Bradbury</p></div>
+          <div class="book-card"><p class="book-title">The Metamorphosis</p><p class="book-author">Franz Kafka</p></div>
+          <div class="book-card"><p class="book-title">The Iliad</p><p class="book-author">Homer</p></div>
+          <div class="book-card"><p class="book-title">Ruthless Vows</p><p class="book-author">Rebecca Ross</p></div>
+          <div class="book-card"><p class="book-title">Charlotte's Web</p><p class="book-author">E.B. White</p></div>
+        </div>
+        <h3 class="section-title">Recently Finished</h3>
+        <div class="book-list" style="margin-bottom: 32px;">
+          <div class="book-card"><p class="book-title">Son</p><p class="book-author">Lois Lowry</p><p class="book-status">★ 4.5</p></div>
+          <div class="book-card"><p class="book-title">The Giraffe and the Pelly and Me</p><p class="book-author">Roald Dahl</p><p class="book-status">★ 4.0</p></div>
+          <div class="book-card"><p class="book-title">The One</p><p class="book-author">Kiera Cass</p><p class="book-status">★ 4.5</p></div>
+          <div class="book-card"><p class="book-title">The Midnight Library</p><p class="book-author">Matt Haig</p><p class="book-status">★ 4.5</p></div>
+        </div>
+        <div class="carousel-header">
+          <h3 class="section-title" style="margin-bottom: 0;">Books by Rating</h3>
+          <div class="carousel-nav">
+            <button class="carousel-btn" onclick="changeSlide(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <span class="carousel-indicator" id="carouselIndicator">1 / 7</span>
+            <button class="carousel-btn" onclick="changeSlide(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+          </div>
+        </div>
+        <div id="ratingCarousel">
+          <div class="carousel-slide active"><div class="slide-header" onclick="openModal('5star')"><span class="rating-stars">★★★★★</span><span class="rating-label">5-Star Reads</span><span class="rating-count">43 books</span><span class="view-all-hint">Click to view all →</span></div><div class="book-list"><div class="book-card"><p class="book-title">The Silent Patient</p><p class="book-author">Alex Michaelides</p></div><div class="book-card"><p class="book-title">The Hobbit</p><p class="book-author">J.R.R. Tolkien</p></div><div class="book-card"><p class="book-title">Jane Eyre</p><p class="book-author">Charlotte Brontë</p></div><div class="book-card"><p class="book-title">Frankenstein</p><p class="book-author">Mary Shelley</p></div><div class="book-card"><p class="book-title">Before the Coffee Gets Cold</p><p class="book-author">Toshikazu Kawaguchi</p></div></div></div>
+          <div class="carousel-slide"><div class="slide-header" onclick="openModal('4.5star')"><span class="rating-stars">★★★★¾</span><span class="rating-label">4.5+ Stars</span><span class="rating-count">11 books</span><span class="view-all-hint">Click to view all →</span></div><div class="book-list"><div class="book-card"><p class="book-title">Eleanor Oliphant Is Completely Fine</p><p class="book-author">Gail Honeyman</p></div><div class="book-card"><p class="book-title">Howl's Moving Castle</p><p class="book-author">Diana Wynne Jones</p></div><div class="book-card"><p class="book-title">Where the Crawdads Sing</p><p class="book-author">Delia Owens</p></div><div class="book-card"><p class="book-title">The Midnight Library</p><p class="book-author">Matt Haig</p></div><div class="book-card"><p class="book-title">1984</p><p class="book-author">George Orwell</p></div></div></div>
+          <div class="carousel-slide"><div class="slide-header" onclick="openModal('4star')"><span class="rating-stars">★★★★</span><span class="rating-label">4-Star Reads</span><span class="rating-count">53 books</span><span class="view-all-hint">Click to view all →</span></div><div class="book-list"><div class="book-card"><p class="book-title">The Little Prince</p><p class="book-author">Antoine de Saint-Exupéry</p></div><div class="book-card"><p class="book-title">City of Ashes</p><p class="book-author">Cassandra Clare</p></div><div class="book-card"><p class="book-title">Six of Crows</p><p class="book-author">Leigh Bardugo</p></div><div class="book-card"><p class="book-title">The Song of Achilles</p><p class="book-author">Madeline Miller</p></div><div class="book-card"><p class="book-title">Fourth Wing</p><p class="book-author">Rebecca Yarros</p></div></div></div>
+          <div class="carousel-slide"><div class="slide-header" onclick="openModal('3.5star')"><span class="rating-stars">★★★½</span><span class="rating-label">3.5-Star Reads</span><span class="rating-count">10 books</span><span class="view-all-hint">Click to view all →</span></div><div class="book-list"><div class="book-card"><p class="book-title">Ready Player One</p><p class="book-author">Ernest Cline</p></div><div class="book-card"><p class="book-title">The Guest List</p><p class="book-author">Lucy Foley</p></div><div class="book-card"><p class="book-title">Dracula</p><p class="book-author">Bram Stoker</p></div><div class="book-card"><p class="book-title">The Trial</p><p class="book-author">Franz Kafka</p></div></div></div>
+          <div class="carousel-slide"><div class="slide-header" onclick="openModal('3star')"><span class="rating-stars">★★★</span><span class="rating-label">3-Star Reads</span><span class="rating-count">21 books</span><span class="view-all-hint">Click to view all →</span></div><div class="book-list"><div class="book-card"><p class="book-title">The Love Hypothesis</p><p class="book-author">Ali Hazelwood</p></div><div class="book-card"><p class="book-title">The Inheritance Games</p><p class="book-author">Jennifer Lynn Barnes</p></div><div class="book-card"><p class="book-title">Crooked House</p><p class="book-author">Agatha Christie</p></div><div class="book-card"><p class="book-title">Normal People</p><p class="book-author">Sally Rooney</p></div></div></div>
+          <div class="carousel-slide"><div class="slide-header" onclick="openModal('2star')"><span class="rating-stars">★★</span><span class="rating-label">2-Star Reads</span><span class="rating-count">3 books</span><span class="view-all-hint">Click to view all →</span></div><div class="book-list"><div class="book-card"><p class="book-title">The Push</p><p class="book-author">Ashley Audrain</p></div><div class="book-card"><p class="book-title">Siege and Storm</p><p class="book-author">Leigh Bardugo</p></div><div class="book-card"><p class="book-title">The Myth of Sisyphus</p><p class="book-author">Albert Camus</p></div></div></div>
+          <div class="carousel-slide"><div class="slide-header" onclick="openModal('dnf')"><span class="rating-stars">✗</span><span class="rating-label">Did Not Finish</span><span class="rating-count">14 books</span><span class="view-all-hint">Click to view all →</span></div><div class="book-list"><div class="book-card"><p class="book-title">To Kill a Mockingbird</p><p class="book-author">Harper Lee</p></div><div class="book-card"><p class="book-title">If We Were Villains</p><p class="book-author">M.L. Rio</p></div><div class="book-card"><p class="book-title">The Phantom of the Opera</p><p class="book-author">Gaston Leroux</p></div><div class="book-card"><p class="book-title">Apples Never Fall</p><p class="book-author">Liane Moriarty</p></div></div></div>
+        </div>
+        <div class="carousel-dots"><span class="dot active" onclick="goToSlide(0)"></span><span class="dot" onclick="goToSlide(1)"></span><span class="dot" onclick="goToSlide(2)"></span><span class="dot" onclick="goToSlide(3)"></span><span class="dot" onclick="goToSlide(4)"></span><span class="dot" onclick="goToSlide(5)"></span><span class="dot" onclick="goToSlide(6)"></span></div>
+        <p class="footer-note">Data from <a href="https://app.thestorygraph.com" target="_blank">Storygraph</a> · Last updated February 2026</p>
+      </div>
+    </div>
+
+    <div class="page" id="page-fitness">
+      <div class="container">
+        <header class="page-header">
+          <p class="page-label">Lifetime Lifestyle Change</p>
+          <h1 class="page-title">Fitness Journey</h1>
+          <p style="color: var(--color-text-muted); margin-top: 12px;">5x per week · MWF Strength · TTH Cardio + Core</p>
+        </header>
+
+        <!-- Philosophy -->
+        <div class="card" style="margin-bottom: 32px; text-align: center; background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 100%);">
+          <h3 style="margin-bottom: 8px;">The Approach</h3>
+          <p style="color: var(--color-text-muted); max-width: 600px; margin: 0 auto;">No deadline. No end date. This is about building sustainable habits that become part of who you are. Progress over perfection. Consistency over intensity. Show up, do the work, trust the process.</p>
+        </div>
+
+        <!-- Weekly Schedule -->
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Weekly Schedule</h2>
+
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <!-- Monday -->
+          <div class="card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <span style="background: var(--color-green); color: white; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">MON</span>
+              <h3 style="margin: 0;">Full Body Strength</h3>
+            </div>
+            <p class="card-subtitle">All major muscle groups · 45–60 min</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Upper Body</p>
+            <ul>
+              <li>Push-ups or Bench Press — 3×10</li>
+              <li>Rows (dumbbell or barbell) — 3×10</li>
+              <li>Shoulder Press — 3×10</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Lower Body</p>
+            <ul>
+              <li>Squats — 3×12</li>
+              <li>Romanian Deadlifts — 3×10</li>
+              <li>Lunges — 3×10 each leg</li>
+            </ul>
+          </div>
+
+          <!-- Tuesday -->
+          <div class="card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <span style="background: var(--color-brown); color: white; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">TUE</span>
+              <h3 style="margin: 0;">Cardio + Core</h3>
+            </div>
+            <p class="card-subtitle">Heart health & stability · 40–50 min</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Cardio (pick one)</p>
+            <ul>
+              <li>Running/jogging — 25–30 min</li>
+              <li>Cycling — 30–40 min</li>
+              <li>Jump rope — 20 min (with breaks)</li>
+              <li>HIIT — 20 min intervals</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Core Circuit (3 rounds)</p>
+            <ul>
+              <li>Plank — 45 sec</li>
+              <li>Bicycle crunches — 20 reps</li>
+              <li>Mountain climbers — 30 sec</li>
+              <li>Dead bug — 10 each side</li>
+            </ul>
+          </div>
+
+          <!-- Wednesday -->
+          <div class="card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <span style="background: var(--color-green); color: white; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">WED</span>
+              <h3 style="margin: 0;">Full Body Strength</h3>
+            </div>
+            <p class="card-subtitle">Different variations · 45–60 min</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Upper Body</p>
+            <ul>
+              <li>Incline Push-ups or Flys — 3×12</li>
+              <li>Lat Pulldowns or Pull-ups — 3×8</li>
+              <li>Lateral Raises — 3×12</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Lower Body</p>
+            <ul>
+              <li>Goblet Squats — 3×12</li>
+              <li>Hip Thrusts — 3×12</li>
+              <li>Step-ups — 3×10 each leg</li>
+            </ul>
+          </div>
+
+          <!-- Thursday -->
+          <div class="card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <span style="background: var(--color-brown); color: white; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">THU</span>
+              <h3 style="margin: 0;">Cardio + Core</h3>
+            </div>
+            <p class="card-subtitle">Different style from Tuesday · 40–50 min</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Cardio (pick different from Tue)</p>
+            <ul>
+              <li>Swimming — 30 min</li>
+              <li>Stair climbing — 20 min</li>
+              <li>Rowing machine — 25 min</li>
+              <li>Dance workout — 30 min</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Core Circuit (3 rounds)</p>
+            <ul>
+              <li>Side plank — 30 sec each</li>
+              <li>Russian twists — 20 reps</li>
+              <li>Leg raises — 15 reps</li>
+              <li>Bird dog — 10 each side</li>
+            </ul>
+          </div>
+
+          <!-- Friday -->
+          <div class="card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <span style="background: var(--color-green); color: white; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">FRI</span>
+              <h3 style="margin: 0;">Full Body Strength</h3>
+            </div>
+            <p class="card-subtitle">Compound focus · 45–60 min</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Compound Movements</p>
+            <ul>
+              <li>Deadlifts — 3×8</li>
+              <li>Bench Press or Push-ups — 3×10</li>
+              <li>Bent-over Rows — 3×10</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Accessory Work</p>
+            <ul>
+              <li>Bulgarian Split Squats — 3×8 each</li>
+              <li>Bicep Curls — 3×12</li>
+              <li>Tricep Dips — 3×12</li>
+              <li>Calf Raises — 3×15</li>
+            </ul>
+          </div>
+
+          <!-- Weekend -->
+          <div class="card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <span style="background: var(--color-text-light); color: white; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;">SAT/SUN</span>
+              <h3 style="margin: 0;">Active Recovery</h3>
+            </div>
+            <p class="card-subtitle">Rest, but keep moving</p>
+            <ul>
+              <li>Light walking — 20–30 min</li>
+              <li>Stretching or yoga — 15–20 min</li>
+              <li>Foam rolling — 10 min</li>
+              <li>Outdoor activity (hike, bike, swim)</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 12px; font-style: italic;">Listen to your body. If you're exhausted, rest completely. Recovery is when muscles grow.</p>
+          </div>
+        </div>
+
+        <!-- Progressive Overload -->
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Progressive Overload</h2>
+
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <div class="card">
+            <h3>How to Progress</h3>
+            <p class="card-subtitle">The key to continuous improvement</p>
+            <ul>
+              <li>Add 1–2 reps when exercises feel easy</li>
+              <li>Increase weight by 2.5–5 lbs when hitting rep targets</li>
+              <li>Slow down tempo for more time under tension</li>
+              <li>Reduce rest periods between sets</li>
+              <li>Add one set when fully adapted</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>When to Deload</h3>
+            <p class="card-subtitle">Recovery weeks matter</p>
+            <ul>
+              <li>Every 4–6 weeks, reduce intensity by 40–50%</li>
+              <li>If feeling unusually fatigued or unmotivated</li>
+              <li>When progress stalls for 2+ weeks</li>
+              <li>After illness or high-stress periods</li>
+              <li>Use deload week for mobility & technique work</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Habits & Tips -->
+        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Lifestyle Habits</h2>
+
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <div class="card">
+            <h3>Nutrition Basics</h3>
+            <ul>
+              <li>Protein with every meal (palm-sized portion)</li>
+              <li>Vegetables at lunch and dinner</li>
+              <li>Stay hydrated — 8+ glasses water</li>
+              <li>Eat whole foods 80% of the time</li>
+              <li>Don't restrict — just make better choices</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Sleep & Recovery</h3>
+            <ul>
+              <li>Aim for 7–9 hours of sleep</li>
+              <li>Consistent sleep/wake times</li>
+              <li>No screens 30 min before bed</li>
+              <li>Stretch or foam roll on rest days</li>
+              <li>Manage stress — it blocks progress</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Mindset</h3>
+            <ul>
+              <li>Track workouts to see progress</li>
+              <li>Celebrate small wins</li>
+              <li>Bad workout > no workout</li>
+              <li>Compare yourself to yesterday's you</li>
+              <li>This is a lifestyle, not a phase</li>
+            </ul>
+          </div>
+        </div>
+
+        <p style="text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--color-brown); padding: 32px 0;">"The best workout is the one you actually do."</p>
+      </div>
+    </div>
+
+    <div class="page" id="page-photography">
+      <div class="container">
+        <header class="page-header"><p class="page-label">Through My Lens</p><h1 class="page-title">Photography</h1></header>
+        <div class="photo-gallery">
+          <div class="photo-item large">🌿</div><div class="photo-item">☕</div><div class="photo-item">📷</div><div class="photo-item tall">🏔️</div><div class="photo-item">🌅</div><div class="photo-item">🎹</div><div class="photo-item">📚</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-journal">
+      <div class="container">
+        <header class="page-header"><p class="page-label">Thoughts & Reflections</p><h1 class="page-title">Journal</h1></header>
+        <div class="journal-grid">
+          <article class="journal-entry"><div class="journal-image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg></div><div class="journal-content"><p class="journal-date">February 2, 2025</p><h3 class="journal-title">One Month of Piano: What I've Learned</h3><p class="journal-excerpt">Looking back at my first month learning piano, I'm surprised by how much muscle memory matters...</p><div class="journal-tags"><span class="tag">Piano</span><span class="tag">Progress</span></div></div></article>
+          <article class="journal-entry"><div class="journal-image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="journal-content"><p class="journal-date">January 28, 2025</p><h3 class="journal-title">Why Atomic Habits Changed My Approach</h3><p class="journal-excerpt">I used to set big goals and burn out. This book shifted my focus to systems instead...</p><div class="journal-tags"><span class="tag">Reading</span><span class="tag">Habits</span></div></div></article>
+          <article class="journal-entry"><div class="journal-image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></div><div class="journal-content"><p class="journal-date">January 20, 2025</p><h3 class="journal-title">Finding Joy in Morning Workouts</h3><p class="journal-excerpt">I never thought I'd be a morning person. But there's something about finishing a workout before 7 AM...</p><div class="journal-tags"><span class="tag">Fitness</span><span class="tag">Routine</span></div></div></article>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="bookModal" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header"><h2 class="modal-title" id="modalTitle">5-Star Books</h2><button class="modal-close" onclick="closeModal()">×</button></div>
+      <div class="modal-body"><div class="modal-book-list" id="modalBookList"></div></div>
+    </div>
+  </div>
+
+  <script>
+    const bookData = {
+      '5star': { title: '★★★★★ 5-Star Books (43)', books: [{title:"All the Lies",author:"S.T. Abby"},{title:"Heartstopper Volume 5",author:"Alice Oseman"},{title:"Before the Coffee Gets Cold",author:"Toshikazu Kawaguchi"},{title:"Love and Other Words",author:"Christina Lauren"},{title:"Tales from the Café",author:"Toshikazu Kawaguchi"},{title:"The Blood of Olympus",author:"Rick Riordan"},{title:"The Last Olympian",author:"Rick Riordan"},{title:"Christmas Rivalry",author:"Ruby Hill"},{title:"Grown",author:"Tiffany D. Jackson"},{title:"The Power of Six",author:"Pittacus Lore"},{title:"The Heart Principle",author:"Helen Hoang"},{title:"Heartstopper Volume 2",author:"Alice Oseman"},{title:"Waking Lazarus",author:"T.L. Hines"},{title:"In a Holidaze",author:"Christina Lauren"},{title:"Twisted Games",author:"Ana Huang"},{title:"Master of the Game",author:"Sidney Sheldon"},{title:"The Silent Patient",author:"Alex Michaelides"},{title:"The Hobbit",author:"J.R.R. Tolkien"},{title:"The Housemaid's Secret",author:"Freida McFadden"},{title:"Crooked Kingdom",author:"Leigh Bardugo"},{title:"Romanov",author:"Nadine Brandes"},{title:"The Spanish Love Deception",author:"Elena Armas"},{title:"The Giver",author:"Lois Lowry"},{title:"Daisy Darker",author:"Alice Feeney"},{title:"The Son of Neptune",author:"Rick Riordan"},{title:"Jane Eyre",author:"Charlotte Brontë"},{title:"Anxious People",author:"Fredrik Backman"},{title:"Verity",author:"Colleen Hoover"},{title:"The House of Hades",author:"Rick Riordan"},{title:"Frankenstein",author:"Mary Shelley"},{title:"The Unhoneymooners",author:"Christina Lauren"},{title:"The Dutch House",author:"Ann Patchett"},{title:"The Sea of Monsters",author:"Rick Riordan"},{title:"The Kiss Quotient",author:"Helen Hoang"},{title:"The True Love Experiment",author:"Christina Lauren"},{title:"Paint It All Red",author:"S.T. Abby"},{title:"Scarlet Angel",author:"S.T. Abby"},{title:"And Then There Were None",author:"Agatha Christie"},{title:"The Soulmate Equation",author:"Christina Lauren"},{title:"Hidden Pictures",author:"Jason Rekulak"},{title:"The Nightingale",author:"Kristin Hannah"},{title:"The Only One Left",author:"Riley Sager"},{title:"1st To Die",author:"James Patterson"}] },
+      '4.5star': { title: '★★★★¾ 4.5+ Star Books (11)', books: [{title:"Eleanor Oliphant Is Completely Fine",author:"Gail Honeyman"},{title:"Howl's Moving Castle",author:"Diana Wynne Jones"},{title:"Where the Crawdads Sing",author:"Delia Owens"},{title:"The Ex Hex",author:"Erin Sterling"},{title:"1984",author:"George Orwell"},{title:"The Midnight Library",author:"Matt Haig"},{title:"Along Came a Spider",author:"James Patterson"},{title:"The One",author:"Kiera Cass"},{title:"The Martian",author:"Andy Weir"},{title:"Son",author:"Lois Lowry"},{title:"The Great Gatsby",author:"F. Scott Fitzgerald"}] },
+      '4star': { title: '★★★★ 4-Star Books (53)', books: [{title:"The Little Prince",author:"Antoine de Saint-Exupéry"},{title:"Losers: Part I",author:"Harley Laroux"},{title:"City of Ashes",author:"Cassandra Clare"},{title:"Behind Closed Doors",author:"B.A. Paris"},{title:"The Fall of Five",author:"Pittacus Lore"},{title:"Snow, Glass, Apples",author:"Neil Gaiman"},{title:"Bared to You",author:"Sylvia Day"},{title:"City of Bones",author:"Cassandra Clare"},{title:"Love on the Brain",author:"Ali Hazelwood"},{title:"Fight Club",author:"Chuck Palahniuk"},{title:"Stone Heart",author:"Katee Robert"},{title:"A Good Girl's Guide to Murder",author:"Holly Jackson"},{title:"The Lost Hero",author:"Rick Riordan"},{title:"Love, Theoretically",author:"Ali Hazelwood"},{title:"The Fine Print",author:"Lauren Asher"},{title:"Sidetracked",author:"S.T. Abby"},{title:"Rhapsodic",author:"Laura Thalassa"},{title:"Heartstopper Volume 3",author:"Alice Oseman"},{title:"The Mysterious Affair at Styles",author:"Agatha Christie"},{title:"I Am Number Four",author:"Pittacus Lore"},{title:"The Hidden Oracle",author:"Rick Riordan"},{title:"The Book Thief",author:"Markus Zusak"},{title:"The Lightning Thief",author:"Rick Riordan"},{title:"Six of Crows",author:"Leigh Bardugo"},{title:"The Elite",author:"Kiera Cass"},{title:"The Titan's Curse",author:"Rick Riordan"},{title:"A Touch of Darkness",author:"Scarlett St. Clair"},{title:"Rodrick Rules",author:"Jeff Kinney"},{title:"Gathering Blue",author:"Lois Lowry"},{title:"Rock Paper Scissors",author:"Alice Feeney"},{title:"The Selection",author:"Kiera Cass"},{title:"The Song of Achilles",author:"Madeline Miller"},{title:"Notes from Underground",author:"Fyodor Dostoevsky"},{title:"Fourth Wing",author:"Rebecca Yarros"},{title:"One of Us Is Lying",author:"Karen M. McManus"},{title:"The Housemaid",author:"Freida McFadden"},{title:"His & Hers",author:"Alice Feeney"},{title:"The Shack",author:"William Paul Young"},{title:"A Cup of Sake Beneath the Cherry Trees",author:"Yoshida Kenkō"},{title:"The Mark of Athena",author:"Rick Riordan"},{title:"Nyxia",author:"Scott Reintgen"},{title:"The Sweetest Oblivion",author:"Danielle Lori"},{title:"The Purpose Driven Life",author:"Rick Warren"},{title:"The Giraffe and the Pelly and Me",author:"Roald Dahl"},{title:"Josh and Hazel's Guide to Not Dating",author:"Christina Lauren"},{title:"Agnes and the Hitman",author:"Jennifer Crusie"},{title:"It Happened One Summer",author:"Tessa Bailey"},{title:"Twisted Love",author:"Ana Huang"},{title:"Shadow and Bone",author:"Leigh Bardugo"},{title:"Heartstopper Volume 1",author:"Alice Oseman"},{title:"Heartstopper Volume 4",author:"Alice Oseman"},{title:"Dr Jekyll and Mr. Hyde",author:"Robert Louis Stevenson"},{title:"The Battle of the Labyrinth",author:"Rick Riordan"}] },
+      '3.5star': { title: '★★★½ 3.5-Star Books (10)', books: [{title:"My Dark Vanessa",author:"Kate Elizabeth Russell"},{title:"Ready Player One",author:"Ernest Cline"},{title:"The Guest List",author:"Lucy Foley"},{title:"Before Your Memory Fades",author:"Toshikazu Kawaguchi"},{title:"Good Bad Girl",author:"Alice Feeney"},{title:"Alice's Adventures in Wonderland",author:"Lewis Carroll"},{title:"The Trial",author:"Franz Kafka"},{title:"Scarred",author:"Emily McIntire"},{title:"Dracula",author:"Bram Stoker"},{title:"The Secret History",author:"Donna Tartt"}] },
+      '3star': { title: '★★★ 3-Star Books (21)', books: [{title:"The Love Hypothesis",author:"Ali Hazelwood"},{title:"The Inheritance Games",author:"Jennifer Lynn Barnes"},{title:"Crooked House",author:"Agatha Christie"},{title:"Diary of a Wimpy Kid",author:"Jeff Kinney"},{title:"Normal People",author:"Sally Rooney"},{title:"The Tailor",author:"Leigh Bardugo"},{title:"The Darkest Temptation",author:"Danielle Lori"},{title:"The Beautifull Cassandra",author:"Jane Austen"},{title:"Stalking Jack the Ripper",author:"Kerri Maniscalco"},{title:"Little Secrets",author:"Jennifer Hillier"},{title:"The Maddest Obsession",author:"Danielle Lori"},{title:"The Risk",author:"S.T. Abby"},{title:"The Rise of Nine",author:"Pittacus Lore"},{title:"The House of the Scorpion",author:"Nancy Farmer"},{title:"A Study in Scarlet",author:"Arthur Conan Doyle"},{title:"The Perfect Marriage",author:"Jeneva Rose"},{title:"Fa La La Latte",author:"Ruby Hill"},{title:"Hook, Line, and Sinker",author:"Tessa Bailey"},{title:"The Bride Test",author:"Helen Hoang"},{title:"The Sign of Four",author:"Arthur Conan Doyle"},{title:"The Hating Game",author:"Sally Thorne"}] },
+      '2star': { title: '★★ 2-Star Books (3)', books: [{title:"The Push",author:"Ashley Audrain"},{title:"Siege and Storm",author:"Leigh Bardugo"},{title:"The Myth of Sisyphus",author:"Albert Camus"}] },
+      'dnf': { title: '✗ Did Not Finish (14)', books: [{title:"The Realm of Possibility",author:"David Levithan"},{title:"Nineteen Minutes",author:"Jodi Picoult"},{title:"Love Unending",author:"Becky Thompson"},{title:"The Secret Adversary",author:"Agatha Christie"},{title:"The Ten Thousand Doors of January",author:"Alix E. Harrow"},{title:"To Kill a Mockingbird",author:"Harper Lee"},{title:"The Turn of the Key",author:"Ruth Ware"},{title:"The Claiming of Sleeping Beauty",author:"A.N. Roquelaure"},{title:"Apples Never Fall",author:"Liane Moriarty"},{title:"The Phantom of the Opera",author:"Gaston Leroux"},{title:"The Illumination of Ursula Flight",author:"Anna-Marie Crowhurst"},{title:"If We Were Villains",author:"M.L. Rio"},{title:"The Wrath & the Dawn",author:"Renée Ahdieh"},{title:"The Tattooist of Auschwitz",author:"Heather Morris"}] }
+    };
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      document.getElementById('page-' + pageId).classList.add('active');
+      document.querySelector('[data-page="' + pageId + '"]').classList.add('active');
+    }
+
+    let currentSlide = 0;
+    const totalSlides = 7;
+    function changeSlide(dir) { currentSlide = (currentSlide + dir + totalSlides) % totalSlides; updateCarousel(); }
+    function goToSlide(idx) { currentSlide = idx; updateCarousel(); }
+    function updateCarousel() {
+      document.querySelectorAll('.carousel-slide').forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+      document.getElementById('carouselIndicator').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+    }
+
+    function openModal(category) {
+      const data = bookData[category];
+      document.getElementById('modalTitle').textContent = data.title;
+      document.getElementById('modalBookList').innerHTML = data.books.map(b => '<div class="modal-book"><p class="modal-book-title">' + b.title + '</p><p class="modal-book-author">' + b.author + '</p></div>').join('');
+      document.getElementById('bookModal').classList.add('active');
+    }
+    function closeModal(e) { if (!e || e.target === document.getElementById('bookModal')) document.getElementById('bookModal').classList.remove('active'); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+</body>
+</html>

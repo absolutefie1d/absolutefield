@@ -1,0 +1,63 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  # Journal Entries
+  - name: "journal"
+    label: "Journal Entries"
+    folder: "content/journal"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Excerpt", name: "excerpt", widget: "text", hint: "Short preview text (1-2 sentences)" }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Tags"
+        name: "tags"
+        widget: "select"
+        multiple: true
+        options: ["Piano", "Reading", "Fitness", "Photography", "Progress", "Habits", "Routine", "Reflection", "Goals"]
+
+  # Photography
+  - name: "photography"
+    label: "Photography"
+    folder: "content/photography"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Photo", name: "image", widget: "image" }
+      - { label: "Caption", name: "caption", widget: "string", required: false }
+      - { label: "Date Taken", name: "date", widget: "datetime" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options: ["Nature", "Coffee & Food", "Books", "Music", "Travel", "Portraits", "Street", "Other"]
+      - { label: "Featured", name: "featured", widget: "boolean", default: false, hint: "Show in large format on gallery" }
+
+  # Site Settings - Reading
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "reading"
+        label: "Reading Stats"
+        file: "_data/reading.json"
+        fields:
+          - { label: "2026 Books Read", name: "books_read_2026", widget: "number", default: 6 }
+          - { label: "2026 Goal", name: "goal_2026", widget: "number", default: 30 }
+          - { label: "Total Books Read (All Time)", name: "total_read", widget: "number", default: 164 }
+          - { label: "Currently Reading Count", name: "currently_reading_count", widget: "number", default: 5 }
+          - { label: "To Be Read Count", name: "tbr_count", widget: "number", default: 232 }
+          - label: "Currently Reading Books"
+            name: "currently_reading"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Author", name: "author", widget: "string" }
+          - { label: "Last CSV Upload Date", name: "last_updated", widget: "datetime" }
