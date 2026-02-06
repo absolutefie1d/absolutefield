@@ -1,0 +1,10 @@
+{
+  "name": "my-absolute-field",
+  "version": "1.0.0",
+  "description": "Personal hobbies website with CMS",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "author": "",
+  "license": "MIT"
+}

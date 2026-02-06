@@ -11,6 +11,7 @@ collections:
     label: "Journal Entries"
     folder: "content/journal"
     create: true
+    delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
@@ -29,6 +30,7 @@ collections:
     label: "Photography"
     folder: "content/photography"
     create: true
+    delete: true
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
@@ -41,10 +43,11 @@ collections:
         options: ["Nature", "Coffee & Food", "Books", "Music", "Travel", "Portraits", "Street", "Other"]
       - { label: "Featured", name: "featured", widget: "boolean", default: false, hint: "Show in large format on gallery" }
 
-  # Site Settings - Reading
+  # Site Settings
   - name: "settings"
     label: "Site Settings"
     files:
+      # Reading Stats
       - name: "reading"
         label: "Reading Stats"
         file: "_data/reading.json"
@@ -60,4 +63,82 @@ collections:
             fields:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Author", name: "author", widget: "string" }
-          - { label: "Last CSV Upload Date", name: "last_updated", widget: "datetime" }
+          - { label: "Last Updated", name: "last_updated", widget: "datetime" }
+
+      # Fitness Routine
+      - name: "fitness"
+        label: "Fitness Routine"
+        file: "_data/fitness.json"
+        fields:
+          - { label: "Philosophy", name: "philosophy", widget: "text", default: "No deadline. No end date. This is about building sustainable habits that become part of who you are." }
+          - { label: "Closing Quote", name: "closing_quote", widget: "string", default: "The best workout is the one you actually do." }
+          
+          - label: "Monday Workout"
+            name: "monday"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Full Body Strength" }
+              - { label: "Subtitle", name: "subtitle", widget: "string", default: "All major muscle groups" }
+              - { label: "Duration", name: "duration", widget: "string", default: "45-60 min" }
+              - { label: "Upper Body Exercises", name: "upper", widget: "list", field: { label: "Exercise", name: "ex", widget: "string" } }
+              - { label: "Lower Body Exercises", name: "lower", widget: "list", field: { label: "Exercise", name: "ex", widget: "string" } }
+          
+          - label: "Tuesday Workout"
+            name: "tuesday"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Cardio + Core" }
+              - { label: "Subtitle", name: "subtitle", widget: "string", default: "Heart health & stability" }
+              - { label: "Duration", name: "duration", widget: "string", default: "40-50 min" }
+              - { label: "Cardio Options", name: "cardio", widget: "list", field: { label: "Option", name: "opt", widget: "string" } }
+              - { label: "Core Circuit", name: "core", widget: "list", field: { label: "Exercise", name: "ex", widget: "string" } }
+          
+          - label: "Wednesday Workout"
+            name: "wednesday"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Full Body Strength" }
+              - { label: "Subtitle", name: "subtitle", widget: "string", default: "Different variations" }
+              - { label: "Duration", name: "duration", widget: "string", default: "45-60 min" }
+              - { label: "Upper Body Exercises", name: "upper", widget: "list", field: { label: "Exercise", name: "ex", widget: "string" } }
+              - { label: "Lower Body Exercises", name: "lower", widget: "list", field: { label: "Exercise", name: "ex", widget: "string" } }
+          
+          - label: "Thursday Workout"
+            name: "thursday"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Cardio + Core" }
+              - { label: "Subtitle", name: "subtitle", widget: "string", default: "Different style from Tuesday" }
+              - { label: "Duration", name: "duration", widget: "string", default: "40-50 min" }
+              - { label: "Cardio Options", name: "cardio", widget: "list", field: { label: "Option", name: "opt", widget: "string" } }
+              - { label: "Core Circuit", name: "core", widget: "list", field: { label: "Exercise", name: "ex", widget: "string" } }
+          
+          - label: "Friday Workout"
+            name: "friday"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Full Body Strength" }
+              - { label: "Subtitle", name: "subtitle", widget: "string", default: "Compound focus" }
+              - { label: "Duration", name: "duration", widget: "string", default: "45-60 min" }
+              - { label: "Compound Movements", name: "compound", widget: "list", field: { label: "Exercise", name: "ex", widget: "string" } }
+              - { label: "Accessory Work", name: "accessory", widget: "list", field: { label: "Exercise", name: "ex", widget: "string" } }
+          
+          - label: "Weekend Recovery"
+            name: "weekend"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string", default: "Active Recovery" }
+              - { label: "Subtitle", name: "subtitle", widget: "string", default: "Rest, but keep moving" }
+              - { label: "Activities", name: "activities", widget: "list", field: { label: "Activity", name: "act", widget: "string" } }
+              - { label: "Note", name: "note", widget: "text", default: "Listen to your body. If you're exhausted, rest completely. Recovery is when muscles grow." }
+
+      # Storygraph CSV Upload
+      - name: "storygraph"
+        label: "Storygraph CSV Upload"
+        file: "_data/storygraph.csv"
+        description: "Upload your Storygraph export CSV here. The build script will process it automatically."
+        fields:
+          - label: "Instructions"
+            name: "instructions"
+            widget: "hidden"
+            default: "Upload your Storygraph CSV export. Go to Storygraph > Settings > Export to get your CSV file."

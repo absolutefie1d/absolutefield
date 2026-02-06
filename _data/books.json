@@ -1,0 +1,85 @@
+{
+  "5star": {
+    "title": "★★★★★ 5-Star Books (43)",
+    "stars": "★★★★★",
+    "label": "5-Star Reads",
+    "books": [
+      {"title": "The Silent Patient", "author": "Alex Michaelides"},
+      {"title": "The Hobbit", "author": "J.R.R. Tolkien"},
+      {"title": "Jane Eyre", "author": "Charlotte Brontë"},
+      {"title": "Frankenstein", "author": "Mary Shelley"},
+      {"title": "Before the Coffee Gets Cold", "author": "Toshikazu Kawaguchi"},
+      {"title": "The Nightingale", "author": "Kristin Hannah"},
+      {"title": "Verity", "author": "Colleen Hoover"},
+      {"title": "The Dutch House", "author": "Ann Patchett"},
+      {"title": "Crooked Kingdom", "author": "Leigh Bardugo"},
+      {"title": "Anxious People", "author": "Fredrik Backman"},
+      {"title": "The Giver", "author": "Lois Lowry"},
+      {"title": "And Then There Were None", "author": "Agatha Christie"}
+    ]
+  },
+  "4.5star": {
+    "title": "★★★★¾ 4.5+ Stars (11)",
+    "stars": "★★★★¾",
+    "label": "4.5+ Stars",
+    "books": [
+      {"title": "Eleanor Oliphant Is Completely Fine", "author": "Gail Honeyman"},
+      {"title": "Howl's Moving Castle", "author": "Diana Wynne Jones"},
+      {"title": "Where the Crawdads Sing", "author": "Delia Owens"},
+      {"title": "1984", "author": "George Orwell"},
+      {"title": "The Midnight Library", "author": "Matt Haig"},
+      {"title": "The Martian", "author": "Andy Weir"}
+    ]
+  },
+  "4star": {
+    "title": "★★★★ 4-Star Books (53)",
+    "stars": "★★★★",
+    "label": "4-Star Reads",
+    "books": [
+      {"title": "The Little Prince", "author": "Antoine de Saint-Exupéry"},
+      {"title": "Six of Crows", "author": "Leigh Bardugo"},
+      {"title": "The Song of Achilles", "author": "Madeline Miller"},
+      {"title": "Fourth Wing", "author": "Rebecca Yarros"},
+      {"title": "The Book Thief", "author": "Markus Zusak"}
+    ]
+  },
+  "3.5star": {
+    "title": "★★★½ 3.5-Star Books (10)",
+    "stars": "★★★½",
+    "label": "3.5-Star Reads",
+    "books": [
+      {"title": "Ready Player One", "author": "Ernest Cline"},
+      {"title": "Dracula", "author": "Bram Stoker"},
+      {"title": "The Guest List", "author": "Lucy Foley"}
+    ]
+  },
+  "3star": {
+    "title": "★★★ 3-Star Books (21)",
+    "stars": "★★★",
+    "label": "3-Star Reads",
+    "books": [
+      {"title": "The Love Hypothesis", "author": "Ali Hazelwood"},
+      {"title": "Normal People", "author": "Sally Rooney"},
+      {"title": "The Hating Game", "author": "Sally Thorne"}
+    ]
+  },
+  "2star": {
+    "title": "★★ 2-Star Books (3)",
+    "stars": "★★",
+    "label": "2-Star Reads",
+    "books": [
+      {"title": "The Push", "author": "Ashley Audrain"},
+      {"title": "Siege and Storm", "author": "Leigh Bardugo"}
+    ]
+  },
+  "dnf": {
+    "title": "✗ Did Not Finish (14)",
+    "stars": "✗",
+    "label": "Did Not Finish",
+    "books": [
+      {"title": "To Kill a Mockingbird", "author": "Harper Lee"},
+      {"title": "If We Were Villains", "author": "M.L. Rio"},
+      {"title": "The Phantom of the Opera", "author": "Gaston Leroux"}
+    ]
+  }
+}

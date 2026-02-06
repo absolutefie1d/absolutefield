@@ -1,0 +1,95 @@
+{
+  "philosophy": "No deadline. No end date. This is about building sustainable habits that become part of who you are. Progress over perfection. Consistency over intensity. Show up, do the work, trust the process.",
+  "closing_quote": "The best workout is the one you actually do.",
+  "monday": {
+    "title": "Full Body Strength",
+    "subtitle": "All major muscle groups",
+    "duration": "45-60 min",
+    "upper": [
+      "Push-ups or Bench Press — 3×10",
+      "Rows (dumbbell or barbell) — 3×10",
+      "Shoulder Press — 3×10"
+    ],
+    "lower": [
+      "Squats — 3×12",
+      "Romanian Deadlifts — 3×10",
+      "Lunges — 3×10 each leg"
+    ]
+  },
+  "tuesday": {
+    "title": "Cardio + Core",
+    "subtitle": "Heart health & stability",
+    "duration": "40-50 min",
+    "cardio": [
+      "Running/jogging — 25-30 min",
+      "Cycling — 30-40 min",
+      "Jump rope — 20 min (with breaks)",
+      "HIIT — 20 min intervals"
+    ],
+    "core": [
+      "Plank — 45 sec",
+      "Bicycle crunches — 20 reps",
+      "Mountain climbers — 30 sec",
+      "Dead bug — 10 each side"
+    ]
+  },
+  "wednesday": {
+    "title": "Full Body Strength",
+    "subtitle": "Different variations",
+    "duration": "45-60 min",
+    "upper": [
+      "Incline Push-ups or Flys — 3×12",
+      "Lat Pulldowns or Pull-ups — 3×8",
+      "Lateral Raises — 3×12"
+    ],
+    "lower": [
+      "Goblet Squats — 3×12",
+      "Hip Thrusts — 3×12",
+      "Step-ups — 3×10 each leg"
+    ]
+  },
+  "thursday": {
+    "title": "Cardio + Core",
+    "subtitle": "Different style from Tuesday",
+    "duration": "40-50 min",
+    "cardio": [
+      "Swimming — 30 min",
+      "Stair climbing — 20 min",
+      "Rowing machine — 25 min",
+      "Dance workout — 30 min"
+    ],
+    "core": [
+      "Side plank — 30 sec each",
+      "Russian twists — 20 reps",
+      "Leg raises — 15 reps",
+      "Bird dog — 10 each side"
+    ]
+  },
+  "friday": {
+    "title": "Full Body Strength",
+    "subtitle": "Compound focus",
+    "duration": "45-60 min",
+    "compound": [
+      "Deadlifts — 3×8",
+      "Bench Press or Push-ups — 3×10",
+      "Bent-over Rows — 3×10"
+    ],
+    "accessory": [
+      "Bulgarian Split Squats — 3×8 each",
+      "Bicep Curls — 3×12",
+      "Tricep Dips — 3×12",
+      "Calf Raises — 3×15"
+    ]
+  },
+  "weekend": {
+    "title": "Active Recovery",
+    "subtitle": "Rest, but keep moving",
+    "activities": [
+      "Light walking — 20-30 min",
+      "Stretching or yoga — 15-20 min",
+      "Foam rolling — 10 min",
+      "Outdoor activity (hike, bike, swim)"
+    ],
+    "note": "Listen to your body. If you're exhausted, rest completely. Recovery is when muscles grow."
+  }
+}

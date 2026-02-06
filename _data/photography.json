@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Morning Light",
+    "caption": "Golden hour in the garden",
+    "category": "Nature",
+    "image": "",
+    "featured": true,
+    "date": "2025-01-15"
+  },
+  {
+    "title": "Coffee Moments",
+    "caption": "Daily ritual",
+    "category": "Coffee & Food",
+    "image": "",
+    "featured": false,
+    "date": "2025-01-10"
+  },
+  {
+    "title": "Mountain Escape",
+    "caption": "Weekend adventure",
+    "category": "Travel",
+    "image": "",
+    "featured": false,
+    "date": "2025-01-05"
+  }
+]
