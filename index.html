@@ -369,7 +369,7 @@
     // ===== DATA LOADING =====
     async function loadReadingData() {
       try {
-        const response = await fetch('/_data/reading.json');
+        const response = await fetch('_data/reading.json');
         readingData = await response.json();
       } catch (e) {
         // Fallback data
@@ -388,7 +388,7 @@
       
       // Load book data from generated books.json
       try {
-        const booksResponse = await fetch('/_data/books.json');
+        const booksResponse = await fetch('_data/books.json');
         bookData = await booksResponse.json();
       } catch (e) {
         // Fallback data if books.json doesn't exist yet
@@ -406,7 +406,7 @@
 
     async function loadFitnessData() {
       try {
-        const response = await fetch('/_data/fitness.json');
+        const response = await fetch('_data/fitness.json');
         fitnessData = await response.json();
       } catch (e) {
         fitnessData = { philosophy: "No deadline. No end date.", closing_quote: "The best workout is the one you actually do." };
@@ -415,7 +415,7 @@
 
     async function loadJournalEntries() {
       try {
-        const response = await fetch('/_data/journal.json');
+        const response = await fetch('_data/journal.json');
         journalEntries = await response.json();
       } catch (e) {
         // Fallback sample data
@@ -434,7 +434,7 @@
 
     async function loadPhotoEntries() {
       try {
-        const response = await fetch('/_data/photography.json');
+        const response = await fetch('_data/photography.json');
         photoEntries = await response.json();
       } catch (e) {
         // Fallback sample data
