@@ -624,7 +624,7 @@
 
     // ===== CAROUSEL =====
     let currentSlide = 0;
-    const totalSlides = 7;
+    let totalSlides = 7;
     function changeSlide(dir) { currentSlide = (currentSlide + dir + totalSlides) % totalSlides; updateCarousel(); }
     function goToSlide(idx) { currentSlide = idx; updateCarousel(); }
     function updateCarousel() {
