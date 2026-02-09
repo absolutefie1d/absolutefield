@@ -31,7 +31,7 @@
     .nav-logo { cursor: pointer; display: flex; align-items: center; gap: 8px; }
     .nav-logo svg { width: 36px; height: 36px; }
     .nav-links { display: flex; gap: 8px; list-style: none; }
-    .nav-links a { color: var(--color-text-muted); font-size: 0.9rem; padding: 8px 16px; border-radius: 50px; transition: all var(--transition); cursor: pointer; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+    .nav-links a { color: var(--color-text-muted); font-size: 0.9rem; padding: 8px 16px; border-radius: 50px; transition: all var(--transition); cursor: pointer; text-decoration: none; font-weight: 400; letter-spacing: 0.02em; }
     .nav-links a:hover { color: var(--color-green); background: var(--color-green-pale); }
     .nav-links a.active { color: var(--color-white); background: var(--color-green); }
 
@@ -43,7 +43,7 @@
 
     .page-header { text-align: center; margin-bottom: 48px; }
     .page-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-brown); margin-bottom: 12px; }
-    .page-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 3.5rem); color: var(--color-green-dark); }
+    .page-title { font-family: 'Great Vibes', cursive; font-size: clamp(2.5rem, 6vw, 3.5rem); color: var(--color-green-dark); }
 
     .hero { min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px; background: radial-gradient(ellipse at 30% 20%, rgba(212, 228, 207, 0.4) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(196, 168, 130, 0.2) 0%, transparent 50%); }
     .hero-content { max-width: 700px; }
@@ -84,7 +84,7 @@
     .book-title { font-weight: 600; color: var(--color-text); font-size: 0.9rem; margin-bottom: 4px; }
     .book-author { font-size: 0.8rem; color: var(--color-text-muted); }
     .book-status { font-size: 0.75rem; color: var(--color-text-light); margin-top: 8px; }
-    .section-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--color-green-dark); margin-bottom: 20px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--color-green-dark); margin-bottom: 20px; }
 
     .carousel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; margin-top: 48px; }
     .carousel-nav { display: flex; align-items: center; gap: 12px; }
@@ -98,7 +98,7 @@
     .slide-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border); cursor: pointer; transition: opacity var(--transition); }
     .slide-header:hover { opacity: 0.7; }
     .rating-stars { font-size: 1.2rem; color: var(--color-brown); }
-    .rating-label { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--color-green-dark); }
+    .rating-label { font-family: 'Great Vibes', cursive; font-size: 1.4rem; color: var(--color-green-dark); }
     .rating-count { font-size: 0.8rem; color: var(--color-text-muted); background: var(--color-bg-alt); padding: 4px 12px; border-radius: 50px; }
     .view-all-hint { font-size: 0.75rem; color: var(--color-green); margin-left: auto; }
     .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
@@ -225,13 +225,206 @@
         <header class="page-header">
           <p class="page-label">Worship Keys Journey</p>
           <h1 class="page-title">Piano Training</h1>
+          <p style="color: var(--color-text-muted); margin-top: 12px;">30–45 minutes daily · Goal: Playing at church</p>
         </header>
-        <div class="cards-grid">
-          <div class="card"><h3>Week 1 — Foundation</h3><p class="card-subtitle">Common keys & basic chord shapes</p><ul><li>Master G and C major chords</li><li>Practice I-IV-V-vi progressions</li><li>Learn "Good Good Father" & "Way Maker"</li></ul></div>
-          <div class="card"><h3>Week 2 — Movement</h3><p class="card-subtitle">Inversions & voice leading</p><ul><li>First & second inversions</li><li>Smooth chord transitions</li><li>Add D major to repertoire</li></ul></div>
-          <div class="card"><h3>Week 3 — Color</h3><p class="card-subtitle">Extensions & rhythm patterns</p><ul><li>Sus4, sus2, add9 voicings</li><li>Whole-note pads & eighth-note patterns</li><li>Play along with recordings</li></ul></div>
-          <div class="card"><h3>Week 4 — Integration</h3><p class="card-subtitle">Dynamics & band playing</p><ul><li>Dynamic control through sections</li><li>Clean starts and endings</li><li>Run full song sets</li></ul></div>
+
+        <!-- Phase 1: Foundation (Weeks 1-4) -->
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Phase 1: Foundation <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Weeks 1–4</span></h2>
+        
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <div class="card">
+            <h3>Week 1 — Foundation</h3>
+            <p class="card-subtitle">Getting comfortable in common worship keys and basic chord shapes</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Keys to Learn: G and C</p>
+            <ul>
+              <li>G Major: G, C, D, Em (I, IV, V, vi)</li>
+              <li>C Major: C, F, G, Am (I, IV, V, vi)</li>
+              <li>Practice transitions at 70 bpm, 4 beats per chord</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Songs to Learn</p>
+            <ul>
+              <li>"Good Good Father" (G)</li>
+              <li>"Way Maker" (C)</li>
+            </ul>
+            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
+              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min chord transitions · 20 min songs</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Week 2 — Smoother Movement</h3>
+            <p class="card-subtitle">Inversions and voice leading for seamless transitions</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">New Concepts</p>
+            <ul>
+              <li>First and second inversions of I, IV, V, vi</li>
+              <li>Voice leading — move each note shortest distance</li>
+              <li>Keep hand in one area of keyboard</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Add New Key: D Major</p>
+            <ul>
+              <li>D, G, A, Bm</li>
+            </ul>
+            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
+              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min inversions · 10 min transitions · 20 min songs</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Week 3 — Adding Color</h3>
+            <p class="card-subtitle">Extensions and accompaniment patterns for that worship sound</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">New Chord Types</p>
+            <ul>
+              <li>Sus4 — Gsus4, Dsus4 (add tension)</li>
+              <li>Sus2 — Asus2, Dsus2 (dreamy feel)</li>
+              <li>Add9 — Cadd9, Gadd9 (fullness)</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Rhythm Patterns</p>
+            <ul>
+              <li>Whole-note pads for verses/bridges</li>
+              <li>Eighth-note patterns for choruses</li>
+            </ul>
+            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
+              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min voicings · 10 min rhythm · 20 min play-along</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Week 4 — Integration</h3>
+            <p class="card-subtitle">Dynamics, transitions, and playing like you're in a band</p>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Skills to Develop</p>
+            <ul>
+              <li>Dynamic control — soft verses, big choruses</li>
+              <li>Smooth transitions between sections</li>
+              <li>Clean starts and endings</li>
+              <li>Playing through full song sets</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Add New Key: A Major</p>
+            <ul>
+              <li>A, D, E, F#m</li>
+            </ul>
+            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
+              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min technique · 30 min full run-throughs</p>
+            </div>
+          </div>
         </div>
+
+        <!-- Phase 2: Growth -->
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Phase 2: Growth <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Weeks 5–8</span></h2>
+
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <div class="card">
+            <h3>Week 5–6 — Expand Keys</h3>
+            <p class="card-subtitle">Becoming comfortable in more keys</p>
+            <ul>
+              <li>Add E Major: E, A, B, C#m</li>
+              <li>Add B Major: B, E, F#, G#m</li>
+              <li>Practice transposing familiar songs</li>
+              <li>Learn Nashville Number System basics</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Week 7–8 — Musicality</h3>
+            <p class="card-subtitle">Making music, not just playing notes</p>
+            <ul>
+              <li>Intro/outro patterns for songs</li>
+              <li>Fills between chord changes</li>
+              <li>Reading the room — when to play less</li>
+              <li>Following a worship leader's cues</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Ongoing Practice -->
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Ongoing Growth <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Lifetime habits</span></h2>
+
+        <div class="cards-grid" style="margin-bottom: 48px;">
+          <div class="card">
+            <h3>Weekly Habits</h3>
+            <p class="card-subtitle">Consistency over intensity</p>
+            <ul>
+              <li>Learn 1 new song per week</li>
+              <li>Practice scales in one new key</li>
+              <li>Play along with worship recordings</li>
+              <li>Record yourself and listen back</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Monthly Challenges</h3>
+            <p class="card-subtitle">Push your boundaries</p>
+            <ul>
+              <li>Master one complex song</li>
+              <li>Learn a song by ear (no charts)</li>
+              <li>Practice with a metronome at new tempos</li>
+              <li>Try improvising over a progression</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Ear Training</h3>
+            <p class="card-subtitle">Develop your musical ear</p>
+            <ul>
+              <li>Identify chord progressions by sound</li>
+              <li>Pick out melodies from recordings</li>
+              <li>Recognize common worship patterns</li>
+              <li>Sing while you play (builds connection)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Music Theory</h3>
+            <p class="card-subtitle">Understand the "why"</p>
+            <ul>
+              <li>Learn why I-IV-V-I works</li>
+              <li>Understand relative minor keys</li>
+              <li>Study chord substitutions</li>
+              <li>Explore modes (start with Mixolydian)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Quick Reference -->
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Quick Reference</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px;">
+          <div class="card">
+            <h3>Chords by Key</h3>
+            <table style="width: 100%; font-size: 0.9rem; border-collapse: collapse; margin-top: 12px;">
+              <thead><tr style="border-bottom: 2px solid var(--color-border);"><th style="text-align: left; padding: 8px 4px; color: var(--color-green-dark);">Key</th><th style="padding: 8px 4px;">I</th><th style="padding: 8px 4px;">IV</th><th style="padding: 8px 4px;">V</th><th style="padding: 8px 4px;">vi</th></tr></thead>
+              <tbody style="color: var(--color-text-muted);">
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">G</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">C</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">Em</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">C</td><td style="padding: 8px 4px; text-align: center;">C</td><td style="padding: 8px 4px; text-align: center;">F</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">Am</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">D</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">Bm</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">A</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">F#m</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">E</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">B</td><td style="padding: 8px 4px; text-align: center;">C#m</td></tr>
+                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">B</td><td style="padding: 8px 4px; text-align: center;">B</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">F#</td><td style="padding: 8px 4px; text-align: center;">G#m</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>Songs for Practice</h3>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 8px 0;">Beginner-Friendly</p>
+            <ul>
+              <li>Good Good Father (G)</li>
+              <li>Way Maker (C)</li>
+              <li>10,000 Reasons (G)</li>
+              <li>What A Beautiful Name (D)</li>
+              <li>Goodness of God (A)</li>
+            </ul>
+            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Next Level</p>
+            <ul>
+              <li>Build My Life (G)</li>
+              <li>King of Kings (D)</li>
+              <li>The Blessing (A)</li>
+              <li>Great Are You Lord (G)</li>
+              <li>O Come to the Altar (A)</li>
+            </ul>
+          </div>
+        </div>
+
+        <p style="text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--color-brown); padding: 32px 0;">"Keep showing up. Consistency beats intensity."</p>
       </div>
     </div>
 
