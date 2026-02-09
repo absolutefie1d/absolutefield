@@ -175,7 +175,7 @@ function updateBooksJson(bookData, booksJsonPath) {
 
 // ===== MAIN =====
 function main() {
-  const dataDir = path.join(__dirname, '_data');
+  const dataDir = path.join(__dirname, 'data');
   const csvPath = path.join(dataDir, 'storygraph.csv');
   const readingJsonPath = path.join(dataDir, 'reading.json');
   const booksJsonPath = path.join(dataDir, 'books.json');
