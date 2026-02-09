@@ -21,6 +21,7 @@
       --color-border: #e2ded6;
       --shadow-sm: 0 2px 8px rgba(45, 63, 40, 0.06);
       --shadow-md: 0 4px 20px rgba(45, 63, 40, 0.08);
+      --shadow-lg: 0 12px 40px rgba(45, 63, 40, 0.12);
       --radius: 12px; --radius-sm: 6px; --transition: 0.3s ease;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,7 +31,7 @@
     .nav-logo { cursor: pointer; display: flex; align-items: center; gap: 8px; }
     .nav-logo svg { width: 36px; height: 36px; }
     .nav-links { display: flex; gap: 8px; list-style: none; }
-    .nav-links a { color: var(--color-text-muted); font-size: 0.9rem; padding: 8px 16px; border-radius: 50px; transition: all var(--transition); cursor: pointer; text-decoration: none; }
+    .nav-links a { color: var(--color-text-muted); font-size: 0.9rem; padding: 8px 16px; border-radius: 50px; transition: all var(--transition); cursor: pointer; text-decoration: none; font-family: 'Great Vibes', cursive; font-size: 1.1rem; }
     .nav-links a:hover { color: var(--color-green); background: var(--color-green-pale); }
     .nav-links a.active { color: var(--color-white); background: var(--color-green); }
 
@@ -108,49 +109,57 @@
     /* Modal Styles */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
-    .modal { background: var(--color-white); border-radius: var(--radius); max-width: 700px; width: 100%; max-height: 85vh; overflow: hidden; animation: modalIn 0.3s ease; }
+    .modal { background: var(--color-white); border-radius: var(--radius); max-width: 700px; width: 100%; max-height: 80vh; overflow: hidden; animation: modalIn 0.3s ease; }
     @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     .modal-header { padding: 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; }
-    .modal-title { font-family: 'Great Vibes', cursive; font-size: 2rem; color: var(--color-green-dark); }
+    .modal-title { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: var(--color-green-dark); }
     .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--color-bg-alt); cursor: pointer; font-size: 1.2rem; color: var(--color-text-muted); transition: all var(--transition); }
     .modal-close:hover { background: var(--color-green); color: var(--color-white); }
-    .modal-body { padding: 24px; overflow-y: auto; max-height: calc(85vh - 100px); }
+    .modal-body { padding: 24px; overflow-y: auto; max-height: calc(80vh - 80px); }
     .modal-book-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
     .modal-book { padding: 12px; background: var(--color-bg-alt); border-radius: var(--radius-sm); }
     .modal-book-title { font-weight: 600; font-size: 0.9rem; color: var(--color-text); }
     .modal-book-author { font-size: 0.8rem; color: var(--color-text-muted); }
-
-    /* Journal Entry Modal */
-    .modal-date { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-brown); margin-bottom: 16px; }
-    .modal-content { line-height: 1.8; color: var(--color-text); }
+    .modal-meta { font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 16px; }
+    .modal-content { line-height: 1.8; }
     .modal-content h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--color-green-dark); margin: 24px 0 12px; }
     .modal-content p { margin-bottom: 16px; }
-    .modal-content ul, .modal-content ol { margin: 16px 0; padding-left: 24px; }
-    .modal-content li { margin-bottom: 8px; }
-    .modal-image { width: 100%; max-height: 300px; object-fit: cover; border-radius: var(--radius); margin-bottom: 20px; }
-    .modal-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+    .modal-content ul, .modal-content ol { margin-left: 20px; margin-bottom: 16px; }
+    .modal-image { width: 100%; max-height: 300px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 16px; }
+
+    /* Fitness Styles */
+    .fitness-philosophy { background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 100%); border-radius: var(--radius); padding: 32px; margin-bottom: 40px; text-align: center; }
+    .fitness-philosophy p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--color-green-dark); max-width: 600px; margin: 0 auto; }
+    .fitness-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .fitness-card { background: var(--color-white); border-radius: var(--radius); padding: 28px; border: 1px solid var(--color-border); }
+    .fitness-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--color-green-dark); margin-bottom: 8px; }
+    .fitness-card .card-subtitle { font-style: italic; color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 16px; }
+    .fitness-card h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-brown); margin: 16px 0 8px; }
+    .fitness-card ul { list-style: none; }
+    .fitness-card li { position: relative; padding-left: 16px; margin-bottom: 6px; font-size: 0.9rem; color: var(--color-text-muted); }
+    .fitness-card li::before { content: '•'; position: absolute; left: 0; color: var(--color-green-light); }
+    .fitness-note { font-size: 0.85rem; font-style: italic; color: var(--color-text-muted); margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border); }
 
     /* Photo Gallery */
-    .photo-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
-    .photo-item { background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 50%, var(--color-brown-light) 100%); border-radius: var(--radius); cursor: pointer; transition: all var(--transition); aspect-ratio: 4/3; overflow: hidden; position: relative; }
-    .photo-item:hover { transform: scale(1.02); box-shadow: 0 12px 40px rgba(45, 63, 40, 0.12); }
+    .photo-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .photo-item { background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 50%, var(--color-brown-light) 100%); border-radius: var(--radius); aspect-ratio: 1; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; overflow: hidden; }
+    .photo-item:hover { transform: scale(1.02); box-shadow: var(--shadow-lg); }
     .photo-item img { width: 100%; height: 100%; object-fit: cover; }
-    .photo-item.placeholder { display: flex; align-items: center; justify-content: center; font-size: 3rem; }
-    .photo-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(transparent, rgba(0,0,0,0.6)); color: white; opacity: 0; transition: opacity var(--transition); }
+    .photo-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; opacity: 0; transition: opacity var(--transition); }
     .photo-item:hover .photo-overlay { opacity: 1; }
-    .photo-overlay-title { font-weight: 600; font-size: 0.95rem; }
-    .photo-overlay-caption { font-size: 0.8rem; opacity: 0.9; }
+    .photo-title { font-weight: 600; font-size: 0.9rem; }
+    .photo-caption { font-size: 0.8rem; opacity: 0.8; }
 
-    /* Journal Grid */
+    /* Journal */
     .journal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
     .journal-entry { background: var(--color-white); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--color-border); transition: all var(--transition); cursor: pointer; }
     .journal-entry:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .journal-image { height: 160px; background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .journal-image { height: 160px; background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 100%); display: flex; align-items: center; justify-content: center; }
     .journal-image img { width: 100%; height: 100%; object-fit: cover; }
     .journal-image svg { width: 40px; height: 40px; stroke: var(--color-green); opacity: 0.5; }
     .journal-content { padding: 24px; }
     .journal-date { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-brown); margin-bottom: 8px; }
-    .journal-title { font-family: 'Great Vibes', cursive; font-size: 1.5rem; color: var(--color-green-dark); margin-bottom: 10px; line-height: 1.3; }
+    .journal-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--color-green-dark); margin-bottom: 10px; line-height: 1.3; }
     .journal-excerpt { font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 16px; }
     .journal-tags { display: flex; gap: 8px; flex-wrap: wrap; }
     .tag { font-size: 0.75rem; padding: 4px 12px; background: var(--color-green-pale); color: var(--color-green-dark); border-radius: 50px; }
@@ -161,24 +170,25 @@
     @media (max-width: 768px) {
       nav { padding: 12px 20px; }
       .nav-links { gap: 4px; }
-      .nav-links a { padding: 6px 12px; font-size: 0.8rem; }
+      .nav-links a { padding: 6px 12px; font-size: 0.9rem; }
       .container { padding: 40px 20px; }
       .stats-row { grid-template-columns: 1fr; }
+      .fitness-grid { grid-template-columns: 1fr; }
       .photo-gallery { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
   <nav>
-    <div class="nav-logo" onclick="showPage('home')">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <span class="nav-logo" onclick="showPage('home')">
+      <svg viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="45" fill="#4a6741"/>
         <path d="M50 25 C35 40, 30 60, 50 75 C70 60, 65 40, 50 25" fill="#d4e4cf"/>
         <path d="M50 35 L50 65" stroke="#2d3f28" stroke-width="3" stroke-linecap="round"/>
         <path d="M50 45 L40 55" stroke="#2d3f28" stroke-width="2" stroke-linecap="round"/>
         <path d="M50 55 L60 50" stroke="#2d3f28" stroke-width="2" stroke-linecap="round"/>
       </svg>
-    </div>
+    </span>
     <ul class="nav-links">
       <li><a onclick="showPage('home')" class="active" data-page="home">Home</a></li>
       <li><a onclick="showPage('piano')" data-page="piano">Piano</a></li>
@@ -211,22 +221,39 @@
 
     <!-- PIANO PAGE -->
     <div class="page" id="page-piano">
-      <div class="container" id="piano-content">
-        <!-- Piano content loaded here - keeping static for now as it rarely changes -->
+      <div class="container">
+        <header class="page-header">
+          <p class="page-label">Worship Keys Journey</p>
+          <h1 class="page-title">Piano Training</h1>
+        </header>
+        <div class="cards-grid">
+          <div class="card"><h3>Week 1 — Foundation</h3><p class="card-subtitle">Common keys & basic chord shapes</p><ul><li>Master G and C major chords</li><li>Practice I-IV-V-vi progressions</li><li>Learn "Good Good Father" & "Way Maker"</li></ul></div>
+          <div class="card"><h3>Week 2 — Movement</h3><p class="card-subtitle">Inversions & voice leading</p><ul><li>First & second inversions</li><li>Smooth chord transitions</li><li>Add D major to repertoire</li></ul></div>
+          <div class="card"><h3>Week 3 — Color</h3><p class="card-subtitle">Extensions & rhythm patterns</p><ul><li>Sus4, sus2, add9 voicings</li><li>Whole-note pads & eighth-note patterns</li><li>Play along with recordings</li></ul></div>
+          <div class="card"><h3>Week 4 — Integration</h3><p class="card-subtitle">Dynamics & band playing</p><ul><li>Dynamic control through sections</li><li>Clean starts and endings</li><li>Run full song sets</li></ul></div>
+        </div>
       </div>
     </div>
 
     <!-- READING PAGE -->
     <div class="page" id="page-reading">
-      <div class="container" id="reading-content">
-        <!-- Reading content loaded dynamically -->
+      <div class="container">
+        <header class="page-header">
+          <p class="page-label">Currently Exploring</p>
+          <h1 class="page-title">Reading List</h1>
+        </header>
+        <div id="reading-content">Loading...</div>
       </div>
     </div>
 
     <!-- FITNESS PAGE -->
     <div class="page" id="page-fitness">
-      <div class="container" id="fitness-content">
-        <!-- Fitness content loaded dynamically -->
+      <div class="container">
+        <header class="page-header">
+          <p class="page-label">Strength & Consistency</p>
+          <h1 class="page-title">Fitness Journey</h1>
+        </header>
+        <div id="fitness-content">Loading...</div>
       </div>
     </div>
 
@@ -237,9 +264,7 @@
           <p class="page-label">Through My Lens</p>
           <h1 class="page-title">Photography</h1>
         </header>
-        <div class="photo-gallery" id="photo-gallery">
-          <!-- Photos loaded dynamically -->
-        </div>
+        <div class="photo-gallery" id="photo-gallery">Loading...</div>
       </div>
     </div>
 
@@ -250,32 +275,17 @@
           <p class="page-label">Thoughts & Reflections</p>
           <h1 class="page-title">Journal</h1>
         </header>
-        <div class="journal-grid" id="journal-grid">
-          <!-- Journal entries loaded dynamically -->
-        </div>
+        <div class="journal-grid" id="journal-grid">Loading...</div>
       </div>
     </div>
   </main>
 
-  <!-- Generic Modal -->
-  <div class="modal-overlay" id="contentModal" onclick="closeContentModal(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h2 class="modal-title" id="contentModalTitle">Title</h2>
-        <button class="modal-close" onclick="closeContentModal()">×</button>
-      </div>
-      <div class="modal-body" id="contentModalBody">
-        <!-- Dynamic content -->
-      </div>
-    </div>
-  </div>
-
   <!-- Book List Modal -->
-  <div class="modal-overlay" id="bookModal" onclick="closeBookModal(event)">
+  <div class="modal-overlay" id="bookModal" onclick="closeModal('bookModal', event)">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-header">
         <h2 class="modal-title" id="bookModalTitle">Books</h2>
-        <button class="modal-close" onclick="closeBookModal()">×</button>
+        <button class="modal-close" onclick="closeModal('bookModal')">×</button>
       </div>
       <div class="modal-body">
         <div class="modal-book-list" id="bookModalList"></div>
@@ -283,301 +293,244 @@
     </div>
   </div>
 
+  <!-- Content Modal (Journal/Photo) -->
+  <div class="modal-overlay" id="contentModal" onclick="closeModal('contentModal', event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title" id="contentModalTitle">Title</h2>
+        <button class="modal-close" onclick="closeModal('contentModal')">×</button>
+      </div>
+      <div class="modal-body" id="contentModalBody"></div>
+    </div>
+  </div>
 
   <script>
-    // ===== DATA STORES =====
-    let journalEntries = [];
-    let photoEntries = [];
-    let readingData = {};
-    let fitnessData = {};
-    let bookData = {};
+    // Data storage
+    let readingData = null;
+    let booksData = null;
+    let fitnessData = null;
+    let journalData = [];
+    let photoData = [];
 
-    // ===== STATIC PIANO CONTENT =====
-    const pianoContent = `
-      <header class="page-header">
-        <p class="page-label">Worship Keys Journey</p>
-        <h1 class="page-title">Piano Training</h1>
-        <p style="color: var(--color-text-muted); margin-top: 12px;">30–45 minutes daily · Goal: Playing at church</p>
-      </header>
-
-      <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Phase 1: Foundation <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Weeks 1–4</span></h2>
-      
-      <div class="cards-grid" style="margin-bottom: 48px;">
-        <div class="card">
-          <h3>Week 1 — Foundation</h3>
-          <p class="card-subtitle">Getting comfortable in common worship keys</p>
-          <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Keys: G and C</p>
-          <ul><li>G Major: G, C, D, Em</li><li>C Major: C, F, G, Am</li><li>Practice at 70 bpm, 4 beats per chord</li></ul>
-          <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Songs</p>
-          <ul><li>"Good Good Father" (G)</li><li>"Way Maker" (C)</li></ul>
-        </div>
-        <div class="card">
-          <h3>Week 2 — Movement</h3>
-          <p class="card-subtitle">Inversions and voice leading</p>
-          <ul><li>First and second inversions</li><li>Voice leading — shortest distance</li><li>Add D Major: D, G, A, Bm</li></ul>
-        </div>
-        <div class="card">
-          <h3>Week 3 — Color</h3>
-          <p class="card-subtitle">Extensions for that worship sound</p>
-          <ul><li>Sus4, Sus2, Add9 voicings</li><li>Whole-note pads for verses</li><li>Eighth-note patterns for choruses</li></ul>
-        </div>
-        <div class="card">
-          <h3>Week 4 — Integration</h3>
-          <p class="card-subtitle">Dynamics and band playing</p>
-          <ul><li>Dynamic control through sections</li><li>Clean starts and endings</li><li>Add A Major: A, D, E, F#m</li></ul>
-        </div>
-      </div>
-
-      <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Ongoing Growth</h2>
-      <div class="cards-grid" style="margin-bottom: 48px;">
-        <div class="card"><h3>Weekly Habits</h3><ul><li>Learn 1 new song per week</li><li>Practice scales in a new key</li><li>Play along with recordings</li><li>Record yourself and listen back</li></ul></div>
-        <div class="card"><h3>Ear Training</h3><ul><li>Identify chord progressions by sound</li><li>Pick out melodies from recordings</li><li>Recognize common worship patterns</li><li>Sing while you play</li></ul></div>
-      </div>
-
-      <div class="card" style="margin-bottom: 48px;">
-        <h3>Chords by Key</h3>
-        <table style="width: 100%; font-size: 0.9rem; border-collapse: collapse; margin-top: 12px;">
-          <thead><tr style="border-bottom: 2px solid var(--color-border);"><th style="text-align: left; padding: 8px 4px;">Key</th><th style="padding: 8px 4px;">I</th><th style="padding: 8px 4px;">IV</th><th style="padding: 8px 4px;">V</th><th style="padding: 8px 4px;">vi</th></tr></thead>
-          <tbody style="color: var(--color-text-muted);">
-            <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">G</td><td style="text-align: center;">G</td><td style="text-align: center;">C</td><td style="text-align: center;">D</td><td style="text-align: center;">Em</td></tr>
-            <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">C</td><td style="text-align: center;">C</td><td style="text-align: center;">F</td><td style="text-align: center;">G</td><td style="text-align: center;">Am</td></tr>
-            <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">D</td><td style="text-align: center;">D</td><td style="text-align: center;">G</td><td style="text-align: center;">A</td><td style="text-align: center;">Bm</td></tr>
-            <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">A</td><td style="text-align: center;">A</td><td style="text-align: center;">D</td><td style="text-align: center;">E</td><td style="text-align: center;">F#m</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p style="text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--color-brown);">"Keep showing up. Consistency beats intensity."</p>
-    `;
-
-    // ===== INITIALIZATION =====
-    document.addEventListener('DOMContentLoaded', async () => {
-      console.log('Initializing site...');
-      
-      // Load piano content (static)
-      document.getElementById('piano-content').innerHTML = pianoContent;
-      
-      // Load dynamic data with error handling
-      try {
-        await loadReadingData();
-        console.log('Reading data loaded');
-      } catch (e) {
-        console.error('Error loading reading data:', e);
-      }
-      
-      try {
-        await loadFitnessData();
-        console.log('Fitness data loaded');
-      } catch (e) {
-        console.error('Error loading fitness data:', e);
-      }
-      
-      try {
-        await loadJournalEntries();
-        console.log('Journal entries loaded');
-      } catch (e) {
-        console.error('Error loading journal entries:', e);
-      }
-      
-      try {
-        await loadPhotoEntries();
-        console.log('Photo entries loaded');
-      } catch (e) {
-        console.error('Error loading photo entries:', e);
-      }
-      
-      // Render all pages
-      renderReadingPage();
-      renderFitnessPage();
-      renderJournalGrid();
-      renderPhotoGallery();
-      
-      console.log('Site initialized!');
+    // Load all data on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadReadingData();
+      loadBooksData();
+      loadFitnessData();
+      loadJournalData();
+      loadPhotoData();
     });
 
-    // ===== DATA LOADING =====
+    // Fetch functions
     async function loadReadingData() {
       try {
-        const response = await fetch('data/reading.json');
-        readingData = await response.json();
+        const res = await fetch('data/reading.json');
+        readingData = await res.json();
+        renderReading();
       } catch (e) {
-        // Fallback data
-        readingData = {
-          books_read_2026: 6, goal_2026: 30, total_read: 164,
-          currently_reading_count: 5, tbr_count: 232,
-          currently_reading: [
-            {title: "Fahrenheit 451", author: "Ray Bradbury"},
-            {title: "The Metamorphosis", author: "Franz Kafka"},
-            {title: "The Iliad", author: "Homer"},
-            {title: "Ruthless Vows", author: "Rebecca Ross"},
-            {title: "Charlotte's Web", author: "E.B. White"}
-          ]
-        };
+        console.error('Failed to load reading data:', e);
+        document.getElementById('reading-content').innerHTML = '<p>Failed to load reading data.</p>';
       }
-      
-      // Load book data from generated books.json
+    }
+
+    async function loadBooksData() {
       try {
-        const booksResponse = await fetch('data/books.json');
-        bookData = await booksResponse.json();
+        const res = await fetch('data/books.json');
+        booksData = await res.json();
+        renderReading(); // Re-render with books
       } catch (e) {
-        // Fallback data if books.json doesn't exist yet
-        bookData = {
-          '5star': { title: '★★★★★ 5-Star Books (0)', stars: '★★★★★', label: '5-Star Reads', books: [] },
-          '4.5star': { title: '★★★★¾ 4.5+ Stars (0)', stars: '★★★★¾', label: '4.5+ Stars', books: [] },
-          '4star': { title: '★★★★ 4-Star Books (0)', stars: '★★★★', label: '4-Star Reads', books: [] },
-          '3.5star': { title: '★★★½ 3.5-Star Books (0)', stars: '★★★½', label: '3.5-Star Reads', books: [] },
-          '3star': { title: '★★★ 3-Star Books (0)', stars: '★★★', label: '3-Star Reads', books: [] },
-          '2star': { title: '★★ 2-Star Books (0)', stars: '★★', label: '2-Star Reads', books: [] },
-          'dnf': { title: '✗ Did Not Finish (0)', stars: '✗', label: 'Did Not Finish', books: [] }
-        };
+        console.error('Failed to load books data:', e);
       }
     }
 
     async function loadFitnessData() {
       try {
-        const response = await fetch('data/fitness.json');
-        fitnessData = await response.json();
+        const res = await fetch('data/fitness.json');
+        fitnessData = await res.json();
+        renderFitness();
       } catch (e) {
-        fitnessData = { philosophy: "No deadline. No end date.", closing_quote: "The best workout is the one you actually do." };
+        console.error('Failed to load fitness data:', e);
+        document.getElementById('fitness-content').innerHTML = '<p>Failed to load fitness data.</p>';
       }
     }
 
-    async function loadJournalEntries() {
+    async function loadJournalData() {
       try {
-        const response = await fetch('data/journal.json');
-        journalEntries = await response.json();
+        const res = await fetch('data/journal.json');
+        journalData = await res.json();
+        renderJournal();
       } catch (e) {
-        // Fallback sample data
-        journalEntries = [
-          {
-            title: "One Month of Piano: What I've Learned",
-            date: "2025-02-02",
-            excerpt: "Looking back at my first month learning piano, I'm surprised by how much muscle memory matters...",
-            tags: ["Piano", "Progress"],
-            image: "",
-            body: "Looking back at my first month learning piano, I'm surprised by how much muscle memory matters."
-          }
-        ];
+        console.error('Failed to load journal data:', e);
+        document.getElementById('journal-grid').innerHTML = '<p>No journal entries yet.</p>';
       }
     }
 
-    async function loadPhotoEntries() {
+    async function loadPhotoData() {
       try {
-        const response = await fetch('data/photography.json');
-        photoEntries = await response.json();
+        const res = await fetch('data/photography.json');
+        photoData = await res.json();
+        renderPhotos();
       } catch (e) {
-        // Fallback sample data
-        photoEntries = [
-          { title: "Morning Light", caption: "Golden hour in the garden", category: "Nature", image: "", featured: true }
-        ];
+        console.error('Failed to load photo data:', e);
+        document.getElementById('photo-gallery').innerHTML = '<p>No photos yet.</p>';
       }
     }
 
-    // ===== RENDER FUNCTIONS =====
-    function renderReadingPage() {
+    // Render Reading Section
+    function renderReading() {
+      if (!readingData) return;
+      
       const progress = Math.round((readingData.books_read_2026 / readingData.goal_2026) * 100);
-      const booksToGo = readingData.goal_2026 - readingData.books_read_2026;
+      const remaining = readingData.goal_2026 - readingData.books_read_2026;
       
       let html = `
-        <header class="page-header">
-          <p class="page-label">Currently Exploring</p>
-          <h1 class="page-title">Reading List</h1>
-        </header>
         <div class="reading-goal">
           <p class="goal-label">2026 Reading Goal</p>
           <p class="goal-number"><span>${readingData.books_read_2026}</span> / ${readingData.goal_2026} books</p>
-          <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
-          <p class="goal-subtitle">${progress}% complete · ${booksToGo} books to go</p>
+          <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+          <p class="goal-subtitle">${progress}% complete · ${remaining} books to go</p>
         </div>
+        
         <div class="stats-row">
           <div class="stat-card"><p class="stat-number">${readingData.total_read}</p><p class="stat-label">Books Read</p></div>
           <div class="stat-card"><p class="stat-number">${readingData.currently_reading_count}</p><p class="stat-label">Currently Reading</p></div>
           <div class="stat-card"><p class="stat-number">${readingData.tbr_count}</p><p class="stat-label">To Be Read</p></div>
         </div>
+        
         <h3 class="section-title">Currently Reading</h3>
         <div class="book-list" style="margin-bottom: 32px;">
-          ${readingData.currently_reading.map(b => `<div class="book-card"><p class="book-title">${b.title}</p><p class="book-author">${b.author}</p></div>`).join('')}
+          ${readingData.currently_reading.map(b => `
+            <div class="book-card"><p class="book-title">${b.title}</p><p class="book-author">${b.author}</p></div>
+          `).join('')}
         </div>
-        ${renderRatingCarousel()}
-        <p class="footer-note">Data from <a href="https://app.thestorygraph.com" target="_blank">Storygraph</a></p>
       `;
+
+      // Add carousel if books data loaded
+      if (booksData) {
+        const categories = Object.keys(booksData).filter(k => booksData[k].books && booksData[k].books.length > 0);
+        
+        html += `
+          <div class="carousel-header">
+            <h3 class="section-title" style="margin-bottom: 0;">Books by Rating</h3>
+            <div class="carousel-nav">
+              <button class="carousel-btn" onclick="changeSlide(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+              <span class="carousel-indicator" id="carouselIndicator">1 / ${categories.length}</span>
+              <button class="carousel-btn" onclick="changeSlide(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+            </div>
+          </div>
+          <div id="ratingCarousel">
+            ${categories.map((cat, i) => `
+              <div class="carousel-slide ${i === 0 ? 'active' : ''}">
+                <div class="slide-header" onclick="openBookModal('${cat}')">
+                  <span class="rating-stars">${booksData[cat].stars}</span>
+                  <span class="rating-label">${booksData[cat].label}</span>
+                  <span class="rating-count">${booksData[cat].books.length} books</span>
+                  <span class="view-all-hint">Click to view all →</span>
+                </div>
+                <div class="book-list">
+                  ${booksData[cat].books.slice(0, 5).map(b => `
+                    <div class="book-card"><p class="book-title">${b.title}</p><p class="book-author">${b.author}</p></div>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="carousel-dots">
+            ${categories.map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></span>`).join('')}
+          </div>
+        `;
+        
+        // Update totalSlides
+        window.totalSlides = categories.length;
+      }
+      
+      html += `<p class="footer-note">Data from <a href="https://app.thestorygraph.com" target="_blank">Storygraph</a> · Last updated ${readingData.last_updated}</p>`;
+      
       document.getElementById('reading-content').innerHTML = html;
     }
 
-    function renderRatingCarousel() {
-      // Get categories dynamically from bookData (filtering out empty ones)
-      const allCategories = ['5star', '4.5star', '4star', '3.5star', '3star', '2star', '1star', 'dnf'];
-      const categories = allCategories.filter(cat => bookData[cat] && bookData[cat].books && bookData[cat].books.length > 0);
+    // Render Fitness Section
+    function renderFitness() {
+      if (!fitnessData) return;
       
-      if (categories.length === 0) {
-        return '<p style="text-align: center; color: var(--color-text-muted);">Upload your Storygraph CSV to see your books here!</p>';
+      const html = `
+        <div class="fitness-philosophy">
+          <p>${fitnessData.philosophy}</p>
+        </div>
+        
+        <div class="fitness-grid">
+          <div class="fitness-card">
+            <h3>${fitnessData.monday.title}</h3>
+            <p class="card-subtitle">${fitnessData.monday.subtitle} · ${fitnessData.monday.duration}</p>
+            <h4>Upper Body</h4>
+            <ul>${fitnessData.monday.upper.map(e => `<li>${e}</li>`).join('')}</ul>
+            <h4>Lower Body</h4>
+            <ul>${fitnessData.monday.lower.map(e => `<li>${e}</li>`).join('')}</ul>
+          </div>
+          
+          <div class="fitness-card">
+            <h3>${fitnessData.tuesday.title}</h3>
+            <p class="card-subtitle">${fitnessData.tuesday.subtitle} · ${fitnessData.tuesday.duration}</p>
+            <h4>Cardio Options</h4>
+            <ul>${fitnessData.tuesday.cardio.map(e => `<li>${e}</li>`).join('')}</ul>
+            <h4>Core Circuit</h4>
+            <ul>${fitnessData.tuesday.core.map(e => `<li>${e}</li>`).join('')}</ul>
+          </div>
+          
+          <div class="fitness-card">
+            <h3>${fitnessData.wednesday.title}</h3>
+            <p class="card-subtitle">${fitnessData.wednesday.subtitle} · ${fitnessData.wednesday.duration}</p>
+            <h4>Upper Body</h4>
+            <ul>${fitnessData.wednesday.upper.map(e => `<li>${e}</li>`).join('')}</ul>
+            <h4>Lower Body</h4>
+            <ul>${fitnessData.wednesday.lower.map(e => `<li>${e}</li>`).join('')}</ul>
+          </div>
+          
+          <div class="fitness-card">
+            <h3>${fitnessData.thursday.title}</h3>
+            <p class="card-subtitle">${fitnessData.thursday.subtitle} · ${fitnessData.thursday.duration}</p>
+            <h4>Cardio Options</h4>
+            <ul>${fitnessData.thursday.cardio.map(e => `<li>${e}</li>`).join('')}</ul>
+            <h4>Core Circuit</h4>
+            <ul>${fitnessData.thursday.core.map(e => `<li>${e}</li>`).join('')}</ul>
+          </div>
+          
+          <div class="fitness-card">
+            <h3>${fitnessData.friday.title}</h3>
+            <p class="card-subtitle">${fitnessData.friday.subtitle} · ${fitnessData.friday.duration}</p>
+            <h4>Compound Movements</h4>
+            <ul>${fitnessData.friday.compound.map(e => `<li>${e}</li>`).join('')}</ul>
+            <h4>Accessory Work</h4>
+            <ul>${fitnessData.friday.accessory.map(e => `<li>${e}</li>`).join('')}</ul>
+          </div>
+          
+          <div class="fitness-card">
+            <h3>${fitnessData.weekend.title}</h3>
+            <p class="card-subtitle">${fitnessData.weekend.subtitle}</p>
+            <h4>Activities</h4>
+            <ul>${fitnessData.weekend.activities.map(e => `<li>${e}</li>`).join('')}</ul>
+            <p class="fitness-note">${fitnessData.weekend.note}</p>
+          </div>
+        </div>
+        
+        <p class="footer-note" style="margin-top: 40px; font-style: italic;">"${fitnessData.closing_quote}"</p>
+      `;
+      
+      document.getElementById('fitness-content').innerHTML = html;
+    }
+
+    // Render Journal
+    function renderJournal() {
+      if (!journalData || journalData.length === 0) {
+        document.getElementById('journal-grid').innerHTML = '<p>No journal entries yet.</p>';
+        return;
       }
-
-      // Update totalSlides for carousel navigation
-      totalSlides = categories.length;
-
-      let slides = categories.map((cat, i) => {
-        const data = bookData[cat];
-        return `
-          <div class="carousel-slide ${i === 0 ? 'active' : ''}">
-            <div class="slide-header" onclick="openBookModal('${cat}')">
-              <span class="rating-stars">${data.stars || '★'}</span>
-              <span class="rating-label">${data.label || cat}</span>
-              <span class="rating-count">${data.books.length} books</span>
-              <span class="view-all-hint">Click to view all →</span>
-            </div>
-            <div class="book-list">
-              ${data.books.slice(0, 5).map(b => `<div class="book-card"><p class="book-title">${b.title}</p><p class="book-author">${b.author}</p></div>`).join('')}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      let dots = categories.map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></span>`).join('');
-
-      return `
-        <div class="carousel-header">
-          <h3 class="section-title" style="margin-bottom: 0;">Books by Rating</h3>
-          <div class="carousel-nav">
-            <button class="carousel-btn" onclick="changeSlide(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-            <span class="carousel-indicator" id="carouselIndicator">1 / ${categories.length}</span>
-            <button class="carousel-btn" onclick="changeSlide(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-          </div>
-        </div>
-        <div id="ratingCarousel">${slides}</div>
-        <div class="carousel-dots">${dots}</div>
-      `;
-    }
-
-    function renderFitnessPage() {
-      document.getElementById('fitness-content').innerHTML = `
-        <header class="page-header">
-          <p class="page-label">Lifetime Lifestyle Change</p>
-          <h1 class="page-title">Fitness Journey</h1>
-          <p style="color: var(--color-text-muted); margin-top: 12px;">5x per week · MWF Strength · TTH Cardio + Core</p>
-        </header>
-        <div class="card" style="margin-bottom: 32px; text-align: center; background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 100%);">
-          <h3>The Approach</h3>
-          <p style="color: var(--color-text-muted); max-width: 600px; margin: 0 auto;">${fitnessData.philosophy}</p>
-        </div>
-        <h2 style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--color-green-dark); margin-bottom: 24px;">Weekly Schedule</h2>
-        <div class="cards-grid" style="margin-bottom: 48px;">
-          <div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><span style="background:var(--color-green);color:white;padding:6px 12px;border-radius:50px;font-size:0.8rem;font-weight:600;">MON</span><h3 style="margin:0;">Full Body Strength</h3></div><p class="card-subtitle">45-60 min</p><ul><li>Push-ups or Bench Press — 3×10</li><li>Rows — 3×10</li><li>Squats — 3×12</li><li>Romanian Deadlifts — 3×10</li></ul></div>
-          <div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><span style="background:var(--color-brown);color:white;padding:6px 12px;border-radius:50px;font-size:0.8rem;font-weight:600;">TUE</span><h3 style="margin:0;">Cardio + Core</h3></div><p class="card-subtitle">40-50 min</p><ul><li>Running — 25-30 min</li><li>Plank — 45 sec × 3</li><li>Bicycle crunches — 20 reps × 3</li></ul></div>
-          <div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><span style="background:var(--color-green);color:white;padding:6px 12px;border-radius:50px;font-size:0.8rem;font-weight:600;">WED</span><h3 style="margin:0;">Full Body Strength</h3></div><p class="card-subtitle">45-60 min</p><ul><li>Incline Push-ups — 3×12</li><li>Lat Pulldowns — 3×8</li><li>Goblet Squats — 3×12</li><li>Hip Thrusts — 3×12</li></ul></div>
-          <div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><span style="background:var(--color-brown);color:white;padding:6px 12px;border-radius:50px;font-size:0.8rem;font-weight:600;">THU</span><h3 style="margin:0;">Cardio + Core</h3></div><p class="card-subtitle">40-50 min</p><ul><li>Swimming or Cycling — 30 min</li><li>Side plank — 30 sec each × 3</li><li>Russian twists — 20 reps × 3</li></ul></div>
-          <div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><span style="background:var(--color-green);color:white;padding:6px 12px;border-radius:50px;font-size:0.8rem;font-weight:600;">FRI</span><h3 style="margin:0;">Full Body Strength</h3></div><p class="card-subtitle">45-60 min</p><ul><li>Deadlifts — 3×8</li><li>Bench Press — 3×10</li><li>Bulgarian Split Squats — 3×8</li><li>Accessory work</li></ul></div>
-          <div class="card"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><span style="background:var(--color-text-light);color:white;padding:6px 12px;border-radius:50px;font-size:0.8rem;font-weight:600;">SAT/SUN</span><h3 style="margin:0;">Active Recovery</h3></div><p class="card-subtitle">Rest, but keep moving</p><ul><li>Light walking — 20-30 min</li><li>Stretching or yoga</li><li>Foam rolling</li></ul></div>
-        </div>
-        <p style="text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--color-brown);">"${fitnessData.closing_quote}"</p>
-      `;
-    }
-
-    function renderJournalGrid() {
-      const grid = document.getElementById('journal-grid');
-      grid.innerHTML = journalEntries.map((entry, idx) => `
+      
+      const html = journalData.map((entry, idx) => `
         <article class="journal-entry" onclick="openJournalModal(${idx})">
           <div class="journal-image">
-            ${entry.image ? `<img src="${entry.image}" alt="${entry.title}">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>`}
+            ${entry.image ? `<img src="${entry.image}" alt="${entry.title}">` : 
+              `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>`}
           </div>
           <div class="journal-content">
             <p class="journal-date">${formatDate(entry.date)}</p>
@@ -587,46 +540,65 @@
           </div>
         </article>
       `).join('');
+      
+      document.getElementById('journal-grid').innerHTML = html;
     }
 
-    function renderPhotoGallery() {
-      const gallery = document.getElementById('photo-gallery');
-      if (photoEntries.length === 0) {
-        gallery.innerHTML = `
-          <div class="photo-item placeholder">🌿</div>
-          <div class="photo-item placeholder">☕</div>
-          <div class="photo-item placeholder">📷</div>
-          <div class="photo-item placeholder">🏔️</div>
+    // Render Photos
+    function renderPhotos() {
+      if (!photoData || photoData.length === 0) {
+        document.getElementById('photo-gallery').innerHTML = `
+          <div class="photo-item">🌿</div>
+          <div class="photo-item">☕</div>
+          <div class="photo-item">📷</div>
+          <div class="photo-item">🏔️</div>
         `;
         return;
       }
-      gallery.innerHTML = photoEntries.map((photo, idx) => `
-        <div class="photo-item ${photo.image ? '' : 'placeholder'}" onclick="openPhotoModal(${idx})">
-          ${photo.image ? `<img src="${photo.image}" alt="${photo.title}"><div class="photo-overlay"><p class="photo-overlay-title">${photo.title}</p><p class="photo-overlay-caption">${photo.caption || ''}</p></div>` : '📷'}
+      
+      const emojis = ['🌿', '☕', '📷', '🏔️', '🌅', '🎹', '📚'];
+      
+      const html = photoData.map((photo, idx) => `
+        <div class="photo-item" onclick="openPhotoModal(${idx})">
+          ${photo.image ? `<img src="${photo.image}" alt="${photo.title}">` : emojis[idx % emojis.length]}
+          <div class="photo-overlay">
+            <p class="photo-title">${photo.title}</p>
+            <p class="photo-caption">${photo.caption}</p>
+          </div>
         </div>
       `).join('');
+      
+      document.getElementById('photo-gallery').innerHTML = html;
     }
 
-    // ===== HELPER FUNCTIONS =====
+    // Helper: Format date
     function formatDate(dateStr) {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     }
 
-    // ===== NAVIGATION =====
+    // Page navigation
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
       document.getElementById('page-' + pageId).classList.add('active');
       document.querySelector('[data-page="' + pageId + '"]').classList.add('active');
-      window.scrollTo(0, 0);
     }
 
-    // ===== CAROUSEL =====
+    // Carousel
     let currentSlide = 0;
     let totalSlides = 7;
-    function changeSlide(dir) { currentSlide = (currentSlide + dir + totalSlides) % totalSlides; updateCarousel(); }
-    function goToSlide(idx) { currentSlide = idx; updateCarousel(); }
+    
+    function changeSlide(dir) {
+      currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+    
+    function goToSlide(idx) {
+      currentSlide = idx;
+      updateCarousel();
+    }
+    
     function updateCarousel() {
       document.querySelectorAll('.carousel-slide').forEach((s, i) => s.classList.toggle('active', i === currentSlide));
       document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
@@ -634,65 +606,60 @@
       if (indicator) indicator.textContent = (currentSlide + 1) + ' / ' + totalSlides;
     }
 
-    // ===== MODALS =====
+    // Modal functions
     function openBookModal(category) {
-      const data = bookData[category];
+      if (!booksData || !booksData[category]) return;
+      const data = booksData[category];
       document.getElementById('bookModalTitle').textContent = data.title;
       document.getElementById('bookModalList').innerHTML = data.books.map(b => 
         `<div class="modal-book"><p class="modal-book-title">${b.title}</p><p class="modal-book-author">${b.author}</p></div>`
       ).join('');
       document.getElementById('bookModal').classList.add('active');
     }
-    function closeBookModal(e) { 
-      if (!e || e.target === document.getElementById('bookModal')) 
-        document.getElementById('bookModal').classList.remove('active'); 
-    }
 
     function openJournalModal(idx) {
-      const entry = journalEntries[idx];
+      if (!journalData || !journalData[idx]) return;
+      const entry = journalData[idx];
       document.getElementById('contentModalTitle').textContent = entry.title;
-      document.getElementById('contentModalBody').innerHTML = `
-        <p class="modal-date">${formatDate(entry.date)}</p>
-        ${entry.image ? `<img src="${entry.image}" class="modal-image" alt="${entry.title}">` : ''}
-        <div class="modal-content">${marked.parse(entry.body)}</div>
-        <div class="modal-tags">${entry.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-      `;
+      
+      let html = `<p class="modal-meta">${formatDate(entry.date)} · ${entry.tags.map(t => `<span class="tag">${t}</span>`).join(' ')}</p>`;
+      if (entry.image) html += `<img class="modal-image" src="${entry.image}" alt="${entry.title}">`;
+      html += `<div class="modal-content">${typeof marked !== 'undefined' ? marked.parse(entry.body) : entry.body.replace(/\n/g, '<br>')}</div>`;
+      
+      document.getElementById('contentModalBody').innerHTML = html;
       document.getElementById('contentModal').classList.add('active');
     }
 
     function openPhotoModal(idx) {
-      const photo = photoEntries[idx];
+      if (!photoData || !photoData[idx]) return;
+      const photo = photoData[idx];
       document.getElementById('contentModalTitle').textContent = photo.title;
-      document.getElementById('contentModalBody').innerHTML = `
-        ${photo.image ? `<img src="${photo.image}" class="modal-image" alt="${photo.title}">` : '<div style="height:200px;background:var(--color-green-pale);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:4rem;">📷</div>'}
-        <p style="margin-top:16px;color:var(--color-text-muted);">${photo.caption || 'No caption'}</p>
-        <p style="margin-top:8px;"><span class="tag">${photo.category}</span></p>
-      `;
+      
+      let html = `<p class="modal-meta">${formatDate(photo.date)} · ${photo.category}</p>`;
+      if (photo.image) html += `<img class="modal-image" src="${photo.image}" alt="${photo.title}">`;
+      html += `<p>${photo.caption}</p>`;
+      
+      document.getElementById('contentModalBody').innerHTML = html;
       document.getElementById('contentModal').classList.add('active');
     }
 
-    function closeContentModal(e) {
-      if (!e || e.target === document.getElementById('contentModal'))
-        document.getElementById('contentModal').classList.remove('active');
+    function closeModal(modalId, e) {
+      if (!e || e.target.classList.contains('modal-overlay')) {
+        document.getElementById(modalId).classList.remove('active');
+      }
     }
 
-    document.addEventListener('keydown', e => { 
+    // ESC key closes modals
+    document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        closeBookModal();
-        closeContentModal();
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
       }
     });
-  </script>
-  
-  <!-- Netlify Identity Widget -->
-  <script>
+
+    // Netlify Identity
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
+        if (!user) window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
       });
     }
   </script>
