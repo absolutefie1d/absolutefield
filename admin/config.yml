@@ -1,6 +1,8 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: absolutefie1d/absolutefield
   branch: main
+  base_url: https://api.netlify.com
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
