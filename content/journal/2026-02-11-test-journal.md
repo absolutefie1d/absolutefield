@@ -1,5 +1,5 @@
 ---
-title: Test Journal
+title: Testing Journal
 date: 2026-02-11T12:48:00
 image: ''
 excerpt: You'll be surprised.
