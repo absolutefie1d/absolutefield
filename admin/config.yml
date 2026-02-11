@@ -2,8 +2,6 @@ backend:
   name: github
   repo: absolutefie1d/absolutefield
   branch: main
-  base_url: https://api.netlify.com
-  site_domain: absolutefield.netlify.app
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
