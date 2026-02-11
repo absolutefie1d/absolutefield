@@ -1,6 +1,114 @@
 const fs = require('fs');
 const path = require('path');
 
+// ===== MARKDOWN FRONTMATTER PARSER =====
+function parseMarkdownFile(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8');
+  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  
+  if (!frontmatterMatch) {
+    return null;
+  }
+  
+  const frontmatter = {};
+  const frontmatterLines = frontmatterMatch[1].split('\n');
+  
+  frontmatterLines.forEach(line => {
+    const colonIndex = line.indexOf(':');
+    if (colonIndex > -1) {
+      const key = line.slice(0, colonIndex).trim();
+      let value = line.slice(colonIndex + 1).trim();
+      
+      // Remove quotes if present
+      if ((value.startsWith('"') && value.endsWith('"')) || 
+          (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      
+      // Parse booleans
+      if (value === 'true') value = true;
+      if (value === 'false') value = false;
+      
+      frontmatter[key] = value;
+    }
+  });
+  
+  frontmatter.body = frontmatterMatch[2].trim();
+  
+  return frontmatter;
+}
+
+// ===== BUILD JOURNAL JSON =====
+function buildJournalJson() {
+  const journalDir = path.join(__dirname, 'content', 'journal');
+  const outputPath = path.join(__dirname, 'data', 'journal.json');
+  
+  if (!fs.existsSync(journalDir)) {
+    console.log('ℹ️ No journal content folder found');
+    return;
+  }
+  
+  const files = fs.readdirSync(journalDir).filter(f => f.endsWith('.md'));
+  const entries = [];
+  
+  files.forEach(file => {
+    const filePath = path.join(journalDir, file);
+    const data = parseMarkdownFile(filePath);
+    
+    if (data) {
+      entries.push({
+        title: data.title || 'Untitled',
+        date: data.date || '',
+        excerpt: data.excerpt || '',
+        image: data.image || '',
+        tags: data.tags ? data.tags.split(',').map(t => t.trim()) : [],
+        body: data.body || ''
+      });
+    }
+  });
+  
+  // Sort by date, newest first
+  entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  fs.writeFileSync(outputPath, JSON.stringify(entries, null, 2));
+  console.log(`✅ Built journal.json (${entries.length} entries)`);
+}
+
+// ===== BUILD PHOTOGRAPHY JSON =====
+function buildPhotographyJson() {
+  const photoDir = path.join(__dirname, 'content', 'photography');
+  const outputPath = path.join(__dirname, 'data', 'photography.json');
+  
+  if (!fs.existsSync(photoDir)) {
+    console.log('ℹ️ No photography content folder found');
+    return;
+  }
+  
+  const files = fs.readdirSync(photoDir).filter(f => f.endsWith('.md'));
+  const photos = [];
+  
+  files.forEach(file => {
+    const filePath = path.join(photoDir, file);
+    const data = parseMarkdownFile(filePath);
+    
+    if (data) {
+      photos.push({
+        image: data.image || '',
+        caption: data.caption || '',
+        date: data.date || '',
+        category: data.category || '',
+        featured: data.featured === true || data.featured === 'true'
+      });
+    }
+  });
+  
+  // Sort by date, newest first
+  photos.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  fs.writeFileSync(outputPath, JSON.stringify(photos, null, 2));
+  console.log(`✅ Built photography.json (${photos.length} photos)`);
+}
+
 // ===== CSV PARSER =====
 function parseCSV(csvText) {
   const lines = csvText.split('\n');
@@ -175,12 +283,18 @@ function updateBooksJson(bookData, booksJsonPath) {
 
 // ===== MAIN =====
 function main() {
+  console.log('🔨 Building content...\n');
+  
+  // Build journal and photography from markdown
+  buildJournalJson();
+  buildPhotographyJson();
+  
+  // Process Storygraph CSV if exists
   const dataDir = path.join(__dirname, 'data');
   const csvPath = path.join(dataDir, 'storygraph.csv');
   const readingJsonPath = path.join(dataDir, 'reading.json');
   const booksJsonPath = path.join(dataDir, 'books.json');
   
-  // Check if CSV exists
   if (!fs.existsSync(csvPath)) {
     console.log('ℹ️ No storygraph.csv found, skipping book data update');
     
@@ -192,32 +306,30 @@ function main() {
       };
       fs.writeFileSync(booksJsonPath, JSON.stringify(defaultBooks, null, 2));
     }
-    return;
+  } else {
+    console.log('📚 Processing Storygraph CSV...');
+    
+    try {
+      const csvText = fs.readFileSync(csvPath, 'utf8');
+      const rows = parseCSV(csvText);
+      console.log(`   Found ${rows.length} books`);
+      
+      const processedData = processStorygraphData(rows);
+      const { bookData, stats } = generateBookDataJS(processedData);
+      
+      console.log(`   📖 Total read: ${stats.totalRead}`);
+      console.log(`   📚 Currently reading: ${stats.currentlyReadingCount}`);
+      console.log(`   📋 TBR: ${stats.tbr}`);
+      console.log(`   🎯 Read in 2026: ${stats.booksRead2026}`);
+      
+      updateReadingJson(stats, readingJsonPath);
+      updateBooksJson(bookData, booksJsonPath);
+    } catch (error) {
+      console.error('❌ Error processing CSV:', error.message);
+    }
   }
   
-  console.log('📚 Processing Storygraph CSV...');
-  
-  try {
-    const csvText = fs.readFileSync(csvPath, 'utf8');
-    const rows = parseCSV(csvText);
-    console.log(`   Found ${rows.length} books`);
-    
-    const processedData = processStorygraphData(rows);
-    const { bookData, stats } = generateBookDataJS(processedData);
-    
-    console.log(`   📖 Total read: ${stats.totalRead}`);
-    console.log(`   📚 Currently reading: ${stats.currentlyReadingCount}`);
-    console.log(`   📋 TBR: ${stats.tbr}`);
-    console.log(`   🎯 Read in 2026: ${stats.booksRead2026}`);
-    
-    updateReadingJson(stats, readingJsonPath);
-    updateBooksJson(bookData, booksJsonPath);
-    
-    console.log('✅ Book data processing complete!');
-  } catch (error) {
-    console.error('❌ Error processing CSV:', error.message);
-    process.exit(1);
-  }
+  console.log('\n✅ Build complete!');
 }
 
 main();
