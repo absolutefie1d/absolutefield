@@ -1,5 +1,6 @@
 name = "my-absolute-field"
 compatibility_date = "2026-02-09"
+main = "worker.js"
 
 [assets]
 directory = "./"

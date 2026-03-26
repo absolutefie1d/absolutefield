@@ -1,859 +1,716 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Absolute Field</title>
-  <script src="https://unpkg.com/marked/marked.min.js"></script>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%234a6741'/><path d='M50 25 C35 40, 30 60, 50 75 C70 60, 65 40, 50 25' fill='%23d4e4cf'/><path d='M50 35 L50 65' stroke='%232d3f28' stroke-width='3' stroke-linecap='round'/><path d='M50 45 L40 55' stroke='%232d3f28' stroke-width='2' stroke-linecap='round'/><path d='M50 55 L60 50' stroke='%232d3f28' stroke-width='2' stroke-linecap='round'/></svg>" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --color-bg: #faf9f7; --color-bg-alt: #f4f2ed; --color-text: #2c3029;
-      --color-text-muted: #6b7265; --color-text-light: #9aa093;
-      --color-green: #4a6741; --color-green-light: #6b8a5e;
-      --color-green-pale: #d4e4cf; --color-green-dark: #2d3f28;
-      --color-brown: #8b7355; --color-brown-light: #c4a882;
-      --color-cream: #f5f1e8; --color-white: #ffffff;
-      --color-border: #e2ded6;
-      --shadow-sm: 0 2px 8px rgba(45, 63, 40, 0.06);
-      --shadow-md: 0 4px 20px rgba(45, 63, 40, 0.08);
-      --shadow-lg: 0 12px 40px rgba(45, 63, 40, 0.12);
-      --radius: 12px; --radius-sm: 6px; --transition: 0.3s ease;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Source Sans 3', sans-serif; font-weight: 300; background: var(--color-bg); color: var(--color-text); line-height: 1.7; }
-
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(250, 249, 247, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--color-border); padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
-    .nav-logo { cursor: pointer; display: flex; align-items: center; gap: 8px; }
-    .nav-logo svg { width: 36px; height: 36px; }
-    .nav-links { display: flex; gap: 8px; list-style: none; }
-    .nav-links a { color: var(--color-text-muted); font-size: 0.9rem; padding: 8px 16px; border-radius: 50px; transition: all var(--transition); cursor: pointer; text-decoration: none; font-weight: 400; letter-spacing: 0.02em; }
-    .nav-links a:hover { color: var(--color-green); background: var(--color-green-pale); }
-    .nav-links a.active { color: var(--color-white); background: var(--color-green); }
-
-    main { padding-top: 80px; min-height: 100vh; }
-    .page { display: none; animation: fadeIn 0.4s ease; }
-    .page.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .container { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
-
-    .page-header { text-align: center; margin-bottom: 48px; }
-    .page-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-brown); margin-bottom: 12px; }
-    .page-title { font-family: 'Great Vibes', cursive; font-size: clamp(2.5rem, 6vw, 3.5rem); color: var(--color-green-dark); }
-
-    .hero { min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px; background: radial-gradient(ellipse at 30% 20%, rgba(212, 228, 207, 0.4) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(196, 168, 130, 0.2) 0%, transparent 50%); }
-    .hero-content { max-width: 700px; }
-    .hero-greeting { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.25em; color: var(--color-brown); margin-bottom: 16px; }
-    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 5rem); color: var(--color-green-dark); line-height: 1.1; margin-bottom: 24px; }
-    .hero h1 em { font-style: italic; color: var(--color-green); }
-    .hero-tagline { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; color: var(--color-brown); margin-bottom: 32px; }
-    .hero-description { font-size: 1.1rem; color: var(--color-text-muted); max-width: 500px; margin: 0 auto 40px; }
-    .hobby-pills { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-    .hobby-pill { padding: 10px 20px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: 50px; font-size: 0.9rem; color: var(--color-text-muted); cursor: pointer; transition: all var(--transition); }
-    .hobby-pill:hover { border-color: var(--color-green); color: var(--color-green); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-    .card { background: var(--color-white); border-radius: var(--radius); padding: 28px; border: 1px solid var(--color-border); transition: all var(--transition); }
-    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--color-green-dark); margin-bottom: 8px; }
-    .card-subtitle { font-style: italic; color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 16px; }
-    .card ul { list-style: none; }
-    .card li { position: relative; padding-left: 16px; margin-bottom: 6px; font-size: 0.9rem; color: var(--color-text-muted); }
-    .card li::before { content: '♪'; position: absolute; left: 0; color: var(--color-green-light); }
-
-    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
-    .stat-card { text-align: center; padding: 28px 20px; background: var(--color-white); border-radius: var(--radius); border: 1px solid var(--color-border); }
-    .stat-number { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--color-green); line-height: 1; margin-bottom: 8px; }
-    .stat-label { font-size: 0.8rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-
-    .reading-goal { background: var(--color-white); border-radius: var(--radius); padding: 32px; margin-bottom: 40px; border: 1px solid var(--color-border); text-align: center; }
-    .goal-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-brown); margin-bottom: 12px; }
-    .goal-number { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--color-green-dark); margin-bottom: 8px; }
-    .goal-number span { color: var(--color-green); }
-    .progress-bar { background: var(--color-border); height: 8px; border-radius: 4px; max-width: 400px; margin: 16px auto; overflow: hidden; }
-    .progress-fill { background: linear-gradient(90deg, var(--color-green) 0%, var(--color-green-light) 100%); height: 100%; border-radius: 4px; transition: width 0.5s ease; }
-    .goal-subtitle { font-size: 0.9rem; color: var(--color-text-muted); }
-
-    .book-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
-    .book-card { background: var(--color-white); border-radius: var(--radius); padding: 16px; border: 1px solid var(--color-border); transition: all var(--transition); }
-    .book-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-    .book-title { font-weight: 600; color: var(--color-text); font-size: 0.9rem; margin-bottom: 4px; }
-    .book-author { font-size: 0.8rem; color: var(--color-text-muted); }
-    .book-status { font-size: 0.75rem; color: var(--color-text-light); margin-top: 8px; }
-    .section-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--color-green-dark); margin-bottom: 20px; }
-
-    .carousel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; margin-top: 48px; }
-    .carousel-nav { display: flex; align-items: center; gap: 12px; }
-    .carousel-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-white); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition); }
-    .carousel-btn:hover { background: var(--color-green); border-color: var(--color-green); }
-    .carousel-btn:hover svg { stroke: var(--color-white); }
-    .carousel-btn svg { stroke: var(--color-text-muted); }
-    .carousel-indicator { font-size: 0.85rem; color: var(--color-text-muted); }
-    .carousel-slide { display: none; }
-    .carousel-slide.active { display: block; animation: fadeIn 0.3s ease; }
-    .slide-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border); cursor: pointer; transition: opacity var(--transition); }
-    .slide-header:hover { opacity: 0.7; }
-    .rating-stars { font-size: 1.2rem; color: var(--color-brown); }
-    .rating-label { font-family: 'Great Vibes', cursive; font-size: 1.4rem; color: var(--color-green-dark); }
-    .rating-count { font-size: 0.8rem; color: var(--color-text-muted); background: var(--color-bg-alt); padding: 4px 12px; border-radius: 50px; }
-    .view-all-hint { font-size: 0.75rem; color: var(--color-green); margin-left: auto; }
-    .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-border); cursor: pointer; transition: all var(--transition); }
-    .dot:hover { background: var(--color-green-light); }
-    .dot.active { background: var(--color-green); width: 24px; border-radius: 4px; }
-
-    /* Modal Styles */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: var(--color-white); border-radius: var(--radius); max-width: 700px; width: 100%; max-height: 80vh; overflow: hidden; animation: modalIn 0.3s ease; }
-    @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-    .modal-header { padding: 24px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; }
-    .modal-title { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: var(--color-green-dark); }
-    .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--color-bg-alt); cursor: pointer; font-size: 1.2rem; color: var(--color-text-muted); transition: all var(--transition); }
-    .modal-close:hover { background: var(--color-green); color: var(--color-white); }
-    .modal-body { padding: 24px; overflow-y: auto; max-height: calc(80vh - 80px); }
-    .modal-book-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-    .modal-book { padding: 12px; background: var(--color-bg-alt); border-radius: var(--radius-sm); }
-    .modal-book-title { font-weight: 600; font-size: 0.9rem; color: var(--color-text); }
-    .modal-book-author { font-size: 0.8rem; color: var(--color-text-muted); }
-    .modal-meta { font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 16px; }
-    .modal-content { line-height: 1.8; }
-    .modal-content h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--color-green-dark); margin: 24px 0 12px; }
-    .modal-content p { margin-bottom: 16px; }
-    .modal-content ul, .modal-content ol { margin-left: 20px; margin-bottom: 16px; }
-    .modal-image { width: 100%; max-height: 300px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 16px; }
-
-    /* Fitness Styles */
-    .fitness-philosophy { background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 100%); border-radius: var(--radius); padding: 32px; margin-bottom: 40px; text-align: center; }
-    .fitness-philosophy p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--color-green-dark); max-width: 600px; margin: 0 auto; }
-    .fitness-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-    .fitness-card { background: var(--color-white); border-radius: var(--radius); padding: 28px; border: 1px solid var(--color-border); }
-    .fitness-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--color-green-dark); margin-bottom: 8px; }
-    .fitness-card .card-subtitle { font-style: italic; color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 16px; }
-    .fitness-card h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-brown); margin: 16px 0 8px; }
-    .fitness-card ul { list-style: none; }
-    .fitness-card li { position: relative; padding-left: 16px; margin-bottom: 6px; font-size: 0.9rem; color: var(--color-text-muted); }
-    .fitness-card li::before { content: '•'; position: absolute; left: 0; color: var(--color-green-light); }
-    .fitness-note { font-size: 0.85rem; font-style: italic; color: var(--color-text-muted); margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border); }
-
-    /* Photo Gallery */
-    .photo-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
-    .photo-item { background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 50%, var(--color-brown-light) 100%); border-radius: var(--radius); aspect-ratio: 1; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; overflow: hidden; }
-    .photo-item:hover { transform: scale(1.02); box-shadow: var(--shadow-lg); }
-    .photo-item img { width: 100%; height: 100%; object-fit: cover; }
-    .photo-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; opacity: 0; transition: opacity var(--transition); }
-    .photo-item:hover .photo-overlay { opacity: 1; }
-    .photo-title { font-weight: 600; font-size: 0.9rem; }
-    .photo-caption { font-size: 0.8rem; opacity: 0.8; }
-
-    /* Journal */
-    .journal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-    .journal-entry { background: var(--color-white); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--color-border); transition: all var(--transition); cursor: pointer; }
-    .journal-entry:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .journal-image { height: 160px; background: linear-gradient(135deg, var(--color-green-pale) 0%, var(--color-cream) 100%); display: flex; align-items: center; justify-content: center; }
-    .journal-image img { width: 100%; height: 100%; object-fit: cover; }
-    .journal-image svg { width: 40px; height: 40px; stroke: var(--color-green); opacity: 0.5; }
-    .journal-content { padding: 24px; }
-    .journal-date { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-brown); margin-bottom: 8px; }
-    .journal-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--color-green-dark); margin-bottom: 10px; line-height: 1.3; }
-    .journal-excerpt { font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 16px; }
-    .journal-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-    .tag { font-size: 0.75rem; padding: 4px 12px; background: var(--color-green-pale); color: var(--color-green-dark); border-radius: 50px; }
-
-    .footer-note { text-align: center; padding: 40px; color: var(--color-text-muted); font-size: 0.9rem; }
-    .footer-note a { color: var(--color-green); }
-
-    @media (max-width: 768px) {
-      nav { padding: 12px 20px; }
-      .nav-links { gap: 4px; }
-      .nav-links a { padding: 6px 12px; font-size: 0.9rem; }
-      .container { padding: 40px 20px; }
-      .stats-row { grid-template-columns: 1fr; }
-      .fitness-grid { grid-template-columns: 1fr; }
-      .photo-gallery { grid-template-columns: repeat(2, 1fr); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>absolutefield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--serif:'Cormorant Garamond',Georgia,serif;--body:'Crimson Pro',Georgia,serif;--mono:'DM Mono',monospace;--r:10px;--rs:6px;--tr:0.2s ease;--sw:214px;}
+@media(prefers-color-scheme:light){:root{--bg:#F7F4EE;--bg2:#EDE8DE;--card:#FAFAF7;--c2:#F4F0E8;--tx:#2C2926;--mid:#7A6F65;--lt:#A89E94;--ht:#D4CCC0;--bd:#E0DAD0;--gn:#4a6741;--gnl:#6b8a5e;--gnp:#d4e4cf;--gnd:#2d3f28;--br:#8b7355;--brl:#c4a882;--wk:#7B9BB5;--wkb:#EAF0F6;--rd:#B8924A;--rdb:#FAF5E8;--pi:#9B85C0;--pib:#F0EDFA;--he:#7BAF8A;--heb:#EDF5F0;--fa:#C4898A;--fab:#FAF0F0;--fm:#B58A7B;--fmb:#FAF0EC;--fn:#888780;--fnb:#F1EFE8;--sh:0 2px 10px rgba(44,41,38,.07);--shm:0 4px 20px rgba(44,41,38,.1);}}
+@media(prefers-color-scheme:dark){:root{--bg:#1C1A17;--bg2:#242018;--card:#211F1B;--c2:#282420;--tx:#E8E0D4;--mid:#A09890;--lt:#6A6058;--ht:#3A3630;--bd:#332F28;--gn:#6b8a5e;--gnl:#8aaa78;--gnp:#2d3f28;--gnd:#d4e4cf;--br:#c4a882;--brl:#a88560;--wk:#9BAAB5;--wkb:#1A2530;--rd:#C8A46A;--rdb:#2A200E;--pi:#B09DD0;--pib:#1E1828;--he:#8ABF98;--heb:#152018;--fa:#D4A0A0;--fab:#281818;--fm:#C8A090;--fmb:#281E18;--fn:#A0A098;--fnb:#1E1E18;--sh:0 2px 10px rgba(0,0,0,.3);--shm:0 4px 20px rgba(0,0,0,.4);}}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg);color:var(--tx);line-height:1.7;display:flex;min-height:100vh;}
+/* SIDEBAR */
+.sb{width:var(--sw);flex-shrink:0;background:var(--card);border-right:1px solid var(--bd);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;overflow-y:auto;}
+.sb-brand{padding:1.5rem 1.25rem 1.2rem;border-bottom:1px solid var(--bd);}
+.brand-s{font-family:var(--serif);font-size:1.5rem;font-weight:300;font-style:italic;color:var(--gn);letter-spacing:.01em;line-height:1;}
+.brand-t{font-family:var(--mono);font-size:.56rem;color:var(--lt);letter-spacing:.1em;margin-top:5px;text-transform:uppercase;}
+.ns{font-family:var(--mono);font-size:.56rem;color:var(--lt);letter-spacing:.12em;text-transform:uppercase;padding:1rem 1.25rem .3rem;}
+.ni{display:flex;align-items:center;gap:9px;padding:.42rem 1.25rem;cursor:pointer;font-size:.85rem;color:var(--mid);border-left:2px solid transparent;transition:all var(--tr);font-family:var(--body);font-weight:300;}
+.ni:hover{color:var(--tx);background:var(--bg2);}
+.ni.active{color:var(--tx);background:var(--bg2);border-left-color:var(--gn);font-weight:400;}
+.nd{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.nc{font-family:var(--mono);font-size:.56rem;color:var(--lt);margin-left:auto;}
+.sb-ft{margin-top:auto;padding:1rem 1.25rem;border-top:1px solid var(--bd);font-family:var(--mono);font-size:.6rem;color:var(--lt);line-height:1.9;}
+/* MAIN */
+.main{margin-left:var(--sw);flex:1;min-height:100vh;}
+.tb{background:var(--card);border-bottom:1px solid var(--bd);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;}
+.tbl{display:flex;align-items:baseline;gap:10px;}
+.tbt{font-family:var(--serif);font-size:1.1rem;font-weight:400;font-style:italic;}
+.tbd{font-family:var(--mono);font-size:.65rem;color:var(--lt);}
+.btn{background:var(--gn);color:white;border:none;padding:7px 16px;border-radius:50px;font-family:var(--mono);font-size:.7rem;cursor:pointer;transition:all var(--tr);}
+.btn:hover{background:var(--gnl);}
+.btn-sm{padding:5px 12px;font-size:.65rem;}
+.btn-ghost{background:none;border:1px solid var(--bd);color:var(--mid);padding:5px 12px;border-radius:50px;font-family:var(--mono);font-size:.65rem;cursor:pointer;transition:all var(--tr);}
+.btn-ghost:hover{border-color:var(--gn);color:var(--gn);}
+/* PAGES */
+.page{display:none;animation:fu .3s ease both;}
+.page.active{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pc{padding:2rem;max-width:1160px;}
+/* THEME BANNER */
+.thb{background:var(--c2);border:1px solid var(--bd);border-left:3px solid var(--br);border-radius:0 var(--rs) var(--rs) 0;padding:9px 16px;display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;}
+.thl{font-family:var(--mono);font-size:.58rem;color:var(--brl);letter-spacing:.1em;text-transform:uppercase;}
+.thv{font-family:var(--serif);font-style:italic;color:var(--br);font-size:.95rem;flex:1;}
+.the{font-family:var(--mono);font-size:.62rem;color:var(--lt);cursor:pointer;}
+.the:hover{color:var(--br);}
+/* WIDGET */
+.w{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.wh{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 9px;border-bottom:1px solid var(--bd);}
+.wt{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--lt);display:flex;align-items:center;gap:7px;}
+.wd2{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.wa{font-family:var(--mono);font-size:.65rem;color:var(--lt);cursor:pointer;transition:color var(--tr);}
+.wa:hover{color:var(--gn);}
+.wb{padding:14px;}
+/* GRIDS */
+.g{display:grid;gap:14px;}
+.gm{grid-template-columns:1.55fr 1fr;}
+.g3{grid-template-columns:1fr 1fr 1fr;}
+.g2{grid-template-columns:1fr 1fr;}
+/* TODAY */
+.tc{background:var(--bg2);border-radius:var(--rs);padding:13px;margin-bottom:11px;}
+.tday{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--gnd);line-height:1;}
+.tdt{font-family:var(--mono);font-size:.62rem;color:var(--lt);margin-bottom:11px;}
+.mr{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.ml{font-family:var(--mono);font-size:.58rem;color:var(--lt);width:50px;text-transform:uppercase;letter-spacing:.06em;}
+.mps{display:flex;gap:3px;}
+.mp{font-family:var(--mono);font-size:.58rem;padding:2px 8px;border-radius:20px;border:1px solid var(--bd);color:var(--lt);cursor:pointer;transition:all var(--tr);}
+.mp:hover{border-color:var(--gn);color:var(--gn);}
+.mp.sel{background:var(--gn);color:white;border-color:var(--gn);}
+.tn{margin-top:9px;padding-top:9px;border-top:1px solid var(--bd);font-size:.82rem;color:var(--mid);font-style:italic;}
+.tnl{font-family:var(--mono);font-size:.58rem;color:var(--lt);text-transform:uppercase;letter-spacing:.06em;font-style:normal;display:block;margin-bottom:1px;}
+/* PRIORITIES */
+.pl{display:flex;flex-direction:column;gap:4px;}
+.pi{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:var(--rs);cursor:pointer;transition:background var(--tr);}
+.pi:hover{background:var(--bg2);}
+.pi.done{opacity:.38;}
+.pi.done .pt{text-decoration:line-through;}
+.pn{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.58rem;flex-shrink:0;margin-top:2px;}
+.pt{flex:1;font-size:.85rem;}
+/* TASKS */
+.tl{display:flex;flex-direction:column;}
+.ti{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid var(--bg2);font-size:.82rem;cursor:pointer;}
+.ti:last-child{border-bottom:none;}
+.ti:hover .tn2{color:var(--gn);}
+.ug{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.tn2{flex:1;color:var(--mid);}
+.tg{font-family:var(--mono);font-size:.58rem;color:var(--lt);}
+/* HABITS */
+.hh{display:flex;padding-left:82px;gap:3px;margin-bottom:5px;}
+.hdl{width:22px;text-align:center;font-family:var(--mono);font-size:.55rem;color:var(--lt);}
+.hrs{display:flex;flex-direction:column;gap:5px;}
+.hr{display:flex;align-items:center;gap:5px;}
+.hn{font-size:.75rem;color:var(--mid);width:80px;flex-shrink:0;}
+.hbs{display:flex;gap:3px;}
+.hb{width:22px;height:22px;border-radius:4px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.55rem;color:var(--lt);cursor:pointer;transition:all var(--tr);}
+.hb:hover{border-color:var(--he);}
+.hb.done{background:var(--he);border-color:var(--he);color:white;}
+.hb.td{border-width:2px;border-color:var(--tx);}
+.hst{font-family:var(--mono);font-size:.58rem;color:var(--lt);margin-left:3px;}
+/* BOOKS */
+.bl{display:flex;flex-direction:column;gap:10px;}
+.bi{display:flex;gap:9px;cursor:pointer;}
+.bsp{width:4px;border-radius:2px;flex-shrink:0;min-height:40px;align-self:stretch;}
+.bif{flex:1;}
+.bt{font-size:.88rem;font-weight:400;color:var(--tx);}
+.ba{font-size:.72rem;color:var(--lt);}
+.bst{display:flex;gap:14px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);}
+.bs{text-align:center;}
+.bsn{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--tx);}
+.bsl{font-family:var(--mono);font-size:.56rem;color:var(--lt);text-transform:uppercase;letter-spacing:.06em;}
+/* SONGS */
+.sl{display:flex;flex-direction:column;gap:5px;}
+.si{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--bg2);}
+.si:last-child{border-bottom:none;}
+.sd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.sn{flex:1;font-size:.82rem;color:var(--mid);}
+.sbg{font-family:var(--mono);font-size:.56rem;padding:1px 6px;border-radius:3px;}
+/* FINANCE */
+.fs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:9px;}
+.fst{background:var(--bg2);border-radius:var(--rs);padding:7px 9px;}
+.fsl{font-family:var(--mono);font-size:.56rem;color:var(--lt);text-transform:uppercase;letter-spacing:.06em;}
+.fsv{font-family:var(--serif);font-size:1.1rem;font-weight:400;margin-top:1px;}
+.fe{display:flex;flex-direction:column;gap:3px;}
+.fei{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid var(--bg2);font-size:.78rem;}
+.fei:last-child{border-bottom:none;}
+.ft{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.fn2{flex:1;color:var(--mid);}
+.fa2{font-family:var(--mono);font-size:.7rem;}
+/* LOGS */
+.le{padding:8px 0;border-bottom:1px solid var(--bg2);}
+.le:last-child{border-bottom:none;}
+.ld{font-family:var(--mono);font-size:.6rem;color:var(--lt);margin-bottom:2px;}
+.lx{font-size:.85rem;color:var(--mid);font-style:italic;line-height:1.65;}
+/* JOURNAL */
+.jl{display:flex;flex-direction:column;gap:8px;}
+.ji{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;cursor:pointer;box-shadow:var(--sh);}
+.jp{padding:16px 20px;display:flex;align-items:flex-start;gap:14px;}
+.jdc{min-width:60px;text-align:center;padding-top:2px;}
+.jdn{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--tx);line-height:1;}
+.jdd{font-family:var(--mono);font-size:.56rem;color:var(--lt);text-transform:uppercase;letter-spacing:.1em;}
+.jdm{font-family:var(--mono);font-size:.56rem;color:var(--lt);}
+.jdv{width:1px;background:var(--bd);align-self:stretch;flex-shrink:0;}
+.jc{flex:1;}
+.jmo{font-family:var(--mono);font-size:.58rem;padding:1px 7px;border-radius:20px;display:inline-block;margin-bottom:5px;}
+.jg{font-family:var(--serif);font-size:1rem;font-style:italic;color:var(--mid);margin-bottom:4px;}
+.jhl{font-size:.82rem;color:var(--lt);}
+.jhb{font-family:var(--mono);font-size:.58rem;color:var(--gn);margin-top:4px;}
+.jex{padding:0 20px 16px;display:none;border-top:1px solid var(--bg2);}
+.jex.open{display:block;}
+.jbd{font-size:.9rem;color:var(--mid);line-height:1.8;padding-top:14px;}
+.jbd p{margin-bottom:.75rem;}
+.jbd h1,.jbd h2,.jbd h3{font-family:var(--serif);font-weight:400;margin-bottom:.5rem;margin-top:1rem;}
+/* BOOK GRID */
+.bg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;}
+.bc{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px;cursor:pointer;transition:all var(--tr);}
+.bc:hover{box-shadow:var(--shm);transform:translateY(-2px);}
+.bct{font-family:var(--serif);font-size:.92rem;font-weight:400;color:var(--tx);margin-bottom:3px;line-height:1.3;}
+.bca{font-size:.72rem;color:var(--lt);margin-bottom:6px;}
+.bcr{font-size:.78rem;color:var(--rd);}
+.bcs{font-family:var(--mono);font-size:.56rem;padding:2px 6px;border-radius:3px;display:inline-block;margin-top:5px;}
+/* PIANO */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.sc{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px;border-left:3px solid var(--pi);}
+.scs{font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--tx);margin-bottom:2px;}
+.sca{font-size:.75rem;color:var(--lt);margin-bottom:7px;}
+.scp{font-family:var(--mono);font-size:.56rem;padding:1px 6px;border-radius:3px;background:var(--pib);color:var(--pi);}
+.scc{font-family:var(--mono);font-size:.65rem;color:var(--mid);margin-top:7px;}
+/* SESSION TABLE */
+.st{width:100%;border-collapse:collapse;font-size:.82rem;}
+.st th{font-family:var(--mono);font-size:.58rem;color:var(--lt);text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid var(--bd);text-align:left;}
+.st td{padding:7px 10px;border-bottom:1px solid var(--bg2);color:var(--mid);}
+/* HEALTH */
+.hs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;}
+.hss{background:var(--bg2);border-radius:var(--rs);padding:8px 10px;text-align:center;}
+.hsv{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--tx);}
+.hsl{font-family:var(--mono);font-size:.56rem;color:var(--lt);text-transform:uppercase;letter-spacing:.06em;}
+/* TASK MASTER PAGE */
+.filter-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.ftab{font-family:var(--mono);font-size:.65rem;padding:5px 14px;border-radius:20px;cursor:pointer;border:1px solid var(--bd);color:var(--mid);transition:all .2s;}
+.ftab:hover{border-color:var(--gn);color:var(--gn);}
+.ftab.active{background:var(--gn);color:white;border-color:var(--gn);}
+.task-full-list{display:flex;flex-direction:column;gap:6px;}
+.tfi{background:var(--card);border:1px solid var(--bd);border-radius:var(--rs);padding:11px 14px;display:flex;align-items:flex-start;gap:10px;transition:box-shadow var(--tr);}
+.tfi:hover{box-shadow:var(--sh);}
+.tfi-check{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--bd);flex-shrink:0;margin-top:2px;cursor:pointer;transition:all var(--tr);}
+.tfi-check:hover{border-color:var(--gn);}
+.tfi-check.checked{background:var(--gn);border-color:var(--gn);}
+.tfi-body{flex:1;}
+.tfi-name{font-size:.9rem;color:var(--tx);margin-bottom:3px;}
+.tfi-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.tfi-tag{font-family:var(--mono);font-size:.58rem;padding:1px 7px;border-radius:3px;}
+.tfi-urg{font-family:var(--mono);font-size:.58rem;color:var(--lt);}
+.tfi-notes{font-size:.78rem;color:var(--lt);margin-top:3px;font-style:italic;}
+/* WEEKLY REVIEW PAGE */
+.wr-nav{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.wr-nav-btn{background:none;border:1px solid var(--bd);border-radius:50px;padding:5px 14px;font-family:var(--mono);font-size:.68rem;color:var(--mid);cursor:pointer;transition:all var(--tr);}
+.wr-nav-btn:hover{border-color:var(--gn);color:var(--gn);}
+.wr-week-label{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--tx);flex:1;text-align:center;}
+.wr-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.wr-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:16px;}
+.wr-card-title{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--lt);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.wr-card-dot{width:6px;height:6px;border-radius:50%;}
+.wr-field{font-size:.88rem;color:var(--mid);line-height:1.7;font-style:italic;}
+.wr-theme{background:var(--c2);border:1px solid var(--bd);border-left:3px solid var(--br);border-radius:0 var(--rs) var(--rs) 0;padding:10px 16px;margin-bottom:14px;}
+.wr-theme-lbl{font-family:var(--mono);font-size:.56rem;color:var(--brl);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;}
+.wr-theme-val{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--br);}
+.wr-habits{display:flex;flex-direction:column;gap:5px;}
+.wr-hrow{display:flex;align-items:center;gap:8px;}
+.wr-hname{font-size:.75rem;color:var(--mid);width:90px;flex-shrink:0;}
+.wr-hbar{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;}
+.wr-hfill{height:100%;background:var(--he);border-radius:3px;}
+.wr-hcount{font-family:var(--mono);font-size:.6rem;color:var(--lt);min-width:28px;text-align:right;}
+/* WEEKLY PREVIEW WIDGET */
+.wp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.wp-item{background:var(--bg2);border-radius:var(--rs);padding:8px 10px;}
+.wp-label{font-family:var(--mono);font-size:.56rem;color:var(--lt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.wp-val{font-size:.8rem;color:var(--mid);font-style:italic;line-height:1.5;}
+.wp-habits{display:flex;gap:3px;margin-top:8px;padding-top:8px;border-top:1px solid var(--bd);}
+.wp-hchip{font-family:var(--mono);font-size:.58rem;padding:2px 7px;border-radius:20px;}
+/* SECTION TITLE */
+.sectl{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--tx);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:20px;color:var(--lt);font-size:.78rem;gap:7px;}
+.spin{width:12px;height:12px;border:1.5px solid var(--bd);border-top-color:var(--gn);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err{padding:10px 12px;font-family:var(--mono);font-size:.7rem;color:var(--fa);background:var(--fab);border-radius:var(--rs);}
+.empty{font-size:.8rem;color:var(--lt);font-style:italic;padding:6px 0;}
+/* MODALS */
+.mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(28,26,23,.6);align-items:center;justify-content:center;}
+.mo.open{display:flex;}
+.modal{background:var(--card);border-radius:var(--r);width:440px;max-width:92vw;border:1px solid var(--bd);box-shadow:var(--shm);padding:22px;}
+.mtt{font-family:var(--serif);font-size:1.1rem;font-weight:400;font-style:italic;color:var(--tx);margin-bottom:16px;}
+.mf{margin-bottom:11px;}
+.mlab{font-family:var(--mono);font-size:.58rem;color:var(--lt);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px;}
+.mi,.msel,.mta{width:100%;padding:7px 11px;border:1px solid var(--bd);border-radius:var(--rs);background:var(--bg2);font-family:var(--body);font-size:.9rem;color:var(--tx);outline:none;transition:border-color var(--tr);}
+.mi:focus,.msel:focus,.mta:focus{border-color:var(--gn);}
+.mta{resize:vertical;min-height:80px;}
+.mgr{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mbtns{display:flex;gap:7px;justify-content:flex-end;margin-top:15px;}
+.mbc{padding:7px 16px;border:1px solid var(--bd);border-radius:50px;background:none;font-family:var(--mono);font-size:.7rem;color:var(--lt);cursor:pointer;}
+.mbs{padding:7px 20px;border:none;border-radius:50px;background:var(--gn);font-family:var(--mono);font-size:.7rem;color:white;cursor:pointer;}
+.mbs:hover{background:var(--gnl);}
+@media(max-width:768px){:root{--sw:0px;}.sb{transform:translateX(-214px);}.main{margin-left:0;}.gm,.g3,.g2,.wr-cards,.wp-grid{grid-template-columns:1fr;}.pc{padding:1rem;}}
+</style>
 </head>
 <body>
+<aside class="sb" id="sidebar">
+  <div class="sb-brand">
+    <img src="/images/logo.png" alt="absolutefield" style="width:88px;height:88px;object-fit:contain;display:block;margin:0 auto 4px;">
+    <div class="brand-t" style="text-align:center">one day at a time</div>
+  </div>
   <nav>
-    <span class="nav-logo" onclick="showPage('home')">
-      <svg viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="45" fill="#4a6741"/>
-        <path d="M50 25 C35 40, 30 60, 50 75 C70 60, 65 40, 50 25" fill="#d4e4cf"/>
-        <path d="M50 35 L50 65" stroke="#2d3f28" stroke-width="3" stroke-linecap="round"/>
-        <path d="M50 45 L40 55" stroke="#2d3f28" stroke-width="2" stroke-linecap="round"/>
-        <path d="M50 55 L60 50" stroke="#2d3f28" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </span>
-    <ul class="nav-links">
-      <li><a onclick="showPage('home')" class="active" data-page="home">Home</a></li>
-      <li><a onclick="showPage('piano')" data-page="piano">Piano</a></li>
-      <li><a onclick="showPage('reading')" data-page="reading">Reading</a></li>
-      <li><a onclick="showPage('fitness')" data-page="fitness">Fitness</a></li>
-      <li><a onclick="showPage('photography')" data-page="photography">Photography</a></li>
-      <li><a onclick="showPage('journal')" data-page="journal">Journal</a></li>
-    </ul>
+    <div class="ns">main</div>
+    <div class="ni active" onclick="showPage('dashboard',this)"><div class="nd" style="background:var(--gn)"></div>Dashboard</div>
+    <div class="ni" onclick="showPage('journal',this)"><div class="nd" style="background:var(--br)"></div>Journal</div>
+    <div class="ni" onclick="showPage('tasks',this)"><div class="nd" style="background:var(--wk)"></div>Task master<span class="nc" id="task-cnt"></span></div>
+    <div class="ni" onclick="showPage('weekly',this)"><div class="nd" style="background:var(--wk)"></div>Weekly review</div>
+    <div class="ns">life areas</div>
+    <div class="ni" onclick="showPage('reading',this)"><div class="nd" style="background:var(--rd)"></div>Reading<span class="nc" id="read-cnt"></span></div>
+    <div class="ni" onclick="showPage('piano',this)"><div class="nd" style="background:var(--pi)"></div>Piano</div>
+    <div class="ni" onclick="showPage('health',this)"><div class="nd" style="background:var(--he)"></div>Health &amp; fitness</div>
+    <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
+    <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
+  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
+</aside>
 
-  <main>
-    <!-- HOME PAGE -->
-    <div class="page active" id="page-home">
-      <div class="hero">
-        <div class="hero-content">
-          <p class="hero-greeting">Welcome to</p>
-          <h1>My <em>Absolute</em> Field</h1>
-          <p class="hero-tagline">Where passions grow & progress unfolds</p>
-          <p class="hero-description">A personal space documenting my journey through music, books, fitness, and the art of capturing moments.</p>
-          <div class="hobby-pills">
-            <span class="hobby-pill" onclick="showPage('piano')">🎹 Piano</span>
-            <span class="hobby-pill" onclick="showPage('reading')">📚 Reading</span>
-            <span class="hobby-pill" onclick="showPage('fitness')">💪 Fitness</span>
-            <span class="hobby-pill" onclick="showPage('photography')">📷 Photography</span>
-            <span class="hobby-pill" onclick="showPage('journal')">✍️ Journal</span>
-          </div>
-        </div>
-      </div>
+<div class="main">
+  <div class="tb">
+    <div class="tbl">
+      <div class="tbt" id="tb-title">Dashboard</div>
+      <div class="tbd" id="tb-date"></div>
     </div>
-
-    <!-- PIANO PAGE -->
-    <div class="page" id="page-piano">
-      <div class="container">
-        <header class="page-header">
-          <p class="page-label">Worship Keys Journey</p>
-          <h1 class="page-title">Piano Training</h1>
-          <p style="color: var(--color-text-muted); margin-top: 12px;">30–45 minutes daily · Goal: Playing at church</p>
-        </header>
-
-        <!-- Phase 1: Foundation (Weeks 1-4) -->
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Phase 1: Foundation <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Weeks 1–4</span></h2>
-        
-        <div class="cards-grid" style="margin-bottom: 48px;">
-          <div class="card">
-            <h3>Week 1 — Foundation</h3>
-            <p class="card-subtitle">Getting comfortable in common worship keys and basic chord shapes</p>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Keys to Learn: G and C</p>
-            <ul>
-              <li>G Major: G, C, D, Em (I, IV, V, vi)</li>
-              <li>C Major: C, F, G, Am (I, IV, V, vi)</li>
-              <li>Practice transitions at 70 bpm, 4 beats per chord</li>
-            </ul>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Songs to Learn</p>
-            <ul>
-              <li>"Good Good Father" (G)</li>
-              <li>"Way Maker" (C)</li>
-            </ul>
-            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
-              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min chord transitions · 20 min songs</p>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Week 2 — Smoother Movement</h3>
-            <p class="card-subtitle">Inversions and voice leading for seamless transitions</p>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">New Concepts</p>
-            <ul>
-              <li>First and second inversions of I, IV, V, vi</li>
-              <li>Voice leading — move each note shortest distance</li>
-              <li>Keep hand in one area of keyboard</li>
-            </ul>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Add New Key: D Major</p>
-            <ul>
-              <li>D, G, A, Bm</li>
-            </ul>
-            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
-              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min inversions · 10 min transitions · 20 min songs</p>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Week 3 — Adding Color</h3>
-            <p class="card-subtitle">Extensions and accompaniment patterns for that worship sound</p>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">New Chord Types</p>
-            <ul>
-              <li>Sus4 — Gsus4, Dsus4 (add tension)</li>
-              <li>Sus2 — Asus2, Dsus2 (dreamy feel)</li>
-              <li>Add9 — Cadd9, Gadd9 (fullness)</li>
-            </ul>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Rhythm Patterns</p>
-            <ul>
-              <li>Whole-note pads for verses/bridges</li>
-              <li>Eighth-note patterns for choruses</li>
-            </ul>
-            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
-              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min voicings · 10 min rhythm · 20 min play-along</p>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Week 4 — Integration</h3>
-            <p class="card-subtitle">Dynamics, transitions, and playing like you're in a band</p>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin-bottom: 8px;">Skills to Develop</p>
-            <ul>
-              <li>Dynamic control — soft verses, big choruses</li>
-              <li>Smooth transitions between sections</li>
-              <li>Clean starts and endings</li>
-              <li>Playing through full song sets</li>
-            </ul>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Add New Key: A Major</p>
-            <ul>
-              <li>A, D, E, F#m</li>
-            </ul>
-            <div style="background: var(--color-bg-alt); padding: 12px; border-radius: 8px; margin-top: 16px;">
-              <p style="font-size: 0.8rem; font-weight: 600; color: var(--color-green-dark); margin-bottom: 6px;">Daily Practice</p>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">10 min technique · 30 min full run-throughs</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Phase 2: Growth -->
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Phase 2: Growth <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Weeks 5–8</span></h2>
-
-        <div class="cards-grid" style="margin-bottom: 48px;">
-          <div class="card">
-            <h3>Week 5–6 — Expand Keys</h3>
-            <p class="card-subtitle">Becoming comfortable in more keys</p>
-            <ul>
-              <li>Add E Major: E, A, B, C#m</li>
-              <li>Add B Major: B, E, F#, G#m</li>
-              <li>Practice transposing familiar songs</li>
-              <li>Learn Nashville Number System basics</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Week 7–8 — Musicality</h3>
-            <p class="card-subtitle">Making music, not just playing notes</p>
-            <ul>
-              <li>Intro/outro patterns for songs</li>
-              <li>Fills between chord changes</li>
-              <li>Reading the room — when to play less</li>
-              <li>Following a worship leader's cues</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Ongoing Practice -->
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Ongoing Growth <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-muted);">Lifetime habits</span></h2>
-
-        <div class="cards-grid" style="margin-bottom: 48px;">
-          <div class="card">
-            <h3>Weekly Habits</h3>
-            <p class="card-subtitle">Consistency over intensity</p>
-            <ul>
-              <li>Learn 1 new song per week</li>
-              <li>Practice scales in one new key</li>
-              <li>Play along with worship recordings</li>
-              <li>Record yourself and listen back</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Monthly Challenges</h3>
-            <p class="card-subtitle">Push your boundaries</p>
-            <ul>
-              <li>Master one complex song</li>
-              <li>Learn a song by ear (no charts)</li>
-              <li>Practice with a metronome at new tempos</li>
-              <li>Try improvising over a progression</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Ear Training</h3>
-            <p class="card-subtitle">Develop your musical ear</p>
-            <ul>
-              <li>Identify chord progressions by sound</li>
-              <li>Pick out melodies from recordings</li>
-              <li>Recognize common worship patterns</li>
-              <li>Sing while you play (builds connection)</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Music Theory</h3>
-            <p class="card-subtitle">Understand the "why"</p>
-            <ul>
-              <li>Learn why I-IV-V-I works</li>
-              <li>Understand relative minor keys</li>
-              <li>Study chord substitutions</li>
-              <li>Explore modes (start with Mixolydian)</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Quick Reference -->
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--color-green-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--color-green-pale);">Quick Reference</h2>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px;">
-          <div class="card">
-            <h3>Chords by Key</h3>
-            <table style="width: 100%; font-size: 0.9rem; border-collapse: collapse; margin-top: 12px;">
-              <thead><tr style="border-bottom: 2px solid var(--color-border);"><th style="text-align: left; padding: 8px 4px; color: var(--color-green-dark);">Key</th><th style="padding: 8px 4px;">I</th><th style="padding: 8px 4px;">IV</th><th style="padding: 8px 4px;">V</th><th style="padding: 8px 4px;">vi</th></tr></thead>
-              <tbody style="color: var(--color-text-muted);">
-                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">G</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">C</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">Em</td></tr>
-                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">C</td><td style="padding: 8px 4px; text-align: center;">C</td><td style="padding: 8px 4px; text-align: center;">F</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">Am</td></tr>
-                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">D</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">G</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">Bm</td></tr>
-                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">A</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">D</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">F#m</td></tr>
-                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">E</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">A</td><td style="padding: 8px 4px; text-align: center;">B</td><td style="padding: 8px 4px; text-align: center;">C#m</td></tr>
-                <tr><td style="padding: 8px 4px; font-weight: 600; color: var(--color-green);">B</td><td style="padding: 8px 4px; text-align: center;">B</td><td style="padding: 8px 4px; text-align: center;">E</td><td style="padding: 8px 4px; text-align: center;">F#</td><td style="padding: 8px 4px; text-align: center;">G#m</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="card">
-            <h3>Songs for Practice</h3>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 8px 0;">Beginner-Friendly</p>
-            <ul>
-              <li>Good Good Father (G)</li>
-              <li>Way Maker (C)</li>
-              <li>10,000 Reasons (G)</li>
-              <li>What A Beautiful Name (D)</li>
-              <li>Goodness of God (A)</li>
-            </ul>
-            <p style="font-size: 0.85rem; color: var(--color-brown); font-weight: 600; margin: 12px 0 8px;">Next Level</p>
-            <ul>
-              <li>Build My Life (G)</li>
-              <li>King of Kings (D)</li>
-              <li>The Blessing (A)</li>
-              <li>Great Are You Lord (G)</li>
-              <li>O Come to the Altar (A)</li>
-            </ul>
-          </div>
-        </div>
-
-        <p style="text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--color-brown); padding: 32px 0;">"Keep showing up. Consistency beats intensity."</p>
-      </div>
-    </div>
-
-    <!-- READING PAGE -->
-    <div class="page" id="page-reading">
-      <div class="container">
-        <header class="page-header">
-          <p class="page-label">Currently Exploring</p>
-          <h1 class="page-title">Reading List</h1>
-        </header>
-        <div id="reading-content">Loading...</div>
-      </div>
-    </div>
-
-    <!-- FITNESS PAGE -->
-    <div class="page" id="page-fitness">
-      <div class="container">
-        <header class="page-header">
-          <p class="page-label">Strength & Consistency</p>
-          <h1 class="page-title">Fitness Journey</h1>
-        </header>
-        <div id="fitness-content">Loading...</div>
-      </div>
-    </div>
-
-    <!-- PHOTOGRAPHY PAGE -->
-    <div class="page" id="page-photography">
-      <div class="container">
-        <header class="page-header">
-          <p class="page-label">Through My Lens</p>
-          <h1 class="page-title">Photography</h1>
-        </header>
-        <div class="photo-gallery" id="photo-gallery">Loading...</div>
-      </div>
-    </div>
-
-    <!-- JOURNAL PAGE -->
-    <div class="page" id="page-journal">
-      <div class="container">
-        <header class="page-header">
-          <p class="page-label">Thoughts & Reflections</p>
-          <h1 class="page-title">Journal</h1>
-        </header>
-        <div class="journal-grid" id="journal-grid">Loading...</div>
-      </div>
-    </div>
-  </main>
-
-  <!-- Book List Modal -->
-  <div class="modal-overlay" id="bookModal" onclick="closeModal('bookModal', event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h2 class="modal-title" id="bookModalTitle">Books</h2>
-        <button class="modal-close" onclick="closeModal('bookModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="modal-book-list" id="bookModalList"></div>
-      </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-sm" onclick="openCapture()">+ capture</button>
     </div>
   </div>
 
-  <!-- Content Modal (Journal/Photo) -->
-  <div class="modal-overlay" id="contentModal" onclick="closeModal('contentModal', event)">
-    <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h2 class="modal-title" id="contentModalTitle">Title</h2>
-        <button class="modal-close" onclick="closeModal('contentModal')">×</button>
-      </div>
-      <div class="modal-body" id="contentModalBody"></div>
-    </div>
-  </div>
-
-  <script>
-    // Data storage
-    let readingData = null;
-    let booksData = null;
-    let fitnessData = null;
-    let journalData = [];
-    let photoData = [];
-
-    // Load all data on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      loadReadingData();
-      loadBooksData();
-      loadFitnessData();
-      loadJournalData();
-      loadPhotoData();
-    });
-
-    // Fetch functions
-    async function loadReadingData() {
-      try {
-        const res = await fetch('data/reading.json');
-        readingData = await res.json();
-        renderReading();
-      } catch (e) {
-        console.error('Failed to load reading data:', e);
-        document.getElementById('reading-content').innerHTML = '<p>Failed to load reading data.</p>';
-      }
-    }
-
-    async function loadBooksData() {
-      try {
-        const res = await fetch('data/books.json');
-        booksData = await res.json();
-        renderReading(); // Re-render with books
-      } catch (e) {
-        console.error('Failed to load books data:', e);
-      }
-    }
-
-    async function loadFitnessData() {
-      try {
-        const res = await fetch('data/fitness.json');
-        fitnessData = await res.json();
-        renderFitness();
-      } catch (e) {
-        console.error('Failed to load fitness data:', e);
-        document.getElementById('fitness-content').innerHTML = '<p>Failed to load fitness data.</p>';
-      }
-    }
-
-    async function loadJournalData() {
-      try {
-        const res = await fetch('data/journal.json');
-        journalData = await res.json();
-        renderJournal();
-      } catch (e) {
-        console.error('Failed to load journal data:', e);
-        document.getElementById('journal-grid').innerHTML = '<p>No journal entries yet.</p>';
-      }
-    }
-
-    async function loadPhotoData() {
-      try {
-        const res = await fetch('data/photography.json');
-        photoData = await res.json();
-        renderPhotos();
-      } catch (e) {
-        console.error('Failed to load photo data:', e);
-        document.getElementById('photo-gallery').innerHTML = '<p>No photos yet.</p>';
-      }
-    }
-
-    // Render Reading Section
-    function renderReading() {
-      if (!readingData) return;
-      
-      const progress = Math.round((readingData.books_read_2026 / readingData.goal_2026) * 100);
-      const remaining = readingData.goal_2026 - readingData.books_read_2026;
-      
-      let html = `
-        <div class="reading-goal">
-          <p class="goal-label">2026 Reading Goal</p>
-          <p class="goal-number"><span>${readingData.books_read_2026}</span> / ${readingData.goal_2026} books</p>
-          <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
-          <p class="goal-subtitle">${progress}% complete · ${remaining} books to go</p>
-        </div>
-        
-        <div class="stats-row">
-          <div class="stat-card"><p class="stat-number">${readingData.total_read}</p><p class="stat-label">Books Read</p></div>
-          <div class="stat-card"><p class="stat-number">${readingData.currently_reading_count}</p><p class="stat-label">Currently Reading</p></div>
-          <div class="stat-card"><p class="stat-number">${readingData.tbr_count}</p><p class="stat-label">To Be Read</p></div>
-        </div>
-        
-        <h3 class="section-title">Currently Reading</h3>
-        <div class="book-list" style="margin-bottom: 32px;">
-          ${readingData.currently_reading.map(b => `
-            <div class="book-card"><p class="book-title">${b.title}</p><p class="book-author">${b.author}</p></div>
-          `).join('')}
-        </div>
-      `;
-
-      // Add carousel if books data loaded
-      if (booksData) {
-        const categories = Object.keys(booksData).filter(k => booksData[k].books && booksData[k].books.length > 0);
-        
-        html += `
-          <div class="carousel-header">
-            <h3 class="section-title" style="margin-bottom: 0;">Books by Rating</h3>
-            <div class="carousel-nav">
-              <button class="carousel-btn" onclick="changeSlide(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-              <span class="carousel-indicator" id="carouselIndicator">1 / ${categories.length}</span>
-              <button class="carousel-btn" onclick="changeSlide(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-            </div>
-          </div>
-          <div id="ratingCarousel">
-            ${categories.map((cat, i) => `
-              <div class="carousel-slide ${i === 0 ? 'active' : ''}">
-                <div class="slide-header" onclick="openBookModal('${cat}')">
-                  <span class="rating-stars">${booksData[cat].stars}</span>
-                  <span class="rating-label">${booksData[cat].label}</span>
-                  <span class="rating-count">${booksData[cat].books.length} books</span>
-                  <span class="view-all-hint">Click to view all →</span>
-                </div>
-                <div class="book-list">
-                  ${booksData[cat].books.slice(0, 5).map(b => `
-                    <div class="book-card"><p class="book-title">${b.title}</p><p class="book-author">${b.author}</p></div>
-                  `).join('')}
-                </div>
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="pc">
+      <div class="thb"><div class="thl">this week</div><div class="thv" id="theme-text">loading...</div><div class="the" onclick="editTheme()">edit</div></div>
+      <div class="g gm" style="margin-bottom:14px">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="w">
+            <div class="wh"><div class="wt"><div class="wd2" style="background:var(--gn)"></div>today</div><div class="wa" onclick="openDailyLog()">edit log</div></div>
+            <div class="wb">
+              <div class="tc">
+                <div class="tday" id="td-day"></div><div class="tdt" id="td-dt"></div>
+                <div class="mr"><div class="ml">mood</div><div class="mps" id="mood-pills"><div class="mp" onclick="setMood('low')">low</div><div class="mp" onclick="setMood('okay')">okay</div><div class="mp" onclick="setMood('good')">good</div><div class="mp" onclick="setMood('great')">great</div><div class="mp" onclick="setMood('peak')">peak</div></div></div>
+                <div class="mr"><div class="ml">energy</div><div class="mps" id="en-pills"><div class="mp" onclick="setEnergy('low')">low</div><div class="mp" onclick="setEnergy('medium')">medium</div><div class="mp" onclick="setEnergy('high')">high</div></div></div>
+                <div class="tn" id="grat-block" style="display:none"><span class="tnl">grateful for</span><span id="grat-txt"></span></div>
               </div>
-            `).join('')}
-          </div>
-          <div class="carousel-dots">
-            ${categories.map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></span>`).join('')}
-          </div>
-        `;
-        
-        // Update totalSlides
-        window.totalSlides = categories.length;
-      }
-      
-      html += `<p class="footer-note">Data from <a href="https://app.thestorygraph.com" target="_blank">Storygraph</a> · Last updated ${readingData.last_updated}</p>`;
-      
-      document.getElementById('reading-content').innerHTML = html;
-    }
-
-    // Render Fitness Section
-    function renderFitness() {
-      if (!fitnessData) return;
-      
-      const html = `
-        <div class="fitness-philosophy">
-          <p>${fitnessData.philosophy}</p>
-        </div>
-        
-        <div class="fitness-grid">
-          <div class="fitness-card">
-            <h3>${fitnessData.monday.title}</h3>
-            <p class="card-subtitle">${fitnessData.monday.subtitle} · ${fitnessData.monday.duration}</p>
-            <h4>Upper Body</h4>
-            <ul>${fitnessData.monday.upper.map(e => `<li>${e}</li>`).join('')}</ul>
-            <h4>Lower Body</h4>
-            <ul>${fitnessData.monday.lower.map(e => `<li>${e}</li>`).join('')}</ul>
-          </div>
-          
-          <div class="fitness-card">
-            <h3>${fitnessData.tuesday.title}</h3>
-            <p class="card-subtitle">${fitnessData.tuesday.subtitle} · ${fitnessData.tuesday.duration}</p>
-            <h4>Cardio Options</h4>
-            <ul>${fitnessData.tuesday.cardio.map(e => `<li>${e}</li>`).join('')}</ul>
-            <h4>Core Circuit</h4>
-            <ul>${fitnessData.tuesday.core.map(e => `<li>${e}</li>`).join('')}</ul>
-          </div>
-          
-          <div class="fitness-card">
-            <h3>${fitnessData.wednesday.title}</h3>
-            <p class="card-subtitle">${fitnessData.wednesday.subtitle} · ${fitnessData.wednesday.duration}</p>
-            <h4>Upper Body</h4>
-            <ul>${fitnessData.wednesday.upper.map(e => `<li>${e}</li>`).join('')}</ul>
-            <h4>Lower Body</h4>
-            <ul>${fitnessData.wednesday.lower.map(e => `<li>${e}</li>`).join('')}</ul>
-          </div>
-          
-          <div class="fitness-card">
-            <h3>${fitnessData.thursday.title}</h3>
-            <p class="card-subtitle">${fitnessData.thursday.subtitle} · ${fitnessData.thursday.duration}</p>
-            <h4>Cardio Options</h4>
-            <ul>${fitnessData.thursday.cardio.map(e => `<li>${e}</li>`).join('')}</ul>
-            <h4>Core Circuit</h4>
-            <ul>${fitnessData.thursday.core.map(e => `<li>${e}</li>`).join('')}</ul>
-          </div>
-          
-          <div class="fitness-card">
-            <h3>${fitnessData.friday.title}</h3>
-            <p class="card-subtitle">${fitnessData.friday.subtitle} · ${fitnessData.friday.duration}</p>
-            <h4>Compound Movements</h4>
-            <ul>${fitnessData.friday.compound.map(e => `<li>${e}</li>`).join('')}</ul>
-            <h4>Accessory Work</h4>
-            <ul>${fitnessData.friday.accessory.map(e => `<li>${e}</li>`).join('')}</ul>
-          </div>
-          
-          <div class="fitness-card">
-            <h3>${fitnessData.weekend.title}</h3>
-            <p class="card-subtitle">${fitnessData.weekend.subtitle}</p>
-            <h4>Activities</h4>
-            <ul>${fitnessData.weekend.activities.map(e => `<li>${e}</li>`).join('')}</ul>
-            <p class="fitness-note">${fitnessData.weekend.note}</p>
+              <div id="p-list" class="pl"><div class="loading"><div class="spin"></div>loading...</div></div>
+            </div>
           </div>
         </div>
-        
-        <p class="footer-note" style="margin-top: 40px; font-style: italic;">"${fitnessData.closing_quote}"</p>
-      `;
-      
-      document.getElementById('fitness-content').innerHTML = html;
-    }
-
-    // Render Journal
-    function renderJournal() {
-      if (!journalData || journalData.length === 0) {
-        document.getElementById('journal-grid').innerHTML = '<p>No journal entries yet.</p>';
-        return;
-      }
-      
-      const html = journalData.map((entry, idx) => `
-        <article class="journal-entry" onclick="openJournalModal(${idx})">
-          <div class="journal-image">
-            ${entry.image ? `<img src="${entry.image}" alt="${entry.title}">` : 
-              `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>`}
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="w">
+            <div class="wh"><div class="wt"><div class="wd2" style="background:var(--wk)"></div>tasks &middot; today</div><div class="wa" onclick="showPage('tasks',null)">all tasks</div></div>
+            <div class="wb"><div id="t-list" class="tl"><div class="loading"><div class="spin"></div></div></div></div>
           </div>
-          <div class="journal-content">
-            <p class="journal-date">${formatDate(entry.date)}</p>
-            <h3 class="journal-title">${entry.title}</h3>
-            <p class="journal-excerpt">${entry.excerpt}</p>
-            <div class="journal-tags">${entry.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-          </div>
-        </article>
-      `).join('');
-      
-      document.getElementById('journal-grid').innerHTML = html;
-    }
-
-    // Render Photos
-    function renderPhotos() {
-      if (!photoData || photoData.length === 0) {
-        document.getElementById('photo-gallery').innerHTML = `
-          <div class="photo-item">🌿</div>
-          <div class="photo-item">☕</div>
-          <div class="photo-item">📷</div>
-          <div class="photo-item">🏔️</div>
-        `;
-        return;
-      }
-      
-      const emojis = ['🌿', '☕', '📷', '🏔️', '🌅', '🎹', '📚'];
-      
-      const html = photoData.map((photo, idx) => `
-        <div class="photo-item" onclick="openPhotoModal(${idx})">
-          ${photo.image ? `<img src="${photo.image}" alt="${photo.title}">` : emojis[idx % emojis.length]}
-          <div class="photo-overlay">
-            <p class="photo-title">${photo.title}</p>
-            <p class="photo-caption">${photo.caption}</p>
+          <div class="w">
+            <div class="wh"><div class="wt"><div class="wd2" style="background:var(--he)"></div>habits &middot; this week</div></div>
+            <div class="wb">
+              <div class="hh"><div class="hdl">M</div><div class="hdl">T</div><div class="hdl">W</div><div class="hdl">T</div><div class="hdl">F</div><div class="hdl">S</div><div class="hdl">S</div></div>
+              <div id="h-rows" class="hrs"><div class="loading"><div class="spin"></div></div></div>
+            </div>
           </div>
         </div>
-      `).join('');
-      
-      document.getElementById('photo-gallery').innerHTML = html;
-    }
+      </div>
+      <div class="g g3" style="margin-bottom:14px">
+        <div class="w"><div class="wh"><div class="wt"><div class="wd2" style="background:var(--rd)"></div>reading &middot; now</div><div class="wa" onclick="showPage('reading',null)">all books</div></div><div class="wb" id="db-read"><div class="loading"><div class="spin"></div></div></div></div>
+        <div class="w"><div class="wh"><div class="wt"><div class="wd2" style="background:var(--pi)"></div>piano &middot; active</div><div class="wa" onclick="showPage('piano',null)">all songs</div></div><div class="wb" id="db-piano"><div class="loading"><div class="spin"></div></div></div></div>
+        <div class="w"><div class="wh"><div class="wt"><div class="wd2" style="background:var(--wk)"></div>weekly review</div><div class="wa" onclick="showPage('weekly',null)">open</div></div><div class="wb" id="db-weekly"><div class="loading"><div class="spin"></div></div></div></div>
+      </div>
+      <div class="g g2">
+        <div class="w"><div class="wh"><div class="wt"><div class="wd2" style="background:var(--fa)"></div>faith &middot; recent</div><div class="wa" onclick="openAddFaith()">+ log</div></div><div class="wb" id="db-faith"><div class="loading"><div class="spin"></div></div></div></div>
+        <div class="w"><div class="wh"><div class="wt"><div class="wd2" style="background:var(--fm)"></div>family &middot; recent</div><div class="wa" onclick="openAddFamily()">+ log</div></div><div class="wb" id="db-family"><div class="loading"><div class="spin"></div></div></div></div>
+      </div>
+    </div>
+  </div>
 
-    // Helper: Format date
-    function formatDate(dateStr) {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    }
+  <!-- JOURNAL -->
+  <div class="page" id="page-journal">
+    <div class="pc"><div id="journal-list" class="jl"><div class="loading"><div class="spin"></div>loading journal...</div></div></div>
+  </div>
 
-    // Page navigation
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-      document.getElementById('page-' + pageId).classList.add('active');
-      document.querySelector('[data-page="' + pageId + '"]').classList.add('active');
-    }
+  <!-- TASKS -->
+  <div class="page" id="page-tasks">
+    <div class="pc">
+      <div class="filter-tabs">
+        <div class="ftab active" onclick="filterTasks('today',this)">Today</div>
+        <div class="ftab" onclick="filterTasks('week',this)">This week</div>
+        <div class="ftab" onclick="filterTasks('all',this)">All active</div>
+        <div class="ftab" onclick="filterTasks('overdue',this)">Overdue</div>
+        <div class="ftab" onclick="filterTasks('someday',this)">Someday</div>
+      </div>
+      <div id="task-full-list" class="task-full-list"><div class="loading"><div class="spin"></div>loading tasks...</div></div>
+    </div>
+  </div>
 
-    // Carousel
-    let currentSlide = 0;
-    let totalSlides = 7;
-    
-    function changeSlide(dir) {
-      currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
-      updateCarousel();
-    }
-    
-    function goToSlide(idx) {
-      currentSlide = idx;
-      updateCarousel();
-    }
-    
-    function updateCarousel() {
-      document.querySelectorAll('.carousel-slide').forEach((s, i) => s.classList.toggle('active', i === currentSlide));
-      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
-      const indicator = document.getElementById('carouselIndicator');
-      if (indicator) indicator.textContent = (currentSlide + 1) + ' / ' + totalSlides;
-    }
+  <!-- WEEKLY REVIEW -->
+  <div class="page" id="page-weekly">
+    <div class="pc">
+      <div class="wr-nav">
+        <button class="wr-nav-btn" onclick="changeWeek(-1)">&#8592; prev week</button>
+        <div class="wr-week-label" id="wr-week-lbl">loading...</div>
+        <button class="wr-nav-btn" onclick="changeWeek(1)">next week &#8594;</button>
+      </div>
+      <div id="wr-theme" class="wr-theme" style="display:none">
+        <div class="wr-theme-lbl">focus theme</div>
+        <div class="wr-theme-val" id="wr-theme-val"></div>
+      </div>
+      <div class="wr-cards" id="wr-cards"><div class="loading"><div class="spin"></div>loading...</div></div>
+      <div class="w" style="margin-top:14px">
+        <div class="wh"><div class="wt"><div class="wd2" style="background:var(--he)"></div>habit summary</div></div>
+        <div class="wb"><div id="wr-habits" class="wr-habits"><div class="loading"><div class="spin"></div></div></div></div>
+      </div>
+    </div>
+  </div>
 
-    // Modal functions
-    function openBookModal(category) {
-      if (!booksData || !booksData[category]) return;
-      const data = booksData[category];
-      document.getElementById('bookModalTitle').textContent = data.title;
-      document.getElementById('bookModalList').innerHTML = data.books.map(b => 
-        `<div class="modal-book"><p class="modal-book-title">${b.title}</p><p class="modal-book-author">${b.author}</p></div>`
-      ).join('');
-      document.getElementById('bookModal').classList.add('active');
-    }
+  <!-- READING -->
+  <div class="page" id="page-reading">
+    <div class="pc">
+      <div id="rf" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"></div>
+      <div id="rg" class="bg" style="margin-bottom:24px"><div class="loading"><div class="spin"></div>loading books...</div></div>
+      <div class="sectl">Reading sessions <button class="btn btn-sm" onclick="openAddReadSession()">+ log session</button></div>
+      <div id="read-sessions"><div class="loading"><div class="spin"></div></div></div>
+    </div>
+  </div>
 
-    function openJournalModal(idx) {
-      if (!journalData || !journalData[idx]) return;
-      const entry = journalData[idx];
-      document.getElementById('contentModalTitle').textContent = entry.title;
-      
-      let html = `<p class="modal-meta">${formatDate(entry.date)} · ${entry.tags.map(t => `<span class="tag">${t}</span>`).join(' ')}</p>`;
-      if (entry.image) html += `<img class="modal-image" src="${entry.image}" alt="${entry.title}">`;
-      html += `<div class="modal-content">${typeof marked !== 'undefined' ? marked.parse(entry.body) : entry.body.replace(/\n/g, '<br>')}</div>`;
-      
-      document.getElementById('contentModalBody').innerHTML = html;
-      document.getElementById('contentModal').classList.add('active');
-    }
+  <!-- PIANO -->
+  <div class="page" id="page-piano">
+    <div class="pc">
+      <div class="sectl">Active songs</div>
+      <div id="piano-songs" class="sg"></div>
+      <div class="sectl" style="margin-top:8px">Recent sessions <button class="btn btn-sm" onclick="openAddSession()">+ log session</button></div>
+      <div id="piano-sess"><div class="loading"><div class="spin"></div></div></div>
+    </div>
+  </div>
 
-    function openPhotoModal(idx) {
-      if (!photoData || !photoData[idx]) return;
-      const photo = photoData[idx];
-      document.getElementById('contentModalTitle').textContent = photo.title;
-      
-      let html = `<p class="modal-meta">${formatDate(photo.date)} · ${photo.category}</p>`;
-      if (photo.image) html += `<img class="modal-image" src="${photo.image}" alt="${photo.title}">`;
-      html += `<p>${photo.caption}</p>`;
-      
-      document.getElementById('contentModalBody').innerHTML = html;
-      document.getElementById('contentModal').classList.add('active');
-    }
+  <!-- HEALTH -->
+  <div class="page" id="page-health">
+    <div class="pc">
+      <div class="g g2" style="margin-bottom:14px">
+        <div class="w"><div class="wh"><div class="wt"><div class="wd2" style="background:var(--he)"></div>latest entry</div><div class="wa" onclick="openAddHealth()">+ log</div></div><div class="wb" id="health-latest"><div class="loading"><div class="spin"></div></div></div></div>
+        <div class="w"><div class="wh"><div class="wt"><div class="wd2" style="background:var(--he)"></div>this week avg</div></div><div class="wb" id="health-avg"><div class="loading"><div class="spin"></div></div></div></div>
+      </div>
+      <div class="sectl">Recent entries</div>
+      <div id="health-list"><div class="loading"><div class="spin"></div></div></div>
+    </div>
+  </div>
 
-    function closeModal(modalId, e) {
-      if (!e || e.target.classList.contains('modal-overlay')) {
-        document.getElementById(modalId).classList.remove('active');
-      }
-    }
+  <!-- FINANCE -->
+  <div class="page" id="page-finance">
+    <div class="pc">
+      <div class="w" style="margin-bottom:14px">
+        <div class="wh"><div class="wt"><div class="wd2" style="background:var(--fn)"></div>summary &middot; <span id="fin-month-lbl"></span></div><div class="wa" onclick="openAddFinance()">+ entry</div></div>
+        <div class="wb" id="fin-summary"><div class="loading"><div class="spin"></div></div></div>
+      </div>
+      <div class="sectl">All entries</div>
+      <div id="fin-all"><div class="loading"><div class="spin"></div></div></div>
+    </div>
+  </div>
 
-    // ESC key closes modals
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-      }
-    });
+  <!-- FAITH & FAMILY -->
+  <div class="page" id="page-faith">
+    <div class="pc">
+      <div class="g g2">
+        <div>
+          <div class="sectl">Faith log <button class="btn btn-sm" onclick="openAddFaith()" style="font-size:.62rem;padding:4px 10px">+ log</button></div>
+          <div id="faith-list"><div class="loading"><div class="spin"></div></div></div>
+        </div>
+        <div>
+          <div class="sectl">Family log <button class="btn btn-sm" onclick="openAddFamily()" style="font-size:.62rem;padding:4px 10px">+ log</button></div>
+          <div id="family-list"><div class="loading"><div class="spin"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-    // Netlify Identity
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
-      });
-    }
-  </script>
+<!-- MODALS -->
+<div class="mo" id="m-capture" onclick="closeModal('m-capture',event)"><div class="modal"><div class="mtt">Capture a task</div><div class="mf"><label class="mlab">Task</label><input class="mi" id="cap-task" placeholder="What needs to happen?"></div><div class="mgr"><div class="mf"><label class="mlab">Category</label><select class="msel" id="cap-cat"><option>Property mgmt</option><option>ESL</option><option>Reading</option><option>Piano</option><option>Personal</option><option>Finance</option><option>Health</option></select></div><div class="mf"><label class="mlab">Urgency</label><select class="msel" id="cap-urg"><option>Routine</option><option>Important</option><option>Urgent</option></select></div></div><div class="mf"><label class="mlab">Notes</label><input class="mi" id="cap-notes" placeholder="Optional"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-capture')">cancel</button><button class="mbs" onclick="saveTask()">save</button></div></div></div>
+<div class="mo" id="m-daily" onclick="closeModal('m-daily',event)"><div class="modal"><div class="mtt">Morning anchor</div><div class="mgr"><div class="mf"><label class="mlab">Priority 1</label><input class="mi" id="dl-p1" placeholder="Top priority"></div><div class="mf"><label class="mlab">Priority 2</label><input class="mi" id="dl-p2" placeholder="Second"></div></div><div class="mf"><label class="mlab">Priority 3</label><input class="mi" id="dl-p3" placeholder="Third"></div><div class="mf"><label class="mlab">Grateful for</label><input class="mi" id="dl-grat" placeholder="One thing"></div><div class="mgr"><div class="mf"><label class="mlab">Faith note</label><input class="mi" id="dl-faith" placeholder="Verse or prayer"></div><div class="mf"><label class="mlab">Highlight</label><input class="mi" id="dl-hl" placeholder="Best moment"></div></div><div class="mf"><label class="mlab">Journal (freewrite)</label><textarea class="mta" id="dl-body" placeholder="Write freely — appears in your journal..."></textarea></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-daily')">cancel</button><button class="mbs" onclick="saveDailyLog()">save</button></div></div></div>
+<div class="mo" id="m-piano" onclick="closeModal('m-piano',event)"><div class="modal"><div class="mtt">Log piano session</div><div class="mf"><label class="mlab">Song</label><input class="mi" id="ps-song" placeholder="Song title"></div><div class="mgr"><div class="mf"><label class="mlab">Duration (min)</label><input class="mi" id="ps-dur" type="number" placeholder="20"></div><div class="mf"><label class="mlab">Focus</label><input class="mi" id="ps-focus" placeholder="e.g. chords"></div></div><div class="mf"><label class="mlab">Progress notes</label><input class="mi" id="ps-notes" placeholder="How did it go?"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-piano')">cancel</button><button class="mbs" onclick="savePianoSession()">save</button></div></div></div>
+<div class="mo" id="m-readsess" onclick="closeModal('m-readsess',event)"><div class="modal"><div class="mtt">Log reading session</div><div class="mf"><label class="mlab">Book title</label><input class="mi" id="rs-book" placeholder="Title"></div><div class="mgr"><div class="mf"><label class="mlab">Pages start</label><input class="mi" id="rs-start" type="number" placeholder="1"></div><div class="mf"><label class="mlab">Pages end</label><input class="mi" id="rs-end" type="number" placeholder="30"></div></div><div class="mf"><label class="mlab">Notes</label><input class="mi" id="rs-notes" placeholder="How was it?"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-readsess')">cancel</button><button class="mbs" onclick="saveReadSession()">save</button></div></div></div>
+<div class="mo" id="m-finance" onclick="closeModal('m-finance',event)"><div class="modal"><div class="mtt">Log finance entry</div><div class="mgr"><div class="mf"><label class="mlab">Type</label><select class="msel" id="fn-type"><option>Income</option><option>Expense</option><option>Savings</option></select></div><div class="mf"><label class="mlab">Category</label><select class="msel" id="fn-cat"><option>Property management</option><option>Salary / other</option><option>Bills &amp; utilities</option><option>Groceries &amp; food</option><option>Transport</option><option>Personal / misc</option><option>Savings</option></select></div></div><div class="mf"><label class="mlab">Amount (PHP)</label><input class="mi" id="fn-amt" type="number" placeholder="0"></div><div class="mf"><label class="mlab">Description</label><input class="mi" id="fn-desc" placeholder="What was it for?"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-finance')">cancel</button><button class="mbs" onclick="saveFinance()">save</button></div></div></div>
+<div class="mo" id="m-faith" onclick="closeModal('m-faith',event)"><div class="modal"><div class="mtt">Faith log</div><div class="mf"><label class="mlab">Verse / passage</label><input class="mi" id="fh-verse" placeholder="e.g. Psalm 46:10"></div><div class="mf"><label class="mlab">Prayer intention</label><input class="mi" id="fh-prayer" placeholder="What you prayed for"></div><div class="mf"><label class="mlab">Reflection</label><textarea class="mta" id="fh-refl" placeholder="One thought from your quiet time"></textarea></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-faith')">cancel</button><button class="mbs" onclick="saveFaith()">save</button></div></div></div>
+<div class="mo" id="m-family" onclick="closeModal('m-family',event)"><div class="modal"><div class="mtt">Family log</div><div class="mf"><label class="mlab">Who</label><input class="mi" id="fm-who" placeholder="Family member(s)"></div><div class="mf"><label class="mlab">What happened</label><textarea class="mta" id="fm-what" placeholder="What did you do or talk about?"></textarea></div><div class="mf"><label class="mlab">Memory worth keeping</label><input class="mi" id="fm-mem" placeholder="Optional"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-family')">cancel</button><button class="mbs" onclick="saveFamily()">save</button></div></div></div>
+<div class="mo" id="m-health" onclick="closeModal('m-health',event)"><div class="modal"><div class="mtt">Health log</div><div class="mgr"><div class="mf"><label class="mlab">Exercise type</label><input class="mi" id="hl-type" placeholder="Walk, yoga..."></div><div class="mf"><label class="mlab">Duration (min)</label><input class="mi" id="hl-dur" type="number" placeholder="30"></div></div><div class="mgr"><div class="mf"><label class="mlab">Water (glasses)</label><input class="mi" id="hl-water" type="number" placeholder="8"></div><div class="mf"><label class="mlab">Sleep (hrs)</label><input class="mi" id="hl-sleep" type="number" placeholder="7"></div></div><div class="mf"><label class="mlab">Energy level</label><select class="msel" id="hl-energy"><option>low</option><option>medium</option><option>high</option></select></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-health')">cancel</button><button class="mbs" onclick="saveHealth()">save</button></div></div></div>
+
+<script>
+const DB={dailyLog:'32dec4518a618096986cfd9475b0aa1a',taskMaster:'32dec4518a6180dc84cee6e65539f871',weeklyReview:'32dec4518a618028a71cc366512a4dfc',bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',readingSessions:'32dec4518a618071af88ca0f6e477a30',pianoSongs:'32dec4518a6180ae9debe795972c5854',pianoSessions:'32dec4518a61804fb394f39e16d9511f',finance:'32dec4518a6180f886c4db6651b69cec',health:'32dec4518a6180d78721f0b13c663478',faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',family:'32dec4518a618024b0edfd41dc2c6e39',habits:'32dec4518a618070a3c8e50e5a9224e8'};
+const notion=async(m,p,b)=>{const r=await fetch('/api/notion'+p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return r.json();};
+const query=(db,f,s)=>notion('POST',`/databases/${db}/query`,{filter:f,sorts:s});
+const create=(db,p)=>notion('POST','/pages',{parent:{database_id:db},properties:p});
+const update=(id,p)=>notion('PATCH',`/pages/${id}`,{properties:p});
+const getBlocks=(id)=>notion('GET',`/blocks/${id}/children`);
+const addBlock=(id,b)=>notion('PATCH',`/blocks/${id}/children`,{children:b});
+const prop={title:v=>({title:[{text:{content:v||''}}]}),text:v=>({rich_text:[{text:{content:v||''}}]}),select:v=>({select:{name:v}}),date:v=>({date:{start:v}}),checkbox:v=>({checkbox:!!v}),number:v=>({number:parseFloat(v)||0})};
+const gTitle=p=>{for(const k in p.properties)if(p.properties[k].type==='title')return p.properties[k].title.map(t=>t.plain_text).join('')||''};
+const gText=(p,k)=>{const x=p.properties[k];if(!x)return'';if(x.type==='rich_text')return x.rich_text.map(t=>t.plain_text).join('');if(x.type==='title')return x.title.map(t=>t.plain_text).join('');return''};
+const gSel=(p,k)=>p.properties[k]?.select?.name||'';
+const gDate=(p,k)=>p.properties[k]?.date?.start||'';
+const gNum=(p,k)=>p.properties[k]?.number||0;
+const gCB=(p,k)=>p.properties[k]?.checkbox||false;
+const now=new Date(),today=now.toISOString().split('T')[0];
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const HDAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const HABITS=['Read','Piano','Water','Walk','Journal','Pray','Family time'];
+document.getElementById('td-day').textContent=DAYS[now.getDay()];
+document.getElementById('td-dt').textContent=`${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+document.getElementById('tb-date').textContent=`${DAYS[now.getDay()]}, ${MONTHS[now.getMonth()]} ${now.getDate()}`;
+document.getElementById('fin-month-lbl').textContent=MONTHS[now.getMonth()].toLowerCase()+' '+now.getFullYear();
+const getMon=d=>{const m=new Date(d);m.setDate(m.getDate()-((m.getDay()+6)%7));return m};
+const monStr=d=>getMon(d).toISOString().split('T')[0];
+const fmtD=s=>{if(!s)return'';try{const d=new Date(s);return`${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}`}catch{return s}};
+const fmt=n=>n?`₱${Math.round(n).toLocaleString()}`:'—';
+let todayId=null,allBooks=[],allTasks=[],wrOffset=0,wrPageId=null;
+const pTitles={dashboard:'Dashboard',journal:'Journal',tasks:'Task master',weekly:'Weekly review',reading:'Reading',piano:'Piano',health:'Health & fitness',finance:'Finance',faith:'Faith & family'};
+const pLoaders={journal:loadJournal,tasks:loadTasks,weekly:()=>loadWeeklyReview(0),reading:loadReading,piano:loadPiano,health:loadHealth,finance:loadFinance,faith:loadFaithFamily};
+const pLoaded=new Set(['dashboard']);
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  else{const txt=pTitles[id]?.toLowerCase();document.querySelectorAll('.ni').forEach(n=>{if(n.textContent.trim().toLowerCase().startsWith(txt?.slice(0,5)||'_'))n.classList.add('active');});}
+  document.getElementById('tb-title').textContent=pTitles[id]||id;
+  if(!pLoaded.has(id)&&pLoaders[id]){pLoaded.add(id);pLoaders[id]();}
+}
+// DASHBOARD
+async function loadDashboard(){await Promise.all([loadDailyLog(),loadDashTasks(),loadDashHabits(),loadDashRead(),loadDashPiano(),loadDashWeekly(),loadDashFaith(),loadDashFamily(),loadTheme()]);}
+async function loadDailyLog(){
+  try{
+    const res=await query(DB.dailyLog,{property:'Date',date:{equals:today}});
+    const p=res.results?.[0];
+    if(p){todayId=p.id;renderMood(gSel(p,'Mood'));renderEnergy(gSel(p,'Energy'));const g=gText(p,'Gratitude');if(g){document.getElementById('grat-txt').textContent=g;document.getElementById('grat-block').style.display='block';}renderPri(p);}
+    else document.getElementById('p-list').innerHTML='<div class="empty">No log yet — click "edit log" to start</div>';
+  }catch{document.getElementById('p-list').innerHTML='<div class="err">Check DB ID · daily log</div>';}
+}
+function renderMood(m){document.querySelectorAll('#mood-pills .mp').forEach(e=>e.classList.toggle('sel',e.textContent===m));}
+function renderEnergy(e){document.querySelectorAll('#en-pills .mp').forEach(el=>el.classList.toggle('sel',el.textContent===e));}
+function renderPri(p){
+  const ps=['Priority 1','Priority 2','Priority 3'].map(k=>gText(p,k)).filter(Boolean);
+  if(!ps.length){document.getElementById('p-list').innerHTML='<div class="empty">No priorities set</div>';return;}
+  const c=[{bg:'var(--wkb)',c:'var(--wk)'},{bg:'var(--wkb)',c:'var(--wk)'},{bg:'var(--pib)',c:'var(--pi)'}];
+  document.getElementById('p-list').innerHTML=ps.map((t,i)=>`<div class="pi" onclick="this.classList.toggle('done')"><div class="pn" style="background:${c[i].bg};color:${c[i].c}">${i+1}</div><div class="pt">${t}</div></div>`).join('');
+}
+async function loadDashTasks(){
+  try{
+    const res=await query(DB.taskMaster,{and:[{property:'Scheduled',date:{equals:today}},{property:'Status',status:{does_not_equal:'Done'}}]});
+    const uc={'Urgent':'#E24B4A','Important':'#BA7517','Routine':'var(--ht)'};
+    const el=document.getElementById('t-list');
+    if(!res.results?.length){el.innerHTML='<div class="empty">No tasks today</div>';return;}
+    document.getElementById('task-cnt').textContent=res.results.length;
+    el.innerHTML=res.results.slice(0,5).map(p=>`<div class="ti"><div class="ug" style="background:${uc[gSel(p,'Urgency')]||'var(--ht)'}"></div><div class="tn2">${gTitle(p)}</div><div class="tg">${gSel(p,'Category')}</div></div>`).join('');
+  }catch{document.getElementById('t-list').innerHTML='<div class="err">Check DB ID</div>';}
+}
+async function loadDashHabits(){
+  try{
+    const res=await query(DB.habits,{property:'Week of',date:{equals:monStr(now)}});
+    const p=res.results?.[0];const di=(now.getDay()+6)%7;
+    document.getElementById('h-rows').innerHTML=HABITS.map(h=>{
+      const boxes=HDAYS.map((d,i)=>{const k=`${h} \u2014 ${d}`;const done=p?gCB(p,k):false;const it=i===di;return`<div class="hb ${done?'done':''} ${it?'td':''}" onclick="toggleHabit('${p?.id||''}','${k}',this)">${done?'&#10003;':''}</div>`;}).join('');
+      const streak=p?HDAYS.slice(0,di+1).filter(d=>gCB(p,`${h} \u2014 ${d}`)).length:0;
+      return`<div class="hr"><div class="hn">${h}</div><div class="hbs">${boxes}</div><div class="hst">${streak}</div></div>`;
+    }).join('');
+  }catch{document.getElementById('h-rows').innerHTML='<div class="err">Check DB ID</div>';}
+}
+async function toggleHabit(pid,key,el){if(!pid)return;const done=!el.classList.contains('done');el.classList.toggle('done',done);el.innerHTML=done?'&#10003;':'';;await update(pid,{[key]:prop.checkbox(done)});}
+async function loadDashRead(){
+  try{
+    const[c,a]=await Promise.all([query(DB.bookShelf,{property:'Status',select:{equals:'Reading'}}),query(DB.bookShelf,{})]);
+    const read=a.results?.filter(p=>gSel(p,'Status')==='Read').length||0;
+    const unread=a.results?.filter(p=>gSel(p,'Status')==='Owned / unread').length||0;
+    document.getElementById('read-cnt').textContent=read;
+    const books=c.results?.slice(0,2).map(p=>`<div class="bi"><div class="bsp" style="background:var(--rd)"></div><div class="bif"><div class="bt">${gTitle(p)}</div><div class="ba">${gText(p,'Author')}</div></div></div>`).join('')||'<div class="empty">No books reading</div>';
+    document.getElementById('db-read').innerHTML=`<div class="bl">${books}</div><div class="bst"><div class="bs"><div class="bsn">${read}</div><div class="bsl">read</div></div><div class="bs"><div class="bsn">${c.results?.length||0}</div><div class="bsl">reading</div></div><div class="bs"><div class="bsn">${unread}</div><div class="bsl">unread</div></div></div>`;
+  }catch{document.getElementById('db-read').innerHTML='<div class="err">Check DB ID</div>';}
+}
+async function loadDashPiano(){
+  try{
+    const s=await query(DB.pianoSongs,{or:[{property:'Status',select:{equals:'In progress'}},{property:'Status',select:{equals:'Learning'}}]});
+    const sc={'In progress':'var(--pi)','Learning':'var(--pi)'};const sb={'In progress':'var(--pib)','Learning':'var(--pib)'};
+    document.getElementById('db-piano').innerHTML=`<div class="sl">${s.results?.slice(0,3).map(p=>{const st=gSel(p,'Status');return`<div class="si"><div class="sd" style="background:${sc[st]||'var(--ht)'}"></div><div class="sn">${gTitle(p)}</div><div class="sbg" style="background:${sb[st]||'var(--bg2)'};color:${sc[st]||'var(--lt)'}">${st}</div></div>`;}).join('')||'<div class="empty">No active songs</div>'}</div>`;
+  }catch{document.getElementById('db-piano').innerHTML='<div class="err">Check DB ID</div>';}
+}
+async function loadDashWeekly(){
+  try{
+    const mon=monStr(now);
+    const[wr,hab]=await Promise.all([query(DB.weeklyReview,{property:'Week of',date:{equals:mon}}),query(DB.habits,{property:'Week of',date:{equals:mon}})]);
+    const p=wr.results?.[0];const hp=hab.results?.[0];
+    const wins=p?gText(p,'Wins'):'';const carry=p?gText(p,'Carry Forward'):'';const theme=p?gText(p,'Focus Theme'):'';
+    const habitSummary=hp?HABITS.map(h=>{const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;const pct=Math.round(count/7*100);return`<div class="wp-hchip" style="background:${pct>=70?'var(--heb)':(pct>=40?'var(--c2)':'var(--bg2)')};color:${pct>=70?'var(--he)':(pct>=40?'var(--mid)':'var(--lt)')}"><span style="font-size:.56rem">${h.slice(0,4)}</span> ${count}/7</div>`;}).join(''):'';
+    document.getElementById('db-weekly').innerHTML=`
+      <div class="wp-grid">
+        <div class="wp-item"><div class="wp-label">wins</div><div class="wp-val">${wins||'<span style="color:var(--ht)">not filled yet</span>'}</div></div>
+        <div class="wp-item"><div class="wp-label">carry forward</div><div class="wp-val">${carry||'<span style="color:var(--ht)">not filled yet</span>'}</div></div>
+      </div>
+      ${habitSummary?`<div class="wp-habits">${habitSummary}</div>`:''}`;
+  }catch{document.getElementById('db-weekly').innerHTML='<div class="err">Check DB ID</div>';}
+}
+async function loadDashFaith(){try{const r=await query(DB.faith,{},[{property:'Date',direction:'descending'}]);document.getElementById('db-faith').innerHTML=renderLogs(r.results?.slice(0,2),'Verse / passage','Reflection')||'<div class="empty">No entries yet</div>';}catch{document.getElementById('db-faith').innerHTML='<div class="err">Check DB ID</div>';}}
+async function loadDashFamily(){try{const r=await query(DB.family,{},[{property:'Date',direction:'descending'}]);document.getElementById('db-family').innerHTML=renderLogs(r.results?.slice(0,2),'What we did / talked about',null,'Who')||'<div class="empty">No entries yet</div>';}catch{document.getElementById('db-family').innerHTML='<div class="err">Check DB ID</div>';}}
+async function loadTheme(){try{const r=await query(DB.weeklyReview,{property:'Week of',date:{equals:monStr(now)}});document.getElementById('theme-text').textContent=r.results?.[0]?gText(r.results[0],'Focus Theme')||'one day at a time':'one day at a time';}catch{document.getElementById('theme-text').textContent='one day at a time';}}
+function renderLogs(pages,mk,sk,pk){if(!pages?.length)return'';return pages.map(p=>{const main=gText(p,mk),sub=sk?gText(p,sk):'',pre=pk?gText(p,pk):'',date=gDate(p,'Date');return`<div class="le"><div class="ld">${fmtD(date)}${pre?' · '+pre:''}</div><div class="lx">${main}${sub?' · '+sub:''}</div></div>`;}).join('');}
+// JOURNAL
+async function loadJournal(){
+  try{
+    const res=await query(DB.dailyLog,{},[{property:'Date',direction:'descending'}]);
+    if(!res.results?.length){document.getElementById('journal-list').innerHTML='<div class="empty" style="padding:20px">No entries yet</div>';return;}
+    const items=await Promise.all(res.results.slice(0,30).map(async p=>{
+      const date=gDate(p,'Date'),d=date?new Date(date):null;
+      const mood=gSel(p,'Mood'),grat=gText(p,'Gratitude'),hl=gText(p,'Highlight');
+      let bodyHtml='';
+      try{const blks=await getBlocks(p.id);bodyHtml=blks.results?.map(b=>{const t=b.type,rt=b[t]?.rich_text?.map(x=>x.plain_text).join('')||'';
+if(!rt)return'';if(t==='heading_1')return`<h1>${rt}</h1>`;if(t==='heading_2')return`<h2>${rt}</h2>`;if(t==='heading_3')return`<h3>${rt}</h3>`;return`<p>${rt}</p>`;}).join('')||'';}catch{}
+      const mc={'low':'var(--fab);color:var(--fa)','okay':'var(--bg2);color:var(--lt)','good':'var(--heb);color:var(--he)','great':'var(--heb);color:var(--he)','peak':'var(--gnp);color:var(--gn)'};
+      const ms=mc[mood]||'var(--bg2);color:var(--lt)';const hasBody=bodyHtml.trim().length>0;
+      return`<div class="ji"><div class="jp" onclick="toggleJ('${p.id}')"><div class="jdc"><div class="jdn">${d?d.getDate():'?'}</div><div class="jdd">${d?DAYS[d.getDay()].slice(0,3):''}</div><div class="jdm">${d?MONTHS[d.getMonth()].slice(0,3)+' '+d.getFullYear():''}</div></div><div class="jdv"></div><div class="jc">${mood?`<div class="jmo" style="background:${ms}">${mood}</div>`:''}<div class="jg">${grat?`&ldquo;${grat}&rdquo;`:''}</div><div class="jhl">${hl||''}</div>${hasBody?'<div class="jhb">&#9655; journal entry</div>':''}</div></div>${hasBody?`<div class="jex" id="je-${p.id}"><div class="jbd">${bodyHtml}</div></div>`:''}</div>`;
+    }));
+    document.getElementById('journal-list').innerHTML=items.join('');
+  }catch{document.getElementById('journal-list').innerHTML='<div class="err">Check DB ID</div>';}
+}
+function toggleJ(id){const e=document.getElementById('je-'+id);if(e)e.classList.toggle('open');}
+// TASKS PAGE
+async function loadTasks(){
+  try{
+    const res=await query(DB.taskMaster,{},[{property:'Urgency',direction:'ascending'},{property:'Scheduled',direction:'ascending'}]);
+    allTasks=res.results||[];
+    document.getElementById('task-cnt').textContent=allTasks.filter(p=>gSel(p,'Status')!=='Done').length;
+    renderTasks('today');
+  }catch{document.getElementById('task-full-list').innerHTML='<div class="err">Check DB ID</div>';}
+}
+function filterTasks(f,el){document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderTasks(f);}
+function renderTasks(f){
+  const uc={'Urgent':'#E24B4A','Important':'#BA7517','Routine':'var(--ht)'};
+  const mon=monStr(now).toISOString?.()?.split('T')?.[0]||monStr(now);
+  let filtered=allTasks.filter(p=>{
+    const s=gSel(p,'Status'),sch=gDate(p,'Scheduled'),due=gDate(p,'Due Date');
+    if(f==='today')return sch===today&&s!=='Done';
+    if(f==='week'){const m=getMon(now);const e=new Date(m);e.setDate(e.getDate()+6);const ed=e.toISOString().split('T')[0];return sch>=monStr(now)&&sch<=ed&&s!=='Done';}
+    if(f==='overdue')return due&&due<today&&s!=='Done';
+    if(f==='someday')return gCB(p,'Someday');
+    return s!=='Done'&&s!=='Dropped';
+  });
+  if(!filtered.length){document.getElementById('task-full-list').innerHTML='<div class="empty" style="padding:12px">No tasks in this view</div>';return;}
+  document.getElementById('task-full-list').innerHTML=filtered.map(p=>{
+    const urg=gSel(p,'Urgency'),cat=gSel(p,'Category'),notes=gText(p,'Notes'),due=gDate(p,'Due Date'),sch=gDate(p,'Scheduled');
+    const tagStyle=cat==='Property mgmt'?'background:var(--wkb);color:var(--wk)':cat==='ESL'?'background:var(--heb);color:var(--he)':cat==='Piano'?'background:var(--pib);color:var(--pi)':cat==='Reading'?'background:var(--rdb);color:var(--rd)':'background:var(--bg2);color:var(--lt)';
+    return`<div class="tfi"><div class="tfi-check" onclick="this.classList.toggle('checked')"></div><div class="tfi-body"><div class="tfi-name">${gTitle(p)}</div><div class="tfi-meta"><div class="tfi-tag" style="${tagStyle}">${cat}</div><div class="tfi-urg" style="color:${uc[urg]||'var(--lt)'}">${urg}</div>${due?`<div class="tfi-urg">due ${fmtD(due)}</div>`:''}</div>${notes?`<div class="tfi-notes">${notes}</div>`:''}</div></div>`;
+  }).join('');
+}
+// WEEKLY REVIEW PAGE
+async function loadWeeklyReview(offset){
+  wrOffset=offset;
+  const baseDate=new Date(now);baseDate.setDate(baseDate.getDate()+offset*7);
+  const mon=getMon(baseDate);const monStr2=mon.toISOString().split('T')[0];
+  const sunDate=new Date(mon);sunDate.setDate(sunDate.getDate()+6);
+  document.getElementById('wr-week-lbl').textContent=`${MONTHS[mon.getMonth()].slice(0,3)} ${mon.getDate()} — ${MONTHS[sunDate.getMonth()].slice(0,3)} ${sunDate.getDate()}, ${sunDate.getFullYear()}`;
+  try{
+    const[wr,hab]=await Promise.all([query(DB.weeklyReview,{property:'Week of',date:{equals:monStr2}}),query(DB.habits,{property:'Week of',date:{equals:monStr2}})]);
+    const p=wr.results?.[0];const hp=hab.results?.[0];wrPageId=p?.id||null;
+    const theme=p?gText(p,'Focus Theme'):'';
+    if(theme){document.getElementById('wr-theme').style.display='block';document.getElementById('wr-theme-val').textContent=theme;}
+    else document.getElementById('wr-theme').style.display='none';
+    const cards=[{key:'Wins',label:'wins this week',dot:'var(--he)'},{key:'Carry Forward',label:'carry forward',dot:'var(--wk)'},{key:'One Thing to Improve',label:'one thing to improve',dot:'var(--rd)'},{key:'Grateful For',label:'grateful for',dot:'var(--fa)'}];
+    document.getElementById('wr-cards').innerHTML=cards.map(c=>`<div class="wr-card"><div class="wr-card-title"><div class="wr-card-dot" style="background:${c.dot}"></div>${c.label}</div><div class="wr-field">${p&&gText(p,c.key)||'<span style="color:var(--ht)">not filled yet</span>'}</div></div>`).join('');
+    if(hp){
+      document.getElementById('wr-habits').innerHTML=HABITS.map(h=>{
+        const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;const pct=Math.round(count/7*100);
+        return`<div class="wr-hrow"><div class="wr-hname">${h}</div><div class="wr-hbar"><div class="wr-hfill" style="width:${pct}%"></div></div><div class="wr-hcount">${count}/7</div></div>`;
+      }).join('');
+    }else document.getElementById('wr-habits').innerHTML='<div class="empty">No habit data for this week</div>';
+  }catch{document.getElementById('wr-cards').innerHTML='<div class="err">Check DB ID</div>';}
+}
+function changeWeek(dir){loadWeeklyReview(wrOffset+dir);}
+// READING PAGE
+async function loadReading(){
+  try{
+    const[books,sess]=await Promise.all([query(DB.bookShelf,{},[{property:'Title',direction:'ascending'}]),query(DB.readingSessions,{},[{property:'Date',direction:'descending'}])]);
+    allBooks=books.results||[];
+    const stats=[...new Set(allBooks.map(p=>gSel(p,'Status')).filter(Boolean))];
+    document.getElementById('rf').innerHTML=['All',...stats].map(s=>`<div onclick="filterBooks('${s}',this)" class="ftab ${s==='Reading'?'active':''}" ${s==='Reading'?'style="background:var(--gn);color:white;border-color:var(--gn)"':''}>${s}</div>`).join('');
+    renderBooks('Reading');
+    document.getElementById('read-sessions').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Book</th><th>Pages</th><th>Duration</th><th>Notes</th></tr></thead><tbody>${sess.results?.slice(0,15).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gText(p,'Book')}</td><td>${gNum(p,'Pages start')} — ${gNum(p,'Pages end')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gText(p,'Notes')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No sessions logged yet</td></tr>'}</tbody></table>`;
+  }catch{document.getElementById('rg').innerHTML='<div class="err">Check DB ID</div>';}
+}
+function filterBooks(s,el){document.querySelectorAll('#rf .ftab').forEach(b=>{b.style.background='';b.style.color='var(--mid)';b.style.borderColor='var(--bd)';});el.style.background='var(--gn)';el.style.color='white';el.style.borderColor='var(--gn)';renderBooks(s);}
+function renderBooks(s){
+  const f=s==='All'?allBooks:allBooks.filter(p=>gSel(p,'Status')===s);
+  const sc={'Read':'var(--heb);color:var(--he)','Reading':'var(--rdb);color:var(--rd)','Owned / unread':'var(--bg2);color:var(--lt)','DNF':'var(--fab);color:var(--fa)'};
+  document.getElementById('rg').innerHTML=f.map(p=>`<div class="bc"><div class="bct">${gTitle(p)}</div><div class="bca">${gText(p,'Author')}</div><div class="bcr">${gText(p,'Rating')}</div><div class="bcs" style="background:${sc[gSel(p,'Status')]||'var(--bg2);color:var(--lt)'}">${gSel(p,'Status')}</div></div>`).join('')||'<div class="empty">No books here</div>';
+}
+// PIANO PAGE
+async function loadPiano(){
+  try{
+    const[songs,sess]=await Promise.all([query(DB.pianoSongs),query(DB.pianoSessions,{},[{property:'Date',direction:'descending'}])]);
+    const so={'In progress':0,'Learning':1,'Queued':2,'Someday':3};
+    const sorted=songs.results?.sort((a,b)=>(so[gSel(a,'Status')]||9)-(so[gSel(b,'Status')]||9));
+    const sc={'In progress':'var(--pi)','Learning':'var(--pi)','Queued':'var(--ht)','Someday':'var(--ht)'};
+    document.getElementById('piano-songs').innerHTML=sorted?.filter(p=>['In progress','Learning','Queued'].includes(gSel(p,'Status'))).map(p=>`<div class="sc" style="border-left-color:${sc[gSel(p,'Status')]||'var(--pi)'}"><div class="scs">${gTitle(p)}</div><div class="sca">${gText(p,'Artist')}</div><div class="scp">${gText(p,'Purpose')}</div><div class="scc">${gText(p,'Chords / Key')}</div></div>`).join('')||'<div class="empty">No active songs</div>';
+    document.getElementById('piano-sess').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Song</th><th>Duration</th><th>Focus</th><th>Notes</th></tr></thead><tbody>${sess.results?.slice(0,10).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gText(p,'Song practiced')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gText(p,'Focus')}</td><td>${gText(p,'Progress notes')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No sessions yet</td></tr>'}</tbody></table>`;
+  }catch{document.getElementById('piano-songs').innerHTML='<div class="err">Check DB ID</div>';}
+}
+// HEALTH PAGE
+async function loadHealth(){
+  try{
+    const res=await query(DB.health,{},[{property:'Date',direction:'descending'}]);
+    const entries=res.results||[];const latest=entries[0];
+    document.getElementById('health-latest').innerHTML=latest?`<div class="hs"><div class="hss"><div class="hsv">${gNum(latest,'Duration (min)')}</div><div class="hsl">min</div></div><div class="hss"><div class="hsv">${gNum(latest,'Water (glasses)')}</div><div class="hsl">glasses</div></div><div class="hss"><div class="hsv">${gNum(latest,'Sleep (hrs)')}</div><div class="hsl">hrs sleep</div></div></div><div style="font-size:.78rem;color:var(--mid)">${gText(latest,'Exercise type')} · ${gSel(latest,'Energy level')} energy · ${fmtD(gDate(latest,'Date'))}</div>`:'<div class="empty">No entries yet</div>';
+    const week=entries.slice(0,7);const avg=(key)=>week.length?Math.round(week.reduce((s,p)=>s+gNum(p,key),0)/week.length):0;
+    document.getElementById('health-avg').innerHTML=`<div class="hs"><div class="hss"><div class="hsv">${avg('Duration (min)')}</div><div class="hsl">min avg</div></div><div class="hss"><div class="hsv">${avg('Water (glasses)')}</div><div class="hsl">glasses avg</div></div><div class="hss"><div class="hsv">${avg('Sleep (hrs)')}</div><div class="hsl">hrs sleep avg</div></div></div>`;
+    document.getElementById('health-list').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Exercise</th><th>Duration</th><th>Water</th><th>Sleep</th><th>Energy</th></tr></thead><tbody>${entries.slice(0,14).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gText(p,'Exercise type')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gNum(p,'Water (glasses)')} glasses</td><td>${gNum(p,'Sleep (hrs)')} hrs</td><td>${gSel(p,'Energy level')}</td></tr>`).join('')||'<tr><td colspan="6" style="color:var(--lt);font-style:italic">No entries yet</td></tr>'}</tbody></table>`;
+  }catch{document.getElementById('health-latest').innerHTML='<div class="err">Check DB ID</div>';}
+}
+// FINANCE PAGE
+async function loadFinance(){
+  try{
+    const res=await query(DB.finance,{},[{property:'Date',direction:'descending'}]);
+    let inc=0,exp=0,sav=0;
+    res.results?.filter(p=>gText(p,'Month')||gDate(p,'Date')?.startsWith(`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`)).forEach(p=>{const t=gSel(p,'Type'),a=gNum(p,'Amount (PHP)');if(t==='Income')inc+=a;else if(t==='Expense')exp+=a;else if(t==='Savings')sav+=a;});
+    document.getElementById('fin-summary').innerHTML=`<div class="fs"><div class="fst"><div class="fsl">income</div><div class="fsv" style="color:var(--he)">${fmt(inc)}</div></div><div class="fst"><div class="fsl">expense</div><div class="fsv" style="color:var(--fa)">${fmt(exp)}</div></div><div class="fst"><div class="fsl">saved</div><div class="fsv" style="color:var(--wk)">${fmt(sav)}</div></div></div>`;
+    document.getElementById('fin-all').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Type</th><th>Category</th><th>Amount</th><th>Description</th></tr></thead><tbody>${res.results?.slice(0,20).map(p=>{const t=gSel(p,'Type');const c=t==='Income'?'var(--he)':t==='Savings'?'var(--wk)':'var(--fa)';return`<tr><td>${fmtD(gDate(p,'Date'))}</td><td style="color:${c};font-family:var(--mono);font-size:.75rem">${t}</td><td>${gSel(p,'Category')}</td><td style="font-family:var(--mono);color:${c}">${t==='Expense'?'-':'+'}${fmt(gNum(p,'Amount (PHP)'))}</td><td>${gText(p,'Description')}</td></tr>`;}).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No entries yet</td></tr>'}</tbody></table>`;
+  }catch{document.getElementById('fin-summary').innerHTML='<div class="err">Check DB ID</div>';}
+}
+// FAITH & FAMILY PAGE
+async function loadFaithFamily(){
+  try{
+    const[faith,fam]=await Promise.all([query(DB.faith,{},[{property:'Date',direction:'descending'}]),query(DB.family,{},[{property:'Date',direction:'descending'}])]);
+    document.getElementById('faith-list').innerHTML=faith.results?.slice(0,10).map(p=>`<div class="le"><div class="ld">${fmtD(gDate(p,'Date'))}</div><div class="lx">${gText(p,'Verse / passage')}${gText(p,'Reflection')?'<br><span style="font-size:.8rem">'+gText(p,'Reflection')+'</span>':''}</div></div>`).join('')||'<div class="empty">No faith entries yet</div>';
+    document.getElementById('family-list').innerHTML=fam.results?.slice(0,10).map(p=>`<div class="le"><div class="ld">${fmtD(gDate(p,'Date'))}${gText(p,'Who')?' · '+gText(p,'Who'):''}</div><div class="lx">${gText(p,'What we did / talked about')}${gText(p,'Memory worth keeping')?'<br><span style="color:var(--fa)">'+gText(p,'Memory worth keeping')+'</span>':''}</div></div>`).join('')||'<div class="empty">No family entries yet</div>';
+  }catch{document.getElementById('faith-list').innerHTML='<div class="err">Check DB ID</div>';}
+}
+// MOOD/ENERGY
+async function setMood(m){renderMood(m);if(todayId)await update(todayId,{Mood:prop.select(m)});}
+async function setEnergy(e){renderEnergy(e);if(todayId)await update(todayId,{Energy:prop.select(e)});}
+// SAVE
+async function saveTask(){const t=document.getElementById('cap-task').value.trim();if(!t)return;await create(DB.taskMaster,{Task:prop.title(t),Status:prop.select('Not started'),Category:prop.select(document.getElementById('cap-cat').value),Urgency:prop.select(document.getElementById('cap-urg').value),Notes:prop.text(document.getElementById('cap-notes').value),Scheduled:prop.date(today)});closeModal('m-capture');loadDashTasks();if(pLoaded.has('tasks'))loadTasks();}
+async function saveDailyLog(){
+  const p1=document.getElementById('dl-p1').value.trim(),p2=document.getElementById('dl-p2').value.trim(),p3=document.getElementById('dl-p3').value.trim(),g=document.getElementById('dl-grat').value.trim(),f=document.getElementById('dl-faith').value.trim(),hl=document.getElementById('dl-hl').value.trim(),body=document.getElementById('dl-body').value.trim();
+  const props={Day:prop.title(DAYS[now.getDay()]),Date:prop.date(today),'Priority 1':prop.text(p1),'Priority 2':prop.text(p2),'Priority 3':prop.text(p3),Gratitude:prop.text(g),'Faith note':prop.text(f),Highlight:prop.text(hl),Week:prop.text(monStr(now))};
+  let pid=todayId;
+  if(pid)await update(pid,props);else{const pg=await create(DB.dailyLog,props);pid=pg.id;todayId=pg.id;}
+  if(body&&pid)await addBlock(pid,[{object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:body}}]}}]);
+  closeModal('m-daily');loadDailyLog();
+}
+async function saveReadSession(){const b=document.getElementById('rs-book').value.trim();if(!b)return;await create(DB.readingSessions,{Session:prop.title(`${b} — p.${document.getElementById('rs-start').value}–${document.getElementById('rs-end').value}`),Date:prop.date(today),Book:prop.text(b),'Pages start':prop.number(document.getElementById('rs-start').value),'Pages end':prop.number(document.getElementById('rs-end').value),'Pages read':prop.number(document.getElementById('rs-end').value-document.getElementById('rs-start').value),Notes:prop.text(document.getElementById('rs-notes').value)});closeModal('m-readsess');if(pLoaded.has('reading'))loadReading();}
+async function savePianoSession(){const s=document.getElementById('ps-song').value.trim();if(!s)return;await create(DB.pianoSessions,{Session:prop.title(`${s} — ${document.getElementById('ps-dur').value} min`),Date:prop.date(today),'Song practiced':prop.text(s),'Duration (min)':prop.number(document.getElementById('ps-dur').value),Focus:prop.text(document.getElementById('ps-focus').value),'Progress notes':prop.text(document.getElementById('ps-notes').value)});closeModal('m-piano');if(pLoaded.has('piano'))loadPiano();}
+async function saveFinance(){const a=document.getElementById('fn-amt').value;if(!a)return;const t=document.getElementById('fn-type').value;await create(DB.finance,{Date:prop.title(today),Type:prop.select(t),Category:prop.select(document.getElementById('fn-cat').value),'Amount (PHP)':prop.number(a),Description:prop.text(document.getElementById('fn-desc').value),Month:prop.text(`${MONTHS[now.getMonth()]} ${now.getFullYear()}`)});closeModal('m-finance');loadDashWeekly();if(pLoaded.has('finance'))loadFinance();}
+async function saveFaith(){await create(DB.faith,{Date:prop.title(today),'Verse / passage':prop.text(document.getElementById('fh-verse').value),'Prayer intention':prop.text(document.getElementById('fh-prayer').value),Reflection:prop.text(document.getElementById('fh-refl').value),'Devotion done':prop.checkbox(true)});closeModal('m-faith');loadDashFaith();if(pLoaded.has('faith'))loadFaithFamily();}
+async function saveFamily(){await create(DB.family,{Date:prop.title(today),Who:prop.text(document.getElementById('fm-who').value),'What we did / talked about':prop.text(document.getElementById('fm-what').value),'Memory worth keeping':prop.text(document.getElementById('fm-mem').value)});closeModal('m-family');loadDashFamily();if(pLoaded.has('faith'))loadFaithFamily();}
+async function saveHealth(){await create(DB.health,{Date:prop.title(today),'Exercise type':prop.text(document.getElementById('hl-type').value),'Duration (min)':prop.number(document.getElementById('hl-dur').value),'Water (glasses)':prop.number(document.getElementById('hl-water').value),'Sleep (hrs)':prop.number(document.getElementById('hl-sleep').value),'Energy level':prop.select(document.getElementById('hl-energy').value)});closeModal('m-health');if(pLoaded.has('health'))loadHealth();}
+// MODALS
+function openCapture(){document.getElementById('m-capture').classList.add('open');}
+function openDailyLog(){document.getElementById('m-daily').classList.add('open');}
+function openAddSession(){document.getElementById('m-piano').classList.add('open');}
+function openAddReadSession(){document.getElementById('m-readsess').classList.add('open');}
+function openAddFinance(){document.getElementById('m-finance').classList.add('open');}
+function openAddFaith(){document.getElementById('m-faith').classList.add('open');}
+function openAddFamily(){document.getElementById('m-family').classList.add('open');}
+function openAddHealth(){document.getElementById('m-health').classList.add('open');}
+function editTheme(){const t=prompt('This week\'s focus theme:',document.getElementById('theme-text').textContent);if(t)document.getElementById('theme-text').textContent=t;}
+function closeModal(id,e){if(!e||e.target.classList.contains('mo'))document.getElementById(id).classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));});
+loadDashboard();
+</script>
 </body>
 </html>

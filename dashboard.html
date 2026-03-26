@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>absolutefield · dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf9f7; --bg2: #f4f2ed; --bg3: #edeade;
+  --card: #ffffff; --text: #2c3029; --mid: #6b7265; --light: #9aa093;
+  --hint: #e2ded6; --green: #4a6741; --green-l: #6b8a5e;
+  --green-p: #d4e4cf; --green-d: #2d3f28;
+  --brown: #8b7355; --brown-l: #c4a882; --cream: #f5f1e8;
+  --work: #7B9BB5; --work-bg: #EAF0F6; --work-b: #B8CEDF;
+  --read: #B8924A; --read-bg: #FAF5E8; --read-b: #DECA90;
+  --piano: #9B85C0; --piano-bg: #F0EDFA; --piano-b: #C8BEDD;
+  --health: #7BAF8A; --health-bg: #EDF5F0; --health-b: #B0D0BA;
+  --faith: #C4898A; --faith-bg: #FAF0F0; --faith-b: #DDB8B8;
+  --family: #B58A7B; --family-bg: #FAF0EC; --family-b: #D8B8AE;
+  --finance: #888780;
+  --serif: 'Playfair Display', Georgia, serif;
+  --cursive: 'Great Vibes', cursive;
+  --sans: 'Source Sans 3', sans-serif;
+  --radius: 12px; --radius-sm: 8px;
+  --shadow: 0 2px 8px rgba(45,63,40,0.06);
+  --shadow-md: 0 4px 20px rgba(45,63,40,0.08);
+  --transition: 0.25s ease;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--sans); font-weight:300; background:var(--bg); color:var(--text); line-height:1.7; }
+
+/* ── NAV ── */
+.dash-nav {
+  position: sticky; top:0; z-index:100;
+  background: rgba(250,249,247,0.96); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--hint);
+  padding: 14px 40px; display:flex; align-items:center; justify-content:space-between;
+}
+.dash-brand { font-family:var(--cursive); font-size:1.6rem; color:var(--green-d); cursor:pointer; }
+.dash-brand span { font-family:var(--sans); font-size:0.7rem; font-weight:400; color:var(--light); letter-spacing:0.12em; margin-left:10px; text-transform:uppercase; }
+.dash-back { font-size:0.82rem; color:var(--mid); text-decoration:none; padding:6px 14px; border:1px solid var(--hint); border-radius:50px; transition:all var(--transition); }
+.dash-back:hover { color:var(--green); border-color:var(--green-p); background:var(--green-p); }
+.capture-btn {
+  background:var(--green); color:white; border:none;
+  padding:8px 18px; border-radius:50px; font-family:var(--sans);
+  font-size:0.82rem; font-weight:400; cursor:pointer; transition:all var(--transition);
+  display:flex; align-items:center; gap:6px;
+}
+.capture-btn:hover { background:var(--green-l); transform:translateY(-1px); box-shadow:var(--shadow); }
+.nav-right { display:flex; align-items:center; gap:10px; }
+
+/* ── LAYOUT ── */
+.dash-content { max-width:1200px; margin:0 auto; padding:32px 40px 60px; }
+
+/* ── THEME BANNER ── */
+.theme-banner {
+  background:var(--cream); border:1px solid var(--brown-l);
+  border-left:3px solid var(--brown); border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:10px 18px; display:flex; align-items:center; gap:14px; margin-bottom:24px;
+}
+.theme-label { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--brown-l); }
+.theme-value { font-family:var(--serif); font-style:italic; color:var(--brown); font-size:0.95rem; flex:1; }
+.theme-edit { font-size:0.72rem; color:var(--light); cursor:pointer; }
+.theme-edit:hover { color:var(--brown); }
+
+/* ── DATE ROW ── */
+.date-row { display:flex; align-items:baseline; gap:12px; margin-bottom:24px; }
+.date-main { font-family:var(--serif); font-size:1.6rem; color:var(--green-d); }
+.date-sub { font-size:0.78rem; color:var(--light); }
+
+/* ── GRID ── */
+.grid { display:grid; gap:16px; }
+.g2 { grid-template-columns: 1.5fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.g22 { grid-template-columns: 1fr 1fr; }
+
+/* ── WIDGET ── */
+.widget {
+  background:var(--card); border:1px solid var(--hint);
+  border-radius:var(--radius); overflow:hidden;
+  box-shadow:var(--shadow); transition:box-shadow var(--transition);
+}
+.widget:hover { box-shadow:var(--shadow-md); }
+.w-head {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 16px 10px; border-bottom:1px solid var(--hint);
+}
+.w-title {
+  font-size:0.62rem; text-transform:uppercase; letter-spacing:0.12em;
+  color:var(--light); display:flex; align-items:center; gap:7px;
+}
+.w-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.w-action { font-size:0.7rem; color:var(--light); cursor:pointer; transition:color var(--transition); }
+.w-action:hover { color:var(--green); }
+.w-body { padding:14px 16px; }
+
+/* ── TODAY CARD ── */
+.today-card { background:var(--bg2); border-radius:var(--radius-sm); padding:14px; margin-bottom:12px; }
+.today-day { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--green-d); }
+.today-date { font-size:0.72rem; color:var(--light); margin-bottom:12px; }
+.mood-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.mood-label { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--light); width:52px; }
+.mood-pills { display:flex; gap:4px; }
+.mood-pill {
+  font-size:0.62rem; padding:3px 9px; border-radius:20px;
+  border:1px solid var(--hint); color:var(--light); cursor:pointer;
+  transition:all var(--transition); font-family:var(--sans);
+}
+.mood-pill:hover { border-color:var(--green); color:var(--green); }
+.mood-pill.sel { background:var(--green); color:white; border-color:var(--green); }
+.today-note { margin-top:10px; font-size:0.8rem; color:var(--mid); font-style:italic; border-top:1px solid var(--hint); padding-top:8px; }
+.today-note-label { font-size:0.62rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--light); font-style:normal; margin-bottom:2px; }
+
+/* ── PRIORITIES ── */
+.priority-list { display:flex; flex-direction:column; gap:5px; }
+.p-item {
+  display:flex; align-items:flex-start; gap:9px; padding:7px 9px;
+  border-radius:var(--radius-sm); cursor:pointer; transition:background var(--transition);
+}
+.p-item:hover { background:var(--bg2); }
+.p-item.done { opacity:0.4; }
+.p-item.done .p-text { text-decoration:line-through; }
+.p-num {
+  width:20px; height:20px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.6rem; flex-shrink:0; margin-top:1px;
+}
+.p-text { flex:1; font-size:0.82rem; color:var(--text); }
+.p-cat { font-size:0.6rem; padding:2px 6px; border-radius:4px; flex-shrink:0; margin-top:2px; font-family:var(--sans); }
+
+/* ── TASKS ── */
+.task-list { display:flex; flex-direction:column; }
+.t-item {
+  display:flex; align-items:center; gap:8px; padding:7px 0;
+  border-bottom:1px solid var(--bg2); cursor:pointer; transition:all var(--transition);
+}
+.t-item:last-child { border-bottom:none; }
+.t-item:hover .t-name { color:var(--green); }
+.urgency { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.t-name { flex:1; font-size:0.8rem; color:var(--mid); }
+.t-cat { font-size:0.62rem; color:var(--light); }
+.t-due { font-size:0.62rem; color:var(--light); }
+
+/* ── HABITS ── */
+.habit-head-row { display:flex; padding-left:80px; gap:3px; margin-bottom:5px; }
+.habit-day-lbl { width:24px; text-align:center; font-size:0.58rem; color:var(--light); }
+.habit-rows { display:flex; flex-direction:column; gap:6px; }
+.h-row { display:flex; align-items:center; gap:6px; }
+.h-name { font-size:0.75rem; color:var(--mid); width:78px; flex-shrink:0; }
+.h-boxes { display:flex; gap:3px; }
+.h-box {
+  width:24px; height:24px; border-radius:4px; border:1px solid var(--hint);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.6rem; color:var(--light); cursor:pointer; transition:all var(--transition);
+}
+.h-box:hover { border-color:var(--health); }
+.h-box.done { background:var(--health); border-color:var(--health); color:white; }
+.h-box.today-box { border-color:var(--text); border-width:2px; }
+.h-streak { font-size:0.62rem; color:var(--light); margin-left:4px; }
+
+/* ── BOOKS ── */
+.book-list { display:flex; flex-direction:column; gap:10px; }
+.book-item { display:flex; gap:10px; cursor:pointer; }
+.book-spine { width:4px; border-radius:2px; flex-shrink:0; min-height:44px; align-self:stretch; }
+.book-info { flex:1; }
+.book-title { font-size:0.85rem; font-weight:600; color:var(--text); }
+.book-author { font-size:0.72rem; color:var(--light); }
+.progress-bar { height:3px; background:var(--bg2); border-radius:2px; margin-top:5px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:2px; }
+.progress-txt { font-size:0.62rem; color:var(--light); margin-top:2px; }
+.book-stats { display:flex; gap:12px; margin-top:10px; padding-top:10px; border-top:1px solid var(--bg2); }
+.book-stat { text-align:center; }
+.book-stat-n { font-size:1.1rem; font-weight:600; color:var(--green-d); }
+.book-stat-l { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--light); }
+
+/* ── PIANO ── */
+.song-list { display:flex; flex-direction:column; gap:5px; }
+.song-item {
+  display:flex; align-items:center; gap:8px; padding:6px 0;
+  border-bottom:1px solid var(--bg2);
+}
+.song-item:last-child { border-bottom:none; }
+.song-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.song-name { flex:1; font-size:0.8rem; color:var(--mid); }
+.song-badge { font-size:0.6rem; padding:2px 7px; border-radius:4px; }
+.last-session { margin-top:10px; padding-top:8px; border-top:1px solid var(--bg2); font-size:0.72rem; color:var(--light); }
+
+/* ── FINANCE ── */
+.fin-summary { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px; }
+.fin-stat { background:var(--bg2); border-radius:var(--radius-sm); padding:8px 10px; }
+.fin-stat-label { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--light); margin-bottom:2px; }
+.fin-stat-val { font-size:1rem; font-weight:600; }
+.fin-entries { display:flex; flex-direction:column; gap:4px; }
+.fin-entry { display:flex; align-items:center; gap:8px; font-size:0.75rem; color:var(--mid); padding:3px 0; border-bottom:1px solid var(--bg2); }
+.fin-entry:last-child { border-bottom:none; }
+.fin-type { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.fin-name { flex:1; }
+.fin-amt { font-size:0.72rem; font-weight:600; }
+
+/* ── FAITH & FAMILY ── */
+.log-entry { padding:8px 0; border-bottom:1px solid var(--bg2); }
+.log-entry:last-child { border-bottom:none; }
+.log-date { font-size:0.62rem; color:var(--light); margin-bottom:2px; }
+.log-text { font-size:0.8rem; color:var(--mid); font-style:italic; line-height:1.6; }
+
+/* ── HEALTH ── */
+.health-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:10px; }
+.health-stat { background:var(--bg2); border-radius:var(--radius-sm); padding:8px 10px; text-align:center; }
+.health-val { font-size:1.1rem; font-weight:600; color:var(--green-d); }
+.health-lbl { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--light); }
+
+/* ── LOADING ── */
+.loading { display:flex; align-items:center; justify-content:center; padding:24px; color:var(--light); font-size:0.8rem; gap:8px; }
+.spin { width:14px; height:14px; border:2px solid var(--hint); border-top-color:var(--green); border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.error { padding:12px; font-size:0.75rem; color:var(--faith); background:var(--faith-bg); border-radius:var(--radius-sm); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(44,48,41,0.5); align-items:center; justify-content:center;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--card); border-radius:var(--radius); width:460px; max-width:90vw;
+  border:1px solid var(--hint); box-shadow:var(--shadow-md); padding:24px;
+}
+.modal-title { font-family:var(--serif); font-size:1.1rem; font-weight:600; margin-bottom:16px; color:var(--green-d); }
+.modal-field { margin-bottom:12px; }
+.modal-label { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--light); margin-bottom:4px; }
+.modal-input, .modal-select, .modal-textarea {
+  width:100%; padding:8px 12px; border:1px solid var(--hint);
+  border-radius:var(--radius-sm); background:var(--bg);
+  font-family:var(--sans); font-size:0.85rem; color:var(--text);
+  outline:none; transition:border-color var(--transition);
+}
+.modal-input:focus, .modal-select:focus, .modal-textarea:focus { border-color:var(--green); }
+.modal-textarea { resize:vertical; min-height:80px; }
+.modal-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.modal-btns { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+.btn-cancel { padding:8px 18px; border:1px solid var(--hint); border-radius:50px; background:none; font-family:var(--sans); font-size:0.8rem; color:var(--light); cursor:pointer; }
+.btn-save { padding:8px 22px; border:none; border-radius:50px; background:var(--green); font-family:var(--sans); font-size:0.8rem; color:white; cursor:pointer; transition:background var(--transition); }
+.btn-save:hover { background:var(--green-l); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)} }
+.widget { animation:fadeUp 0.35s ease both; }
+.widget:nth-child(1){animation-delay:.05s}.widget:nth-child(2){animation-delay:.1s}
+.widget:nth-child(3){animation-delay:.15s}.widget:nth-child(4){animation-delay:.2s}
+.widget:nth-child(5){animation-delay:.25s}.widget:nth-child(6){animation-delay:.3s}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="dash-nav">
+  <div class="dash-brand" onclick="location.href='/'">absolutefield <span>life tracker</span></div>
+  <div class="nav-right">
+    <a class="dash-back" href="/">← back to site</a>
+    <button class="capture-btn" onclick="openCapture()">+ capture task</button>
+  </div>
+</nav>
+
+<div class="dash-content">
+
+  <!-- Theme banner -->
+  <div class="theme-banner">
+    <div class="theme-label">this week</div>
+    <div class="theme-value" id="theme-text">loading...</div>
+    <div class="theme-edit" onclick="editTheme()">edit</div>
+  </div>
+
+  <!-- Date -->
+  <div class="date-row">
+    <div class="date-main" id="date-main"></div>
+    <div class="date-sub" id="date-sub"></div>
+  </div>
+
+  <!-- Top row: Today + Tasks/Habits -->
+  <div class="grid g2" style="margin-bottom:16px">
+
+    <!-- Today + Priorities -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="widget">
+        <div class="w-head">
+          <div class="w-title"><div class="w-dot" style="background:var(--green)"></div>today</div>
+          <div class="w-action" onclick="openDailyLog()">edit log</div>
+        </div>
+        <div class="w-body">
+          <div class="today-card">
+            <div class="today-day" id="today-day">—</div>
+            <div class="today-date" id="today-date">—</div>
+            <div class="mood-row">
+              <div class="mood-label">mood</div>
+              <div class="mood-pills" id="mood-pills">
+                <div class="mood-pill" onclick="setMood('low')">low</div>
+                <div class="mood-pill" onclick="setMood('okay')">okay</div>
+                <div class="mood-pill" onclick="setMood('good')">good</div>
+                <div class="mood-pill" onclick="setMood('great')">great</div>
+                <div class="mood-pill" onclick="setMood('peak')">peak</div>
+              </div>
+            </div>
+            <div class="mood-row">
+              <div class="mood-label">energy</div>
+              <div class="mood-pills" id="energy-pills">
+                <div class="mood-pill" onclick="setEnergy('low')">low</div>
+                <div class="mood-pill" onclick="setEnergy('medium')">medium</div>
+                <div class="mood-pill" onclick="setEnergy('high')">high</div>
+              </div>
+            </div>
+            <div class="today-note" id="today-gratitude-block" style="display:none">
+              <div class="today-note-label">grateful for</div>
+              <div id="today-gratitude">—</div>
+            </div>
+          </div>
+          <div id="priorities-list" class="priority-list">
+            <div class="loading"><div class="spin"></div>loading priorities...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasks + Habits -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="widget">
+        <div class="w-head">
+          <div class="w-title"><div class="w-dot" style="background:var(--work)"></div>task master · today</div>
+          <div class="w-action" onclick="openAddTask()">+ add</div>
+        </div>
+        <div class="w-body">
+          <div id="task-list" class="task-list">
+            <div class="loading"><div class="spin"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="w-head">
+          <div class="w-title"><div class="w-dot" style="background:var(--health)"></div>habits · this week</div>
+        </div>
+        <div class="w-body">
+          <div class="habit-head-row">
+            <div class="habit-day-lbl">M</div><div class="habit-day-lbl">T</div>
+            <div class="habit-day-lbl">W</div><div class="habit-day-lbl">T</div>
+            <div class="habit-day-lbl">F</div><div class="habit-day-lbl">S</div>
+            <div class="habit-day-lbl">S</div>
+          </div>
+          <div id="habit-rows" class="habit-rows">
+            <div class="loading"><div class="spin"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom row: Reading · Piano · Finance -->
+  <div class="grid g3" style="margin-bottom:16px">
+
+    <div class="widget">
+      <div class="w-head">
+        <div class="w-title"><div class="w-dot" style="background:var(--read)"></div>reading · now</div>
+        <div class="w-action" onclick="openAddBook()">+ log</div>
+      </div>
+      <div class="w-body" id="reading-body">
+        <div class="loading"><div class="spin"></div></div>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="w-head">
+        <div class="w-title"><div class="w-dot" style="background:var(--piano)"></div>piano · songs</div>
+        <div class="w-action" onclick="openAddSession()">+ session</div>
+      </div>
+      <div class="w-body" id="piano-body">
+        <div class="loading"><div class="spin"></div></div>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="w-head">
+        <div class="w-title"><div class="w-dot" style="background:var(--finance)"></div>finance · <span id="fin-month">—</span></div>
+        <div class="w-action" onclick="openAddFinance()">+ entry</div>
+      </div>
+      <div class="w-body" id="finance-body">
+        <div class="loading"><div class="spin"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Faith + Family -->
+  <div class="grid g22">
+    <div class="widget">
+      <div class="w-head">
+        <div class="w-title"><div class="w-dot" style="background:var(--faith)"></div>faith · recent</div>
+        <div class="w-action" onclick="openAddFaith()">+ log</div>
+      </div>
+      <div class="w-body" id="faith-body">
+        <div class="loading"><div class="spin"></div></div>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="w-head">
+        <div class="w-title"><div class="w-dot" style="background:var(--family)"></div>family · recent</div>
+        <div class="w-action" onclick="openAddFamily()">+ log</div>
+      </div>
+      <div class="w-body" id="family-body">
+        <div class="loading"><div class="spin"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── MODALS ── -->
+
+<!-- Capture task -->
+<div class="modal-overlay" id="modal-capture" onclick="closeModal('modal-capture',event)">
+  <div class="modal">
+    <div class="modal-title">Capture a task</div>
+    <div class="modal-field">
+      <div class="modal-label">Task</div>
+      <input class="modal-input" id="cap-task" placeholder="What needs to happen?">
+    </div>
+    <div class="modal-row">
+      <div class="modal-field">
+        <div class="modal-label">Category</div>
+        <select class="modal-select" id="cap-cat">
+          <option>Property mgmt</option><option>ESL</option><option>Reading</option>
+          <option>Piano</option><option>Personal</option><option>Finance</option><option>Health</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Urgency</div>
+        <select class="modal-select" id="cap-urgency">
+          <option>Routine</option><option>Important</option><option>Urgent</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Notes</div>
+      <input class="modal-input" id="cap-notes" placeholder="Optional context...">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-capture')">cancel</button>
+      <button class="btn-save" onclick="saveTask()">save task</button>
+    </div>
+  </div>
+</div>
+
+<!-- Daily log -->
+<div class="modal-overlay" id="modal-daily" onclick="closeModal('modal-daily',event)">
+  <div class="modal">
+    <div class="modal-title">Today's log</div>
+    <div class="modal-row">
+      <div class="modal-field">
+        <div class="modal-label">Priority 1</div>
+        <input class="modal-input" id="dl-p1" placeholder="Most important today">
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Priority 2</div>
+        <input class="modal-input" id="dl-p2" placeholder="Second priority">
+      </div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Priority 3</div>
+      <input class="modal-input" id="dl-p3" placeholder="Third priority">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Grateful for</div>
+      <input class="modal-input" id="dl-gratitude" placeholder="One thing you're grateful for">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Faith note</div>
+      <input class="modal-input" id="dl-faith" placeholder="Prayer intention or verse">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Highlight of the day</div>
+      <input class="modal-input" id="dl-highlight" placeholder="Best moment">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-daily')">cancel</button>
+      <button class="btn-save" onclick="saveDailyLog()">save log</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add reading session -->
+<div class="modal-overlay" id="modal-book" onclick="closeModal('modal-book',event)">
+  <div class="modal">
+    <div class="modal-title">Log reading session</div>
+    <div class="modal-field">
+      <div class="modal-label">Book title</div>
+      <input class="modal-input" id="book-title" placeholder="Title">
+    </div>
+    <div class="modal-row">
+      <div class="modal-field">
+        <div class="modal-label">Pages start</div>
+        <input class="modal-input" id="book-start" type="number" placeholder="e.g. 1">
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Pages end</div>
+        <input class="modal-input" id="book-end" type="number" placeholder="e.g. 30">
+      </div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Notes</div>
+      <input class="modal-input" id="book-notes" placeholder="How was it?">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-book')">cancel</button>
+      <button class="btn-save" onclick="saveReadingSession()">save session</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add piano session -->
+<div class="modal-overlay" id="modal-piano" onclick="closeModal('modal-piano',event)">
+  <div class="modal">
+    <div class="modal-title">Log piano session</div>
+    <div class="modal-field">
+      <div class="modal-label">Song practiced</div>
+      <input class="modal-input" id="piano-song" placeholder="Song title">
+    </div>
+    <div class="modal-row">
+      <div class="modal-field">
+        <div class="modal-label">Duration (min)</div>
+        <input class="modal-input" id="piano-dur" type="number" placeholder="20">
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Focus</div>
+        <input class="modal-input" id="piano-focus" placeholder="e.g. chord transitions">
+      </div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Progress notes</div>
+      <input class="modal-input" id="piano-notes" placeholder="How did it go?">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-piano')">cancel</button>
+      <button class="btn-save" onclick="savePianoSession()">save session</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add finance entry -->
+<div class="modal-overlay" id="modal-finance" onclick="closeModal('modal-finance',event)">
+  <div class="modal">
+    <div class="modal-title">Log finance entry</div>
+    <div class="modal-row">
+      <div class="modal-field">
+        <div class="modal-label">Type</div>
+        <select class="modal-select" id="fin-type">
+          <option>Income</option><option>Expense</option><option>Savings</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Category</div>
+        <select class="modal-select" id="fin-cat">
+          <option>Property management</option><option>Salary / other</option>
+          <option>Bills & utilities</option><option>Groceries & food</option>
+          <option>Transport</option><option>Personal / misc</option><option>Savings</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Amount (PHP)</div>
+      <input class="modal-input" id="fin-amount" type="number" placeholder="0.00">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Description</div>
+      <input class="modal-input" id="fin-desc" placeholder="What was it for?">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-finance')">cancel</button>
+      <button class="btn-save" onclick="saveFinanceEntry()">save entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add faith log -->
+<div class="modal-overlay" id="modal-faith" onclick="closeModal('modal-faith',event)">
+  <div class="modal">
+    <div class="modal-title">Faith log</div>
+    <div class="modal-field">
+      <div class="modal-label">Verse / passage</div>
+      <input class="modal-input" id="faith-verse" placeholder="e.g. Psalm 46:10">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Prayer intention</div>
+      <input class="modal-input" id="faith-prayer" placeholder="What you prayed for">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Reflection</div>
+      <textarea class="modal-textarea" id="faith-reflection" placeholder="One thought from your quiet time"></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-faith')">cancel</button>
+      <button class="btn-save" onclick="saveFaithLog()">save log</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add family log -->
+<div class="modal-overlay" id="modal-family" onclick="closeModal('modal-family',event)">
+  <div class="modal">
+    <div class="modal-title">Family log</div>
+    <div class="modal-field">
+      <div class="modal-label">Who</div>
+      <input class="modal-input" id="family-who" placeholder="Family member(s)">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">What happened</div>
+      <textarea class="modal-textarea" id="family-what" placeholder="What did you do or talk about?"></textarea>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Memory worth keeping</div>
+      <input class="modal-input" id="family-memory" placeholder="Optional">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-family')">cancel</button>
+      <button class="btn-save" onclick="saveFamilyLog()">save log</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG: paste your Notion database IDs here ──────────────────────────
+const DB = {
+  dailyLog:       'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:     'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:   'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:      'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions:'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:     'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:  'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:        'PASTE_FINANCE_DB_ID',
+  health:         'PASTE_HEALTH_DB_ID',
+  faith:          'PASTE_FAITH_DB_ID',
+  family:         'PASTE_FAMILY_DB_ID',
+  habits:         'PASTE_HABIT_TRACKER_DB_ID',
+};
+
+// ── NOTION API HELPER ────────────────────────────────────────────────────
+async function notion(method, path, body) {
+  const res = await fetch(`/api/notion${path}`, {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  return res.json();
+}
+
+const query  = (db, filter, sorts) => notion('POST', `/databases/${db}/query`, { filter, sorts });
+const create = (db, props)          => notion('POST', `/pages`, { parent:{database_id:db}, properties:props });
+const update = (id, props)          => notion('PATCH', `/pages/${id}`, { properties:props });
+
+// ── PROPERTY HELPERS ─────────────────────────────────────────────────────
+const prop = {
+  title:    v => ({ title: [{ text: { content: v||'' } }] }),
+  text:     v => ({ rich_text: [{ text: { content: v||'' } }] }),
+  select:   v => ({ select: { name: v } }),
+  date:     v => ({ date: { start: v } }),
+  checkbox: v => ({ checkbox: !!v }),
+  number:   v => ({ number: parseFloat(v)||0 }),
+};
+
+function getTitle(page) {
+  const props = page.properties;
+  for (const k in props) {
+    if (props[k].type === 'title') {
+      return props[k].title.map(t => t.plain_text).join('') || '';
+    }
+  }
+  return '';
+}
+
+function getText(page, key) {
+  const p = page.properties[key];
+  if (!p) return '';
+  if (p.type === 'rich_text') return p.rich_text.map(t => t.plain_text).join('');
+  if (p.type === 'title') return p.title.map(t => t.plain_text).join('');
+  return '';
+}
+
+function getSelect(page, key) {
+  const p = page.properties[key];
+  return p?.select?.name || '';
+}
+
+function getDate(page, key) {
+  const p = page.properties[key];
+  return p?.date?.start || '';
+}
+
+function getNumber(page, key) {
+  const p = page.properties[key];
+  return p?.number || 0;
+}
+
+function getCheckbox(page, key) {
+  return page.properties[key]?.checkbox || false;
+}
+
+// ── DATE SETUP ───────────────────────────────────────────────────────────
+const now   = new Date();
+const today = now.toISOString().split('T')[0];
+const days  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months= ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+document.getElementById('date-main').textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+document.getElementById('date-sub').textContent  = `${now.getFullYear()} · week ${getWeekNum(now)}`;
+document.getElementById('today-day').textContent  = days[now.getDay()];
+document.getElementById('today-date').textContent = `${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+document.getElementById('fin-month').textContent  = `${months[now.getMonth()].toLowerCase()}`;
+
+function getWeekNum(d) {
+  const s = new Date(Date.UTC(d.getFullYear(),0,1));
+  return Math.ceil((((d-s)/86400000)+s.getUTCDay()+1)/7);
+}
+
+function getMondayStr(d) {
+  const m = new Date(d);
+  m.setDate(m.getDate() - ((m.getDay()+6)%7));
+  return m.toISOString().split('T')[0];
+}
+
+// ── STATE ────────────────────────────────────────────────────────────────
+let todayPageId = null;
+let currentMood = '';
+let currentEnergy = '';
+const habitCols = ['Read','Piano','Water','Walk','Journal','Pray','Family time'];
+const habDays   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+// ── LOAD ALL DATA ────────────────────────────────────────────────────────
+async function loadAll() {
+  await Promise.all([
+    loadDailyLog(),
+    loadTasks(),
+    loadHabits(),
+    loadReading(),
+    loadPiano(),
+    loadFinance(),
+    loadFaith(),
+    loadFamily(),
+    loadWeeklyTheme(),
+  ]);
+}
+
+// ── DAILY LOG ────────────────────────────────────────────────────────────
+async function loadDailyLog() {
+  try {
+    const res = await query(DB.dailyLog, {
+      property: 'Date', date: { equals: today }
+    });
+    const page = res.results?.[0];
+    if (page) {
+      todayPageId = page.id;
+      currentMood = getSelect(page, 'Mood');
+      currentEnergy = getSelect(page, 'Energy');
+      renderMood(currentMood);
+      renderEnergy(currentEnergy);
+
+      const gratitude = getText(page, 'Gratitude');
+      if (gratitude) {
+        document.getElementById('today-gratitude').textContent = gratitude;
+        document.getElementById('today-gratitude-block').style.display = 'block';
+      }
+      renderPriorities(page);
+    } else {
+      document.getElementById('priorities-list').innerHTML =
+        '<div style="font-size:0.78rem;color:var(--light);text-align:center;padding:12px">No log yet today — click "edit log" to start your morning anchor</div>';
+    }
+  } catch(e) {
+    document.getElementById('priorities-list').innerHTML = '<div class="error">Could not load daily log. Check your DB ID and Notion connection.</div>';
+  }
+}
+
+function renderMood(mood) {
+  document.querySelectorAll('#mood-pills .mood-pill').forEach(el => {
+    el.classList.toggle('sel', el.textContent === mood);
+  });
+}
+
+function renderEnergy(energy) {
+  document.querySelectorAll('#energy-pills .mood-pill').forEach(el => {
+    el.classList.toggle('sel', el.textContent === energy);
+  });
+}
+
+function renderPriorities(page) {
+  const p1 = getText(page, 'Priority 1');
+  const p2 = getText(page, 'Priority 2');
+  const p3 = getText(page, 'Priority 3');
+  const cats = [
+    { bg:'var(--work-bg)', color:'var(--work)', label:'work' },
+    { bg:'var(--work-bg)', color:'var(--work)', label:'work' },
+    { bg:'var(--piano-bg)', color:'var(--piano)', label:'personal' },
+  ];
+  const items = [p1, p2, p3].filter(Boolean);
+  if (!items.length) {
+    document.getElementById('priorities-list').innerHTML =
+      '<div style="font-size:0.78rem;color:var(--light);text-align:center;padding:8px">No priorities set — click "edit log"</div>';
+    return;
+  }
+  document.getElementById('priorities-list').innerHTML = items.map((p, i) => `
+    <div class="p-item" onclick="this.classList.toggle('done')">
+      <div class="p-num" style="background:${cats[i].bg};color:${cats[i].color}">${i+1}</div>
+      <div class="p-text">${p}</div>
+    </div>`).join('');
+}
+
+// ── TASKS ────────────────────────────────────────────────────────────────
+async function loadTasks() {
+  try {
+    const res = await query(DB.taskMaster, {
+      and: [
+        { property:'Scheduled', date:{ equals: today } },
+        { property:'Status', status:{ does_not_equal:'Done' } },
+      ]
+    }, [{ property:'Urgency', direction:'ascending' }]);
+
+    const urgencyColors = { 'Urgent':'#E24B4A', 'Important':'#BA7517', 'Routine':'var(--hint)' };
+    const el = document.getElementById('task-list');
+
+    if (!res.results?.length) {
+      el.innerHTML = '<div style="font-size:0.78rem;color:var(--light);padding:8px">No tasks scheduled for today</div>';
+      return;
+    }
+
+    el.innerHTML = res.results.map(p => {
+      const name = getTitle(p);
+      const cat  = getSelect(p, 'Category');
+      const urg  = getSelect(p, 'Urgency');
+      return `<div class="t-item">
+        <div class="urgency" style="background:${urgencyColors[urg]||'var(--hint)'}"></div>
+        <div class="t-name">${name}</div>
+        <div class="t-cat">${cat}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('task-list').innerHTML = '<div class="error">Could not load tasks.</div>';
+  }
+}
+
+// ── HABITS ───────────────────────────────────────────────────────────────
+async function loadHabits() {
+  try {
+    const monday = getMondayStr(now);
+    const res = await query(DB.habits, {
+      property:'Week of', date:{ equals: monday }
+    });
+    const page = res.results?.[0];
+    const dayIdx = (now.getDay() + 6) % 7; // Mon=0
+
+    const el = document.getElementById('habit-rows');
+    el.innerHTML = habitCols.map(habit => {
+      const boxes = habDays.map((d, i) => {
+        const key = `${habit} — ${d}`;
+        const done = page ? getCheckbox(page, key) : false;
+        const isToday = i === dayIdx;
+        return `<div class="h-box ${done?'done':''} ${isToday?'today-box':''}"
+          onclick="toggleHabit('${page?.id}','${key}',this)">${done?'✓':''}</div>`;
+      }).join('');
+      const streak = page ? habDays.slice(0, dayIdx+1).filter(d => getCheckbox(page, `${habit} — ${d}`)).length : 0;
+      return `<div class="h-row">
+        <div class="h-name">${habit}</div>
+        <div class="h-boxes">${boxes}</div>
+        <div class="h-streak">${streak}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('habit-rows').innerHTML = '<div class="error">Could not load habits.</div>';
+  }
+}
+
+async function toggleHabit(pageId, key, el) {
+  if (!pageId) return;
+  const done = !el.classList.contains('done');
+  el.classList.toggle('done', done);
+  el.textContent = done ? '✓' : '';
+  await update(pageId, { [key]: prop.checkbox(done) });
+}
+
+// ── READING ───────────────────────────────────────────────────────────────
+async function loadReading() {
+  try {
+    const [current, stats] = await Promise.all([
+      query(DB.bookShelf, { property:'Status', select:{ equals:'Reading' } }),
+      query(DB.bookShelf, {}, [{property:'Title',direction:'ascending'}]),
+    ]);
+
+    const totalRead = stats.results?.filter(p => getSelect(p,'Status')==='Read').length || 0;
+    const totalOwned = stats.results?.filter(p => getSelect(p,'Status')==='Owned / unread').length || 0;
+
+    const books = current.results?.slice(0,3).map(p => {
+      const title = getTitle(p);
+      const author = getText(p,'Author');
+      return `<div class="book-item">
+        <div class="book-spine" style="background:var(--read)"></div>
+        <div class="book-info">
+          <div class="book-title">${title}</div>
+          <div class="book-author">${author}</div>
+        </div>
+      </div>`;
+    }).join('') || '<div style="font-size:0.78rem;color:var(--light)">No books currently reading</div>';
+
+    document.getElementById('reading-body').innerHTML = `
+      <div class="book-list">${books}</div>
+      <div class="book-stats">
+        <div class="book-stat"><div class="book-stat-n">${totalRead}</div><div class="book-stat-l">read</div></div>
+        <div class="book-stat"><div class="book-stat-n">${totalOwned}</div><div class="book-stat-l">unread</div></div>
+        <div class="book-stat"><div class="book-stat-n">${(current.results?.length||0)}</div><div class="book-stat-l">reading</div></div>
+      </div>`;
+  } catch(e) {
+    document.getElementById('reading-body').innerHTML = '<div class="error">Could not load reading data.</div>';
+  }
+}
+
+// ── PIANO ─────────────────────────────────────────────────────────────────
+async function loadPiano() {
+  try {
+    const [songs, sessions] = await Promise.all([
+      query(DB.pianoSongs, {
+        or: [
+          { property:'Status', select:{equals:'In progress'} },
+          { property:'Status', select:{equals:'Learning'} },
+          { property:'Status', select:{equals:'Queued'} },
+        ]
+      }),
+      query(DB.pianoSessions, {}, [{property:'Date',direction:'descending'}]),
+    ]);
+
+    const statusColors = { 'In progress':'var(--piano)', 'Learning':'var(--piano-b)', 'Queued':'var(--hint)' };
+    const statusBg     = { 'In progress':'var(--piano-bg)', 'Learning':'var(--piano-bg)', 'Queued':'var(--bg2)' };
+    const statusText   = { 'In progress':'var(--piano)', 'Learning':'var(--piano)', 'Queued':'var(--light)' };
+
+    const songList = songs.results?.slice(0,4).map(p => {
+      const name = getTitle(p);
+      const status = getSelect(p,'Status');
+      return `<div class="song-item">
+        <div class="song-dot" style="background:${statusColors[status]||'var(--hint)'}"></div>
+        <div class="song-name">${name}</div>
+        <div class="song-badge" style="background:${statusBg[status]||'var(--bg2)'};color:${statusText[status]||'var(--light)'}">${status||''}</div>
+      </div>`;
+    }).join('') || '<div style="font-size:0.78rem;color:var(--light)">No active songs</div>';
+
+    const lastSession = sessions.results?.[0];
+    const lastInfo = lastSession
+      ? `last: ${getTitle(lastSession)} · ${getNumber(lastSession,'Duration (min)')} min · ${getDate(lastSession,'Date')}`
+      : 'no sessions logged yet';
+
+    document.getElementById('piano-body').innerHTML = `
+      <div class="song-list">${songList}</div>
+      <div class="last-session">${lastInfo}</div>`;
+  } catch(e) {
+    document.getElementById('piano-body').innerHTML = '<div class="error">Could not load piano data.</div>';
+  }
+}
+
+// ── FINANCE ───────────────────────────────────────────────────────────────
+async function loadFinance() {
+  try {
+    const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    const res = await query(DB.finance, {
+      property:'Month', rich_text:{ contains: months[now.getMonth()] }
+    });
+
+    let income = 0, expense = 0, savings = 0;
+    const entries = res.results || [];
+    entries.forEach(p => {
+      const type = getSelect(p,'Type');
+      const amt  = getNumber(p,'Amount (PHP)');
+      if (type==='Income') income += amt;
+      else if (type==='Expense') expense += amt;
+      else if (type==='Savings') savings += amt;
+    });
+
+    const fmt = n => n ? `₱${n.toLocaleString()}` : '—';
+    const entryList = entries.slice(0,4).map(p => {
+      const type = getSelect(p,'Type');
+      const name = getText(p,'Description') || getSelect(p,'Category');
+      const amt  = getNumber(p,'Amount (PHP)');
+      const col  = type==='Income'?'var(--health)':type==='Savings'?'var(--work)':'var(--faith)';
+      const sign = type==='Income'||type==='Savings' ? '+' : '-';
+      return `<div class="fin-entry">
+        <div class="fin-type" style="background:${col}"></div>
+        <div class="fin-name">${name}</div>
+        <div class="fin-amt" style="color:${col}">${sign}${fmt(amt)}</div>
+      </div>`;
+    }).join('') || '<div style="font-size:0.75rem;color:var(--light)">No entries this month yet</div>';
+
+    document.getElementById('finance-body').innerHTML = `
+      <div class="fin-summary">
+        <div class="fin-stat"><div class="fin-stat-label">income</div><div class="fin-stat-val" style="color:var(--health)">${fmt(income)}</div></div>
+        <div class="fin-stat"><div class="fin-stat-label">expense</div><div class="fin-stat-val" style="color:var(--faith)">${fmt(expense)}</div></div>
+        <div class="fin-stat"><div class="fin-stat-label">saved</div><div class="fin-stat-val" style="color:var(--work)">${fmt(savings)}</div></div>
+      </div>
+      <div class="fin-entries">${entryList}</div>`;
+  } catch(e) {
+    document.getElementById('finance-body').innerHTML = '<div class="error">Could not load finance data.</div>';
+  }
+}
+
+// ── FAITH ─────────────────────────────────────────────────────────────────
+async function loadFaith() {
+  try {
+    const res = await query(DB.faith, {}, [{property:'Date',direction:'descending'}]);
+    const el = document.getElementById('faith-body');
+    if (!res.results?.length) { el.innerHTML = '<div style="font-size:0.78rem;color:var(--light)">No entries yet</div>'; return; }
+    el.innerHTML = res.results.slice(0,3).map(p => {
+      const verse = getText(p,'Verse / passage') || getText(p,'Prayer intention');
+      const reflection = getText(p,'Reflection');
+      const date = getDate(p,'Date');
+      return `<div class="log-entry">
+        <div class="log-date">${date}</div>
+        <div class="log-text">${verse}${reflection ? ' · '+reflection : ''}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('faith-body').innerHTML = '<div class="error">Could not load faith log.</div>';
+  }
+}
+
+// ── FAMILY ────────────────────────────────────────────────────────────────
+async function loadFamily() {
+  try {
+    const res = await query(DB.family, {}, [{property:'Date',direction:'descending'}]);
+    const el = document.getElementById('family-body');
+    if (!res.results?.length) { el.innerHTML = '<div style="font-size:0.78rem;color:var(--light)">No entries yet</div>'; return; }
+    el.innerHTML = res.results.slice(0,3).map(p => {
+      const who  = getText(p,'Who');
+      const what = getText(p,'What we did / talked about');
+      const date = getDate(p,'Date');
+      return `<div class="log-entry">
+        <div class="log-date">${date}${who ? ' · '+who : ''}</div>
+        <div class="log-text">${what}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('family-body').innerHTML = '<div class="error">Could not load family log.</div>';
+  }
+}
+
+// ── WEEKLY THEME ──────────────────────────────────────────────────────────
+async function loadWeeklyTheme() {
+  try {
+    const monday = getMondayStr(now);
+    const res = await query(DB.weeklyReview, { property:'Week of', date:{equals:monday} });
+    const page = res.results?.[0];
+    const theme = page ? getText(page,'Focus Theme') : '';
+    document.getElementById('theme-text').textContent = theme || 'one day at a time';
+  } catch(e) {
+    document.getElementById('theme-text').textContent = 'one day at a time';
+  }
+}
+
+// ── MOOD & ENERGY ─────────────────────────────────────────────────────────
+async function setMood(mood) {
+  currentMood = mood;
+  renderMood(mood);
+  if (todayPageId) await update(todayPageId, { Mood: prop.select(mood) });
+}
+
+async function setEnergy(energy) {
+  currentEnergy = energy;
+  renderEnergy(energy);
+  if (todayPageId) await update(todayPageId, { Energy: prop.select(energy) });
+}
+
+// ── SAVE FUNCTIONS ────────────────────────────────────────────────────────
+async function saveTask() {
+  const task = document.getElementById('cap-task').value.trim();
+  if (!task) return;
+  await create(DB.taskMaster, {
+    Task:      prop.title(task),
+    Status:    prop.select('Not started'),
+    Category:  prop.select(document.getElementById('cap-cat').value),
+    Urgency:   prop.select(document.getElementById('cap-urgency').value),
+    Notes:     prop.text(document.getElementById('cap-notes').value),
+    Scheduled: prop.date(today),
+  });
+  closeModal('modal-capture');
+  loadTasks();
+}
+
+async function saveDailyLog() {
+  const p1 = document.getElementById('dl-p1').value.trim();
+  const p2 = document.getElementById('dl-p2').value.trim();
+  const p3 = document.getElementById('dl-p3').value.trim();
+  const gratitude = document.getElementById('dl-gratitude').value.trim();
+  const faith = document.getElementById('dl-faith').value.trim();
+  const highlight = document.getElementById('dl-highlight').value.trim();
+
+  const props = {
+    Day:        prop.title(days[now.getDay()]),
+    Date:       prop.date(today),
+    'Priority 1': prop.text(p1),
+    'Priority 2': prop.text(p2),
+    'Priority 3': prop.text(p3),
+    Gratitude:  prop.text(gratitude),
+    'Faith note': prop.text(faith),
+    Highlight:  prop.text(highlight),
+    Week:       prop.text(getMondayStr(now)),
+  };
+
+  if (todayPageId) {
+    await update(todayPageId, props);
+  } else {
+    const page = await create(DB.dailyLog, props);
+    todayPageId = page.id;
+  }
+  closeModal('modal-daily');
+  loadDailyLog();
+}
+
+async function saveReadingSession() {
+  const title = document.getElementById('book-title').value.trim();
+  if (!title) return;
+  const start = document.getElementById('book-start').value;
+  const end   = document.getElementById('book-end').value;
+  await create(DB.readingSessions, {
+    Session:       prop.title(`${title} — p.${start}–${end}`),
+    Date:          prop.date(today),
+    'Book':        prop.text(title),
+    'Pages start': prop.number(start),
+    'Pages end':   prop.number(end),
+    'Pages read':  prop.number(end - start),
+    Notes:         prop.text(document.getElementById('book-notes').value),
+  });
+  closeModal('modal-book');
+}
+
+async function savePianoSession() {
+  const song = document.getElementById('piano-song').value.trim();
+  if (!song) return;
+  await create(DB.pianoSessions, {
+    Session:          prop.title(`${song} — ${document.getElementById('piano-dur').value} min`),
+    Date:             prop.date(today),
+    'Song practiced': prop.text(song),
+    'Duration (min)': prop.number(document.getElementById('piano-dur').value),
+    Focus:            prop.text(document.getElementById('piano-focus').value),
+    'Progress notes': prop.text(document.getElementById('piano-notes').value),
+  });
+  closeModal('modal-piano');
+  loadPiano();
+}
+
+async function saveFinanceEntry() {
+  const amt = document.getElementById('fin-amount').value;
+  if (!amt) return;
+  const type = document.getElementById('fin-type').value;
+  const cat  = document.getElementById('fin-cat').value;
+  await create(DB.finance, {
+    Date:           prop.title(today),
+    Type:           prop.select(type),
+    Category:       prop.select(cat),
+    'Amount (PHP)': prop.number(amt),
+    Description:    prop.text(document.getElementById('fin-desc').value),
+    Month:          prop.text(`${months[now.getMonth()]} ${now.getFullYear()}`),
+  });
+  closeModal('modal-finance');
+  loadFinance();
+}
+
+async function saveFaithLog() {
+  await create(DB.faith, {
+    Date:              prop.title(today),
+    'Verse / passage': prop.text(document.getElementById('faith-verse').value),
+    'Prayer intention':prop.text(document.getElementById('faith-prayer').value),
+    Reflection:        prop.text(document.getElementById('faith-reflection').value),
+    'Devotion done':   prop.checkbox(true),
+  });
+  closeModal('modal-faith');
+  loadFaith();
+}
+
+async function saveFamilyLog() {
+  await create(DB.family, {
+    Date:                           prop.title(today),
+    Who:                            prop.text(document.getElementById('family-who').value),
+    'What we did / talked about':   prop.text(document.getElementById('family-what').value),
+    'Memory worth keeping':         prop.text(document.getElementById('family-memory').value),
+  });
+  closeModal('modal-family');
+  loadFamily();
+}
+
+// ── MODAL HELPERS ─────────────────────────────────────────────────────────
+function openCapture()    { document.getElementById('modal-capture').classList.add('open'); }
+function openDailyLog()   { document.getElementById('modal-daily').classList.add('open'); }
+function openAddBook()    { document.getElementById('modal-book').classList.add('open'); }
+function openAddSession() { document.getElementById('modal-piano').classList.add('open'); }
+function openAddFinance() { document.getElementById('modal-finance').classList.add('open'); }
+function openAddFaith()   { document.getElementById('modal-faith').classList.add('open'); }
+function openAddFamily()  { document.getElementById('modal-family').classList.add('open'); }
+
+function editTheme() {
+  const t = prompt('This week\'s focus theme:', document.getElementById('theme-text').textContent);
+  if (t) document.getElementById('theme-text').textContent = t;
+}
+
+function closeModal(id, e) {
+  if (!e || e.target.classList.contains('modal-overlay'))
+    document.getElementById(id).classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape')
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+
+// ── BOOT ──────────────────────────────────────────────────────────────────
+loadAll();
+</script>
+</body>
+</html>
