@@ -12,7 +12,7 @@
 @media(prefers-color-scheme:light){:root{--bg:#F7F4EE;--bg2:#EDE8DE;--card:#FAFAF7;--c2:#F4F0E8;--tx:#2C2926;--mid:#7A6F65;--lt:#A89E94;--ht:#D4CCC0;--bd:#E0DAD0;--gn:#4a6741;--gnl:#6b8a5e;--gnp:#d4e4cf;--gnd:#2d3f28;--br:#8b7355;--brl:#c4a882;--wk:#7B9BB5;--wkb:#EAF0F6;--rd:#B8924A;--rdb:#FAF5E8;--pi:#9B85C0;--pib:#F0EDFA;--he:#7BAF8A;--heb:#EDF5F0;--fa:#C4898A;--fab:#FAF0F0;--fm:#B58A7B;--fmb:#FAF0EC;--fn:#888780;--fnb:#F1EFE8;--sh:0 2px 10px rgba(44,41,38,.07);--shm:0 4px 20px rgba(44,41,38,.1);}}
 @media(prefers-color-scheme:dark){:root{--bg:#1C1A17;--bg2:#242018;--card:#211F1B;--c2:#282420;--tx:#E8E0D4;--mid:#A09890;--lt:#6A6058;--ht:#3A3630;--bd:#332F28;--gn:#6b8a5e;--gnl:#8aaa78;--gnp:#2d3f28;--gnd:#d4e4cf;--br:#c4a882;--brl:#a88560;--wk:#9BAAB5;--wkb:#1A2530;--rd:#C8A46A;--rdb:#2A200E;--pi:#B09DD0;--pib:#1E1828;--he:#8ABF98;--heb:#152018;--fa:#D4A0A0;--fab:#281818;--fm:#C8A090;--fmb:#281E18;--fn:#A0A098;--fnb:#1E1E18;--sh:0 2px 10px rgba(0,0,0,.3);--shm:0 4px 20px rgba(0,0,0,.4);}}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg);color:var(--tx);line-height:1.7;display:flex;min-height:100vh;}
+body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg);color:var(--tx);line-height:1.7;display:flex;min-height:100vh;overflow-x:hidden;}
 /* SIDEBAR */
 .sb{width:var(--sw);flex-shrink:0;background:var(--card);border-right:1px solid var(--bd);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;overflow-y:auto;}
 .sb-brand{padding:1.5rem 1.25rem 1.2rem;border-bottom:1px solid var(--bd);}
@@ -26,7 +26,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 .nc{font-family:var(--mono);font-size:.56rem;color:var(--lt);margin-left:auto;}
 .sb-ft{margin-top:auto;padding:1rem 1.25rem;border-top:1px solid var(--bd);font-family:var(--mono);font-size:.6rem;color:var(--lt);line-height:1.9;}
 /* MAIN */
-.main{margin-left:var(--sw);flex:1;min-height:100vh;max-width:calc(100vw - var(--sw));overflow-x:hidden;}
+.main{margin-left:var(--sw);flex:1;min-height:100vh;width:calc(100vw - var(--sw));overflow-x:hidden;}
 .tb{background:var(--card);border-bottom:1px solid var(--bd);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;}
 .tbl{display:flex;align-items:baseline;gap:10px;}
 .tbt{font-family:var(--serif);font-size:1.1rem;font-weight:400;font-style:italic;}
@@ -40,7 +40,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 .page{display:none;animation:fu .3s ease both;}
 .page.active{display:block;}
 @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.pc{padding:2rem;max-width:1100px;width:100%;}
+.pc{padding:2rem;width:100%;box-sizing:border-box;}
 /* THEME BANNER */
 .thb{background:var(--c2);border:1px solid var(--bd);border-left:3px solid var(--br);border-radius:0 var(--rs) var(--rs) 0;padding:9px 16px;display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;}
 .thl{font-family:var(--mono);font-size:.58rem;color:var(--brl);letter-spacing:.1em;text-transform:uppercase;}
@@ -256,16 +256,16 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
     <div class="ns">main</div>
     <div class="ni active" onclick="showPage('dashboard',this)"><div class="nd" style="background:var(--gn)"></div>Dashboard</div>
     <div class="ni" onclick="showPage('journal',this)"><div class="nd" style="background:var(--br)"></div>Journal</div>
-    <div class="ni" onclick="showPage('tasks',this)"><div class="nd" style="background:var(--wk)"></div>Task master<span class="nc" id="task-cnt"></span></div>
+    <div class="ni" onclick="showPage('tasks',this)"><div class="nd" style="background:var(--wk)"></div>Task master</div>
     <div class="ni" onclick="showPage('weekly',this)"><div class="nd" style="background:var(--wk)"></div>Weekly review</div>
     <div class="ns">life areas</div>
-    <div class="ni" onclick="showPage('reading',this)"><div class="nd" style="background:var(--rd)"></div>Reading<span class="nc" id="read-cnt"></span></div>
+    <div class="ni" onclick="showPage('reading',this)"><div class="nd" style="background:var(--rd)"></div>Reading</div>
     <div class="ni" onclick="showPage('piano',this)"><div class="nd" style="background:var(--pi)"></div>Piano</div>
     <div class="ni" onclick="showPage('health',this)"><div class="nd" style="background:var(--he)"></div>Health &amp; fitness</div>
     <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
     <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
-  <div class="sb-ft">Robinee Mae &middot; is Here</div>
+  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
 </aside>
 
 <div class="main">
@@ -436,18 +436,18 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 
 <script>
 const DB={
- dailyLog:'32dec4518a618096986cfd9475b0aa1a',
-  taskMaster:'32dec4518a6180dc84cee6e65539f871',
-  weeklyReview:'32dec4518a618028a71cc366512a4dfc',
-  bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',
-  readingSessions:'32dec4518a618071af88ca0f6e477a30',
-  pianoSongs:'32dec4518a6180ae9debe795972c5854',
-  pianoSessions:'32dec4518a61804fb394f39e16d9511f',
-  finance:'32dec4518a6180f886c4db6651b69cec',
-  health:'32dec4518a6180d78721f0b13c663478',
-  faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',
-  family:'32dec4518a618024b0edfd41dc2c6e39',
-  habits:'32dec4518a618070a3c8e50e5a9224e8',
+  dailyLog:'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions:'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:'PASTE_FINANCE_DB_ID',
+  health:'PASTE_HEALTH_DB_ID',
+  faith:'PASTE_FAITH_DB_ID',
+  family:'PASTE_FAMILY_DB_ID',
+  habits:'PASTE_HABIT_TRACKER_DB_ID',
 };
 
 const notion=async(m,p,b)=>{const r=await fetch('/api/notion'+p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return r.json();};
@@ -555,7 +555,7 @@ async function loadDashTasks(){
     const uc={'Urgent':'#E24B4A','Important':'#BA7517','Routine':'var(--ht)'};
     const el=document.getElementById('t-list');
     if(!res.results?.length){el.innerHTML='<div class="empty">No tasks today</div>';return;}
-    document.getElementById('task-cnt').textContent=res.results.length;
+    
     el.innerHTML=res.results.slice(0,5).map(p=>`<div class="ti"><div class="ug" style="background:${uc[gSel(p,'Urgency')]||'var(--ht)'}"></div><div class="tn2">${gTitle(p)}</div><div class="tg">${gSel(p,'Category')}</div></div>`).join('');
   } catch(e){console.error('Tasks:',e);document.getElementById('t-list').innerHTML='<div class="err">Check DB ID - tasks</div>';}
 }
@@ -563,27 +563,38 @@ async function loadDashTasks(){
 async function loadDashHabits(){
   try{
     const res=await query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]);
-    // Match this week's entry by title containing Monday date
-    const mon=monStr(now);
-    const p=res.results?.find(r=>gTitle(r).includes(mon))||res.results?.[0];
+    // Match by Day title "Mar 23 - 29, 2026"
+    const thisWeekLabel=weekLabel(now);
+    const p=res.results?.find(r=>gTitle(r)===thisWeekLabel)||
+             res.results?.find(r=>gTitle(r).includes(monStr(now)))||
+             res.results?.[0];
+    console.log('Habit row found:', gTitle(p), '| Looking for:', thisWeekLabel);
     const di=(now.getDay()+6)%7;
     document.getElementById('h-rows').innerHTML=HABITS.map(h=>{
       const boxes=HDAYS.map((d,i)=>{
-        const k=`${h} \u2014 ${d}`;
+        const k=`${h} - ${d}`;
         const done=p?gCB(p,k):false; const it=i===di;
         return `<div class="hb ${done?'done':''} ${it?'td':''}" onclick="toggleHabit('${p?.id||''}','${k}',this)">${done?'&#10003;':''}</div>`;
       }).join('');
-      const streak=p?HDAYS.slice(0,di+1).filter(d=>gCB(p,`${h} \u2014 ${d}`)).length:0;
+      const streak=p?HDAYS.slice(0,di+1).filter(d=>gCB(p,`${h} - ${d}`)).length:0;
       return `<div class="hr"><div class="hn">${h}</div><div class="hbs">${boxes}</div><div class="hst">${streak}</div></div>`;
     }).join('');
   } catch(e){console.error('Habits:',e);document.getElementById('h-rows').innerHTML='<div class="err">Check DB ID - habits</div>';}
 }
 
 async function toggleHabit(pid,key,el){
-  if(!pid)return;
   const done=!el.classList.contains('done');
   el.classList.toggle('done',done); el.innerHTML=done?'&#10003;':'';
-  await update(pid,{[key]:prop.checkbox(done)});
+  try{
+    if(pid){
+      await update(pid,{[key]:prop.checkbox(done)});
+    } else {
+      console.warn('No habit page ID - habit toggle may not save');
+    }
+  }catch(e){
+    console.error('toggleHabit error:',e);
+    el.classList.toggle('done',!done); el.innerHTML=done?'':'&#10003;';
+  }
 }
 
 async function loadDashRead(){
@@ -593,10 +604,10 @@ async function loadDashRead(){
     const c={results:all.results?.filter(p=>gSel(p,'Status')==='Reading')};
     // Status options: To read, Paused, Reading, Read, DNF
     const read=a.results?.filter(p=>gSel(p,'Status')==='Read').length||0;
-    const unread=a.results?.filter(p=>gSel(p,'Status')==='To read').length||0;
-    document.getElementById('read-cnt').textContent=read;
+    const toread=a.results?.filter(p=>['To read','Paused'].includes(gSel(p,'Status'))).length||0;
+    
     const books=c.results?.slice(0,2).map(p=>`<div class="bi"><div class="bsp" style="background:var(--rd)"></div><div class="bif"><div class="bt">${gTitle(p)}</div><div class="ba">${gText(p,'Author')}</div></div></div>`).join('')||'<div class="empty">No books reading</div>';
-    document.getElementById('db-read').innerHTML=`<div class="bl">${books}</div><div class="bst"><div class="bs"><div class="bsn">${read}</div><div class="bsl">read</div></div><div class="bs"><div class="bsn">${c.results?.length||0}</div><div class="bsl">reading</div></div><div class="bs"><div class="bsn">${unread}</div><div class="bsl">unread</div></div></div>`;
+    document.getElementById('db-read').innerHTML=`<div class="bl">${books}</div><div class="bst"><div class="bs"><div class="bsn">${read}</div><div class="bsl">read</div></div><div class="bs"><div class="bsn">${c.results?.length||0}</div><div class="bsl">reading</div></div><div class="bs"><div class="bsn">${toread}</div><div class="bsl">to read</div></div></div>`;
   } catch(e){console.error('Read:',e);document.getElementById('db-read').innerHTML='<div class="err">Check DB ID - bookshelf</div>';}
 }
 
@@ -616,10 +627,11 @@ async function loadDashWeekly(){
       query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]),
     ]);
     const p=wr.results?.[0];
-    const hp=hab.results?.find(r=>gTitle(r).includes(monStr(now)))||hab.results?.[0];
+    const dashWeekLabel=weekLabel(now);
+    const hp=hab.results?.find(r=>gTitle(r)===dashWeekLabel)||hab.results?.find(r=>gTitle(r).includes(monStr(now)))||hab.results?.[0];
     const wins=p?gText(p,'Wins'):''; const carry=p?gText(p,'Carry Forward'):'';
     const chips=hp?HABITS.map(h=>{
-      const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;
+      const count=HDAYS.filter(d=>gCB(hp,`${h} - ${d}`)).length;
       const pct=Math.round(count/7*100);
       return `<div class="wp-hchip" style="background:${pct>=70?'var(--heb)':pct>=40?'var(--c2)':'var(--bg2)'};color:${pct>=70?'var(--he)':pct>=40?'var(--mid)':'var(--lt)'};font-family:var(--mono);font-size:.56rem;padding:2px 7px;border-radius:20px">${h.slice(0,4)} ${count}/7</div>`;
     }).join(''):'';
@@ -704,7 +716,7 @@ async function loadTasks(){
   try{
     const res=await query(DB.taskMaster,null,[{property:'Urgency',direction:'ascending'},{property:'Scheduled',direction:'ascending'}]);
     allTasks=res.results||[];
-    document.getElementById('task-cnt').textContent=allTasks.filter(p=>gSel(p,'Status')!=='Completed').length;
+    
     renderTasks('today');
   } catch(e){console.error('Tasks:',e);document.getElementById('task-full-list').innerHTML='<div class="err">Check DB ID - tasks</div>';}
 }
@@ -758,7 +770,8 @@ async function loadWeeklyReview(offset){
       query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]),
     ]);
     const p=wr.results?.[0];
-    const hp=hab.results?.find(r=>gTitle(r).includes(monS))||hab.results?.[0];
+    const wrWeekLabel=weekLabel(base);
+    const hp=hab.results?.find(r=>gTitle(r)===wrWeekLabel)||hab.results?.find(r=>gTitle(r).includes(monS))||hab.results?.[0];
     const theme=p?gText(p,'Focus Theme'):'';
     if(theme){document.getElementById('wr-theme').style.display='block';document.getElementById('wr-theme-val').textContent=theme;}
     else document.getElementById('wr-theme').style.display='none';
@@ -771,7 +784,7 @@ async function loadWeeklyReview(offset){
     document.getElementById('wr-cards').innerHTML=cards.map(c=>`<div class="wr-card"><div class="wr-card-title"><div class="wr-card-dot" style="background:${c.dot}"></div>${c.label}</div><div class="wr-field">${p&&gText(p,c.key)||'<span style="color:var(--ht)">not filled yet</span>'}</div></div>`).join('');
     if(hp){
       document.getElementById('wr-habits').innerHTML=HABITS.map(h=>{
-        const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;
+        const count=HDAYS.filter(d=>gCB(hp,`${h} - ${d}`)).length;
         const pct=Math.round(count/7*100);
         return `<div class="wr-hrow"><div class="wr-hname">${h}</div><div class="wr-hbar"><div class="wr-hfill" style="width:${pct}%"></div></div><div class="wr-hcount">${count}/7</div></div>`;
       }).join('');
@@ -807,8 +820,8 @@ async function loadReading(){
     ]);
     allBooks=books.results||[];
     const statuses=[...new Set(allBooks.map(p=>gSel(p,'Status')).filter(Boolean))];
-    document.getElementById('rf').innerHTML=['All',...statuses].map(s=>`<div onclick="filterBooks('${s}',this)" class="ftab ${s==='Reading'?'active':''}" ${s==='Reading'?'style="background:var(--gn);color:white;border-color:var(--gn)"':''}>${s}</div>`).join('');
-    renderBooks('Reading');
+    document.getElementById('rf').innerHTML=['All',...statuses].map(s=>`<div onclick="filterBooks('${s}',this)" class="ftab ${s==='All'?'active':''}" ${s==='All'?'style="background:var(--gn);color:white;border-color:var(--gn)"':''}>${s}</div>`).join('');
+    renderBooks('All');
     document.getElementById('read-sessions').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Book</th><th>Pages</th><th>Duration</th><th>Notes</th></tr></thead><tbody>${sess.results?.slice(0,15).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gTitle(p)}</td><td>${gNum(p,'Page start')} \u2014 ${gNum(p,'Page end')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gText(p,'Notes')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No sessions yet</td></tr>'}</tbody></table>`;
   } catch(e){console.error('Reading:',e);document.getElementById('rg').innerHTML='<div class="err">Check DB ID - bookshelf</div>';}
 }
