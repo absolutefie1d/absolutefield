@@ -26,7 +26,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 .nc{font-family:var(--mono);font-size:.56rem;color:var(--lt);margin-left:auto;}
 .sb-ft{margin-top:auto;padding:1rem 1.25rem;border-top:1px solid var(--bd);font-family:var(--mono);font-size:.6rem;color:var(--lt);line-height:1.9;}
 /* MAIN */
-.main{margin-left:var(--sw);flex:1;min-height:100vh;}
+.main{margin-left:var(--sw);flex:1;min-height:100vh;max-width:calc(100vw - var(--sw));overflow-x:hidden;}
 .tb{background:var(--card);border-bottom:1px solid var(--bd);padding:.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;}
 .tbl{display:flex;align-items:baseline;gap:10px;}
 .tbt{font-family:var(--serif);font-size:1.1rem;font-weight:400;font-style:italic;}
@@ -40,7 +40,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 .page{display:none;animation:fu .3s ease both;}
 .page.active{display:block;}
 @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.pc{padding:2rem;max-width:1160px;}
+.pc{padding:2rem;max-width:1100px;width:100%;}
 /* THEME BANNER */
 .thb{background:var(--c2);border:1px solid var(--bd);border-left:3px solid var(--br);border-radius:0 var(--rs) var(--rs) 0;padding:9px 16px;display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;}
 .thl{font-family:var(--mono);font-size:.58rem;color:var(--brl);letter-spacing:.1em;text-transform:uppercase;}
@@ -265,7 +265,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
     <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
     <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
-  <div class="sb-ft">Robinee Mae &middot; is Here</div>
+  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
 </aside>
 
 <div class="main">
@@ -436,18 +436,18 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 
 <script>
 const DB={
- dailyLog:'32dec4518a618096986cfd9475b0aa1a',
-  taskMaster:'32dec4518a6180dc84cee6e65539f871',
-  weeklyReview:'32dec4518a618028a71cc366512a4dfc',
-  bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',
-  readingSessions:'32dec4518a618071af88ca0f6e477a30',
-  pianoSongs:'32dec4518a6180ae9debe795972c5854',
-  pianoSessions:'32dec4518a61804fb394f39e16d9511f',
-  finance:'32dec4518a6180f886c4db6651b69cec',
-  health:'32dec4518a6180d78721f0b13c663478',
-  faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',
-  family:'32dec4518a618024b0edfd41dc2c6e39',
-  habits:'32dec4518a618070a3c8e50e5a9224e8',
+  dailyLog:'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions:'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:'PASTE_FINANCE_DB_ID',
+  health:'PASTE_HEALTH_DB_ID',
+  faith:'PASTE_FAITH_DB_ID',
+  family:'PASTE_FAMILY_DB_ID',
+  habits:'PASTE_HABIT_TRACKER_DB_ID',
 };
 
 const notion=async(m,p,b)=>{const r=await fetch('/api/notion'+p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return r.json();};
@@ -464,6 +464,7 @@ const addBlock=(id,b)=>notion('PATCH',`/blocks/${id}/children`,{children:b});
 
 const prop={
   title:  v=>({title:[{text:{content:v||''}}]}),
+  status: v=>({status:{name:v}}),
   text:   v=>({rich_text:[{text:{content:v||''}}]}),
   select: v=>v?({select:{name:v}}):({select:null}),
   date:   v=>({date:{start:v}}),
@@ -474,7 +475,7 @@ const prop={
 
 const gTitle=p=>{for(const k in p.properties)if(p.properties[k].type==='title')return p.properties[k].title.map(t=>t.plain_text).join('')||'';return'';};
 const gText=(p,k)=>{const x=p?.properties[k];if(!x)return'';if(x.type==='rich_text')return x.rich_text.map(t=>t.plain_text).join('');if(x.type==='title')return x.title.map(t=>t.plain_text).join('');return'';};
-const gSel= (p,k)=>p?.properties[k]?.select?.name||'';
+const gSel= (p,k)=>p?.properties[k]?.select?.name||p?.properties[k]?.status?.name||'';
 const gDate=(p,k)=>p?.properties[k]?.date?.start||'';
 const gNum= (p,k)=>p?.properties[k]?.number||0;
 const gCB=  (p,k)=>p?.properties[k]?.checkbox||false;
@@ -783,7 +784,17 @@ async function completeTask(id,el){
   const done=el.classList.contains('checked');
   const row=document.getElementById('tfi-'+id);
   if(row){row.style.opacity=done?'0.4':'1';const nm=row.querySelector('.tfi-name');if(nm)nm.style.textDecoration=done?'line-through':'';}
-  await update(id,{Status:prop.select(done?'Completed':'Not Started')});
+  try{
+    await update(id,{Status:prop.status(done?'Completed':'Not Started')});
+    // Update local cache so re-renders are accurate
+    const task=allTasks.find(t=>t.id===id);
+    if(task)task.properties.Status={type:'status',status:{name:done?'Completed':'Not Started'}};
+  }catch(e){
+    console.error('Failed to update task:',e);
+    // Revert visual if API call failed
+    el.classList.toggle('checked');
+    if(row){row.style.opacity=done?'1':'0.4';const nm=row.querySelector('.tfi-name');if(nm)nm.style.textDecoration=done?'':'line-through';}
+  }
 }
 function changeWeek(dir){loadWeeklyReview(wrOffset+dir);}
 
@@ -881,7 +892,7 @@ async function saveTask(){
   const t=document.getElementById('cap-task').value.trim(); if(!t)return;
   await create(DB.taskMaster,{
     Task:prop.title(t),
-    Status:prop.select('Not Started'),
+    Status:prop.status('Not Started'),
     Category:prop.select(document.getElementById('cap-cat').value),
     Urgency:prop.select(document.getElementById('cap-urg').value),
     Notes:prop.text(document.getElementById('cap-notes').value),
@@ -916,10 +927,12 @@ async function saveDailyLog(){
   };
 
   let pid=todayId;
-  if(pid) await update(pid,props);
-  else { const pg=await create(DB.dailyLog,props); pid=pg.id; todayId=pg.id; }
-  if(body&&pid) await addBlock(pid,[{object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:body}}]}}]);
-  closeModal('m-daily'); loadDailyLog();
+  try {
+    if(pid){ await update(pid,props); }
+    else { const pg=await create(DB.dailyLog,props); if(pg.id){pid=pg.id;todayId=pg.id;}else{console.error('Create failed:',pg);alert('Could not save log: '+JSON.stringify(pg?.message||pg));return;} }
+    if(body&&pid) await addBlock(pid,[{object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:body}}]}}]);
+    closeModal('m-daily'); loadDailyLog();
+  } catch(e){ console.error('saveDailyLog error:',e); alert('Error saving log: '+e.message); }
 }
 
 async function saveReadSession(){
