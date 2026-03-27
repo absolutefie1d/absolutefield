@@ -57,7 +57,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 .wb{padding:14px;}
 /* GRIDS */
 .g{display:grid;gap:14px;}
-.gm{grid-template-columns:1.55fr 1fr;}
+.gm{grid-template-columns:1fr 1fr;}
 .g3{grid-template-columns:1fr 1fr 1fr;}
 .g2{grid-template-columns:1fr 1fr;}
 /* TODAY */
@@ -265,7 +265,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
     <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
     <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
-  <div class="sb-ft">Robinee Mae &middot; is Here</div>
+  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
 </aside>
 
 <div class="main">
@@ -436,18 +436,18 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 
 <script>
 const DB={
- dailyLog:'32dec4518a618096986cfd9475b0aa1a',
-  taskMaster:'32dec4518a6180dc84cee6e65539f871',
-  weeklyReview:'32dec4518a618028a71cc366512a4dfc',
-  bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',
-  readingSessions:'32dec4518a618071af88ca0f6e477a30',
-  pianoSongs:'32dec4518a6180ae9debe795972c5854',
-  pianoSessions:'32dec4518a61804fb394f39e16d9511f',
-  finance:'32dec4518a6180f886c4db6651b69cec',
-  health:'32dec4518a6180d78721f0b13c663478',
-  faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',
-  family:'32dec4518a618024b0edfd41dc2c6e39',
-  habits:'32dec4518a618070a3c8e50e5a9224e8',
+  dailyLog:'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions:'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:'PASTE_FINANCE_DB_ID',
+  health:'PASTE_HEALTH_DB_ID',
+  faith:'PASTE_FAITH_DB_ID',
+  family:'PASTE_FAMILY_DB_ID',
+  habits:'PASTE_HABIT_TRACKER_DB_ID',
 };
 
 const notion=async(m,p,b)=>{const r=await fetch('/api/notion'+p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return r.json();};
@@ -561,7 +561,7 @@ async function loadDashTasks(){
 
 async function loadDashHabits(){
   try{
-    const res=await query(DB.habits,{},[{timestamp:'created_time',direction:'descending'}]);
+    const res=await query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]);
     // Match this week's entry by title containing Monday date
     const mon=monStr(now);
     const p=res.results?.find(r=>gTitle(r).includes(mon))||res.results?.[0];
@@ -587,7 +587,7 @@ async function toggleHabit(pid,key,el){
 
 async function loadDashRead(){
   try{
-    const all=await query(DB.bookShelf,{},[{property:'Title',direction:'ascending'}]);
+    const all=await query(DB.bookShelf,null,[{property:'Title',direction:'ascending'}]);
     const a={results:all.results};
     const c={results:all.results?.filter(p=>gSel(p,'Status')==='Reading')};
     // Status options: To read, Paused, Reading, Read, DNF
@@ -601,7 +601,7 @@ async function loadDashRead(){
 
 async function loadDashPiano(){
   try{
-    const s=await query(DB.pianoSongs,{});
+    const s=await query(DB.pianoSongs,null);
     const sc={'In progress':'var(--pi)','Learning':'var(--pi)'};
     const sb={'In progress':'var(--pib)','Learning':'var(--pib)'};
     document.getElementById('db-piano').innerHTML=`<div class="sl">${s.results?.filter(p=>['In progress','Learning'].includes(gSel(p,'Status'))).slice(0,3).map(p=>{const st=gSel(p,'Status');return`<div class="si"><div class="sd" style="background:${sc[st]||'var(--ht)'}"></div><div class="sn">${gTitle(p)}</div><div class="sbg" style="background:${sb[st]||'var(--bg2)'};color:${sc[st]||'var(--lt)'}">${st}</div></div>`;}).join('')||'<div class="empty">No active songs</div>'}</div>`;
@@ -612,7 +612,7 @@ async function loadDashWeekly(){
   try{
     const [wr,hab]=await Promise.all([
       query(DB.weeklyReview,{property:'Week of',title:{contains:monStr(now)}}),
-      query(DB.habits,{},[{timestamp:'created_time',direction:'descending'}]),
+      query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]),
     ]);
     const p=wr.results?.[0];
     const hp=hab.results?.find(r=>gTitle(r).includes(monStr(now)))||hab.results?.[0];
@@ -642,7 +642,7 @@ function renderLogs(pages,mk,sk,pk){
 
 async function loadDashFaith(){
   try{
-    const r=await query(DB.faith,{},[{timestamp:'created_time',direction:'descending'}]);
+    const r=await query(DB.faith,null,[{timestamp:'created_time',direction:'descending'}]);
     // Faith title is "Feelings Name", verse is "Verse", reflection is "Reflection"
     document.getElementById('db-faith').innerHTML=renderLogs(r.results?.slice(0,2),'Scripture','Reflection')||'<div class="empty">No entries yet</div>';
   } catch(e){document.getElementById('db-faith').innerHTML='<div class="err">Check DB ID - faith</div>';}
@@ -650,7 +650,7 @@ async function loadDashFaith(){
 
 async function loadDashFamily(){
   try{
-    const r=await query(DB.family,{},[{property:'Date',direction:'descending'}]);
+    const r=await query(DB.family,null,[{property:'Date',direction:'descending'}]);
     // Family title is "Who", main content is "Moment"
     document.getElementById('db-family').innerHTML=r.results?.slice(0,2).map(p=>{
       const who=gTitle(p), moment=gText(p,'Moment'), date=gDate(p,'Date');
@@ -669,7 +669,7 @@ async function loadTheme(){
 // ── JOURNAL ──────────────────────────────────────────────────────────────
 async function loadJournal(){
   try{
-    const res=await query(DB.dailyLog,{},[{timestamp:'created_time',direction:'descending'}]);
+    const res=await query(DB.dailyLog,null,[{timestamp:'created_time',direction:'descending'}]);
     if(!res.results?.length){document.getElementById('journal-list').innerHTML='<div class="empty" style="padding:20px">No journal entries yet</div>';return;}
     const items=await Promise.all(res.results.slice(0,30).map(async p=>{
       const date=p.created_time?.split('T')[0]||'';
@@ -701,7 +701,7 @@ function toggleJ(id){const e=document.getElementById('je-'+id);if(e)e.classList.
 // ── TASKS PAGE ────────────────────────────────────────────────────────────
 async function loadTasks(){
   try{
-    const res=await query(DB.taskMaster,{},[{property:'Urgency',direction:'ascending'},{property:'Scheduled',direction:'ascending'}]);
+    const res=await query(DB.taskMaster,null,[{property:'Urgency',direction:'ascending'},{property:'Scheduled',direction:'ascending'}]);
     allTasks=res.results||[];
     document.getElementById('task-cnt').textContent=allTasks.filter(p=>gSel(p,'Status')!=='Completed').length;
     renderTasks('today');
@@ -725,7 +725,8 @@ function renderTasks(f){
     if(f==='week')   return sch>=monStr(now)&&sch<=eow&&!isDone;
     if(f==='overdue')return due&&due<today&&!isDone;
     if(f==='someday')return gCB(p,'Someday');
-    return s!=='Completed';
+    if(f==='completed')return s==='Completed';
+    return s!=='Completed'&&!gCB(p,'Someday');
   });
   if(!filtered.length){document.getElementById('task-full-list').innerHTML='<div class="empty" style="padding:12px">No tasks in this view</div>';return;}
   const tagStyle=cat=>{
@@ -736,8 +737,9 @@ function renderTasks(f){
     return'background:var(--bg2);color:var(--lt)';
   };
   document.getElementById('task-full-list').innerHTML=filtered.map(p=>{
-    const urg=gSel(p,'Urgency'), cat=gSel(p,'Category'), notes=gText(p,'Notes'), due=gDate(p,'Due Date');
-    return `<div class="tfi"><div class="tfi-check" onclick="this.classList.toggle('checked')"></div><div class="tfi-body"><div class="tfi-name">${gTitle(p)}</div><div class="tfi-meta"><div class="tfi-tag" style="${tagStyle(cat)}">${cat}</div><div class="tfi-urg" style="color:${uc[urg]||'var(--lt)'}">${urg}</div>${due?`<div class="tfi-urg">due ${fmtD(due)}</div>`:''}</div>${notes?`<div class="tfi-notes">${notes}</div>`:''}</div></div>`;
+    const urg=gSel(p,'Urgency'), cat=gSel(p,'Category'), notes=gText(p,'Notes'), due=gDate(p,'Due Date'), s=gSel(p,'Status');
+    const done=s==='Completed';
+    return `<div class="tfi" id="tfi-${p.id}" style="${done?'opacity:.4':''}"><div class="tfi-check ${done?'checked':''}" onclick="completeTask('${p.id}',this)"></div><div class="tfi-body"><div class="tfi-name" style="${done?'text-decoration:line-through':''}"">${gTitle(p)}</div><div class="tfi-meta"><div class="tfi-tag" style="${tagStyle(cat)}">${cat}</div><div class="tfi-urg" style="color:${uc[urg]||'var(--lt)'}">${urg}</div>${due?`<div class="tfi-urg">due ${fmtD(due)}</div>`:''}</div>${notes?`<div class="tfi-notes">${notes}</div>`:''}</div></div>`;
   }).join('');
 }
 
@@ -752,7 +754,7 @@ async function loadWeeklyReview(offset){
     // Weekly Review title is the week date string
     const [wr,hab]=await Promise.all([
       query(DB.weeklyReview,{property:'Week of',title:{contains:monS}}),
-      query(DB.habits,{},[{timestamp:'created_time',direction:'descending'}]),
+      query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]),
     ]);
     const p=wr.results?.[0];
     const hp=hab.results?.find(r=>gTitle(r).includes(monS))||hab.results?.[0];
@@ -776,14 +778,21 @@ async function loadWeeklyReview(offset){
   } catch(e){console.error('Weekly:',e);document.getElementById('wr-cards').innerHTML='<div class="err">Check DB ID - weekly review</div>';}
 }
 
+async function completeTask(id,el){
+  el.classList.toggle('checked');
+  const done=el.classList.contains('checked');
+  const row=document.getElementById('tfi-'+id);
+  if(row){row.style.opacity=done?'0.4':'1';const nm=row.querySelector('.tfi-name');if(nm)nm.style.textDecoration=done?'line-through':'';}
+  await update(id,{Status:prop.select(done?'Completed':'Not Started')});
+}
 function changeWeek(dir){loadWeeklyReview(wrOffset+dir);}
 
 // ── READING PAGE ──────────────────────────────────────────────────────────
 async function loadReading(){
   try{
     const [books,sess]=await Promise.all([
-      query(DB.bookShelf,{},[{property:'Title',direction:'ascending'}]),
-      query(DB.readingSessions,{},[{property:'Date',direction:'descending'}]),
+      query(DB.bookShelf,null,[{property:'Title',direction:'ascending'}]),
+      query(DB.readingSessions,null,[{property:'Date',direction:'descending'}]),
     ]);
     allBooks=books.results||[];
     const statuses=[...new Set(allBooks.map(p=>gSel(p,'Status')).filter(Boolean))];
@@ -810,7 +819,7 @@ async function loadPiano(){
   try{
     const [songs,sess]=await Promise.all([
       query(DB.pianoSongs),
-      query(DB.pianoSessions,{},[{property:'Date',direction:'descending'}]),
+      query(DB.pianoSessions,null,[{property:'Date',direction:'descending'}]),
     ]);
     const so={'In progress':0,'Learning':1,'Queued':2,'Not started':3,'Someday':4,'Done':5};
     const sorted=songs.results?.sort((a,b)=>(so[gSel(a,'Status')]||9)-(so[gSel(b,'Status')]||9));
@@ -824,7 +833,7 @@ async function loadPiano(){
 // ── HEALTH PAGE ───────────────────────────────────────────────────────────
 async function loadHealth(){
   try{
-    const res=await query(DB.health,{},[{timestamp:'created_time',direction:'descending'}]);
+    const res=await query(DB.health,null,[{timestamp:'created_time',direction:'descending'}]);
     const entries=res.results||[]; const latest=entries[0];
     document.getElementById('health-latest').innerHTML=latest?`<div class="hs"><div class="hss"><div class="hsv">${gNum(latest,'Duration (min)')}</div><div class="hsl">min</div></div><div class="hss"><div class="hsv">${gNum(latest,'Water (glasses)')}</div><div class="hsl">glasses</div></div><div class="hss"><div class="hsv">${gNum(latest,'Sleep (hrs)')}</div><div class="hsl">hrs sleep</div></div></div><div style="font-size:.78rem;color:var(--mid)">${gSel(latest,'Exercise Type')} \u00b7 ${gSel(latest,'Energy level')} energy</div>`:'<div class="empty">No entries yet</div>';
     const week=entries.slice(0,7);
@@ -837,7 +846,7 @@ async function loadHealth(){
 // ── FINANCE PAGE ──────────────────────────────────────────────────────────
 async function loadFinance(){
   try{
-    const res=await query(DB.finance,{},[{property:'Date of Transaction',direction:'descending'}]);
+    const res=await query(DB.finance,null,[{property:'Date of Transaction',direction:'descending'}]);
     let inc=0,exp=0,sav=0;
     const thisMonth=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
     res.results?.filter(p=>gDate(p,'Date of Transaction')?.startsWith(thisMonth)).forEach(p=>{
@@ -853,8 +862,8 @@ async function loadFinance(){
 async function loadFaithFamily(){
   try{
     const [faith,fam]=await Promise.all([
-      query(DB.faith,{},[{timestamp:'created_time',direction:'descending'}]),
-      query(DB.family,{},[{property:'Date',direction:'descending'}]),
+      query(DB.faith,null,[{timestamp:'created_time',direction:'descending'}]),
+      query(DB.family,null,[{property:'Date',direction:'descending'}]),
     ]);
     // Faith: title="Feelings Name", verse="Verse", reflection="Reflection"
     document.getElementById('faith-list').innerHTML=faith.results?.slice(0,10).map(p=>`<div class="le"><div class="ld">${fmtD(p.created_time?.split('T')[0]||'')} \u00b7 ${gTitle(p)}</div><div class="lx">${gText(p,'Scripture')}${gText(p,'Reflection')?'<br><span style="font-size:.8rem">'+gText(p,'Reflection')+'</span>':''}</div></div>`).join('')||'<div class="empty">No faith entries yet</div>';
@@ -894,8 +903,8 @@ async function saveDailyLog(){
 
   const props={
     Log:prop.title(DAYS[now.getDay()]+' '+now.getDate()),
-    Mood:prop.select(document.querySelector('#mood-pills .mp.sel')?.textContent||''),
-    Energy:prop.select(document.querySelector('#en-pills .mp.sel')?.textContent||''),
+    ...(document.querySelector('#mood-pills .mp.sel')?{Mood:prop.select(document.querySelector('#mood-pills .mp.sel').textContent)}:{}),
+    ...(document.querySelector('#en-pills .mp.sel')?{Energy:prop.select(document.querySelector('#en-pills .mp.sel').textContent)}:{}),
     Gratitude:prop.text(g),
     'Faith Note':prop.text(f),
     Highlight:prop.text(hl),
