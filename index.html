@@ -436,22 +436,27 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 
 <script>
 const DB={
-  dailyLog:'32dec4518a618096986cfd9475b0aa1a',
-  taskMaster:'32dec4518a6180dc84cee6e65539f871',
-  weeklyReview:'32dec4518a618028a71cc366512a4dfc',
-  bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',
-  readingSessions:'32dec4518a618071af88ca0f6e477a30',
-  pianoSongs:'32dec4518a6180ae9debe795972c5854',
-  pianoSessions:'32dec4518a61804fb394f39e16d9511f',
-  finance:'32dec4518a6180f886c4db6651b69cec',
-  health:'32dec4518a6180d78721f0b13c663478',
-  faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',
-  family:'32dec4518a618024b0edfd41dc2c6e39',
-  habits:'32dec4518a618070a3c8e50e5a9224e8',
+  dailyLog:'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions:'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:'PASTE_FINANCE_DB_ID',
+  health:'PASTE_HEALTH_DB_ID',
+  faith:'PASTE_FAITH_DB_ID',
+  family:'PASTE_FAMILY_DB_ID',
+  habits:'PASTE_HABIT_TRACKER_DB_ID',
 };
 
 const notion=async(m,p,b)=>{const r=await fetch('/api/notion'+p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return r.json();};
-const query=(db,f,s)=>notion('POST',`/databases/${db}/query`,{filter:f,sorts:s});
+const query=(db,f,s)=>{
+  const body={};
+  if(f&&Object.keys(f).length)body.filter=f;
+  if(s&&s.length)body.sorts=s;
+  return notion('POST',`/databases/${db}/query`,body);
+};
 const create=(db,p)=>notion('POST','/pages',{parent:{database_id:db},properties:p});
 const update=(id,p)=>notion('PATCH',`/pages/${id}`,{properties:p});
 const getBlocks=(id)=>notion('GET',`/blocks/${id}/children`);
