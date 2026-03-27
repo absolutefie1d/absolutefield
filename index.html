@@ -265,7 +265,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
     <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
     <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
-  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
+  <div class="sb-ft">Robinee Mae &middot; is Here</div>
 </aside>
 
 <div class="main">
@@ -426,290 +426,585 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 
 <!-- MODALS -->
 <div class="mo" id="m-capture" onclick="closeModal('m-capture',event)"><div class="modal"><div class="mtt">Capture a task</div><div class="mf"><label class="mlab">Task</label><input class="mi" id="cap-task" placeholder="What needs to happen?"></div><div class="mgr"><div class="mf"><label class="mlab">Category</label><select class="msel" id="cap-cat"><option>Property mgmt</option><option>ESL</option><option>Reading</option><option>Piano</option><option>Personal</option><option>Finance</option><option>Health</option></select></div><div class="mf"><label class="mlab">Urgency</label><select class="msel" id="cap-urg"><option>Routine</option><option>Important</option><option>Urgent</option></select></div></div><div class="mf"><label class="mlab">Notes</label><input class="mi" id="cap-notes" placeholder="Optional"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-capture')">cancel</button><button class="mbs" onclick="saveTask()">save</button></div></div></div>
-<div class="mo" id="m-daily" onclick="closeModal('m-daily',event)"><div class="modal"><div class="mtt">Morning anchor</div><div class="mgr"><div class="mf"><label class="mlab">Priority 1</label><input class="mi" id="dl-p1" placeholder="Top priority"></div><div class="mf"><label class="mlab">Priority 2</label><input class="mi" id="dl-p2" placeholder="Second"></div></div><div class="mf"><label class="mlab">Priority 3</label><input class="mi" id="dl-p3" placeholder="Third"></div><div class="mf"><label class="mlab">Grateful for</label><input class="mi" id="dl-grat" placeholder="One thing"></div><div class="mgr"><div class="mf"><label class="mlab">Faith note</label><input class="mi" id="dl-faith" placeholder="Verse or prayer"></div><div class="mf"><label class="mlab">Highlight</label><input class="mi" id="dl-hl" placeholder="Best moment"></div></div><div class="mf"><label class="mlab">Journal (freewrite)</label><textarea class="mta" id="dl-body" placeholder="Write freely — appears in your journal..."></textarea></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-daily')">cancel</button><button class="mbs" onclick="saveDailyLog()">save</button></div></div></div>
+<div class="mo" id="m-daily" onclick="closeModal('m-daily',event)"><div class="modal"><div class="mtt">Daily log</div><div class="mf"><label class="mlab">Grateful for</label><input class="mi" id="dl-grat" placeholder="One thing you're grateful for"></div><div class="mgr"><div class="mf"><label class="mlab">Highlight</label><input class="mi" id="dl-hl" placeholder="Best moment of the day"></div><div class="mf"><label class="mlab">Faith note</label><input class="mi" id="dl-faith" placeholder="Verse or prayer"></div></div><div class="mgr"><div class="mf"><label class="mlab">Family note</label><input class="mi" id="dl-family" placeholder="Something about family today"></div><div class="mf"><label class="mlab">Reflection</label><input class="mi" id="dl-refl" placeholder="How did the day go?"></div></div><div class="mgr"><div class="mf"><label class="mlab" style="display:flex;align-items:center;gap:8px">Water <input type="checkbox" id="dl-water" style="width:auto;margin:0"></label></div><div class="mf"><label class="mlab" style="display:flex;align-items:center;gap:8px">Exercise <input type="checkbox" id="dl-exercise" style="width:auto;margin:0"></label></div></div><div class="mf"><label class="mlab">Sleep hrs</label><input class="mi" id="dl-sleep" type="number" placeholder="7"></div><div class="mf"><label class="mlab">Journal (freewrite)</label><textarea class="mta" id="dl-body" placeholder="Write freely -- appears in your journal..."></textarea></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-daily')">cancel</button><button class="mbs" onclick="saveDailyLog()">save</button></div></div></div>
 <div class="mo" id="m-piano" onclick="closeModal('m-piano',event)"><div class="modal"><div class="mtt">Log piano session</div><div class="mf"><label class="mlab">Song</label><input class="mi" id="ps-song" placeholder="Song title"></div><div class="mgr"><div class="mf"><label class="mlab">Duration (min)</label><input class="mi" id="ps-dur" type="number" placeholder="20"></div><div class="mf"><label class="mlab">Focus</label><input class="mi" id="ps-focus" placeholder="e.g. chords"></div></div><div class="mf"><label class="mlab">Progress notes</label><input class="mi" id="ps-notes" placeholder="How did it go?"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-piano')">cancel</button><button class="mbs" onclick="savePianoSession()">save</button></div></div></div>
-<div class="mo" id="m-readsess" onclick="closeModal('m-readsess',event)"><div class="modal"><div class="mtt">Log reading session</div><div class="mf"><label class="mlab">Book title</label><input class="mi" id="rs-book" placeholder="Title"></div><div class="mgr"><div class="mf"><label class="mlab">Pages start</label><input class="mi" id="rs-start" type="number" placeholder="1"></div><div class="mf"><label class="mlab">Pages end</label><input class="mi" id="rs-end" type="number" placeholder="30"></div></div><div class="mf"><label class="mlab">Notes</label><input class="mi" id="rs-notes" placeholder="How was it?"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-readsess')">cancel</button><button class="mbs" onclick="saveReadSession()">save</button></div></div></div>
+<div class="mo" id="m-readsess" onclick="closeModal('m-readsess',event)"><div class="modal"><div class="mtt">Log reading session</div><div class="mf"><label class="mlab">Book title</label><input class="mi" id="rs-book" placeholder="Title"></div><div class="mgr"><div class="mf"><label class="mlab">Pages start</label><input class="mi" id="rs-start" type="number" placeholder="1"></div><div class="mf"><label class="mlab">Pages end</label><input class="mi" id="rs-end" type="number" placeholder="30"></div></div><div class="mgr"><div class="mf"><label class="mlab">Duration (min)</label><input class="mi" id="rs-dur" type="number" placeholder="30"></div><div class="mf"><label class="mlab">Notes</label><input class="mi" id="rs-notes" placeholder="How was it?"></div></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-readsess')">cancel</button><button class="mbs" onclick="saveReadSession()">save</button></div></div></div>
 <div class="mo" id="m-finance" onclick="closeModal('m-finance',event)"><div class="modal"><div class="mtt">Log finance entry</div><div class="mgr"><div class="mf"><label class="mlab">Type</label><select class="msel" id="fn-type"><option>Income</option><option>Expense</option><option>Savings</option></select></div><div class="mf"><label class="mlab">Category</label><select class="msel" id="fn-cat"><option>Property management</option><option>Salary / other</option><option>Bills &amp; utilities</option><option>Groceries &amp; food</option><option>Transport</option><option>Personal / misc</option><option>Savings</option></select></div></div><div class="mf"><label class="mlab">Amount (PHP)</label><input class="mi" id="fn-amt" type="number" placeholder="0"></div><div class="mf"><label class="mlab">Description</label><input class="mi" id="fn-desc" placeholder="What was it for?"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-finance')">cancel</button><button class="mbs" onclick="saveFinance()">save</button></div></div></div>
-<div class="mo" id="m-faith" onclick="closeModal('m-faith',event)"><div class="modal"><div class="mtt">Faith log</div><div class="mf"><label class="mlab">Verse / passage</label><input class="mi" id="fh-verse" placeholder="e.g. Psalm 46:10"></div><div class="mf"><label class="mlab">Prayer intention</label><input class="mi" id="fh-prayer" placeholder="What you prayed for"></div><div class="mf"><label class="mlab">Reflection</label><textarea class="mta" id="fh-refl" placeholder="One thought from your quiet time"></textarea></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-faith')">cancel</button><button class="mbs" onclick="saveFaith()">save</button></div></div></div>
+<div class="mo" id="m-faith" onclick="closeModal('m-faith',event)"><div class="modal"><div class="mtt">Faith log</div><div class="mf"><label class="mlab">Scripture / passage</label><input class="mi" id="fh-scripture" placeholder="e.g. Psalm 46:10"></div><div class="mf"><label class="mlab">Prayer intention</label><input class="mi" id="fh-prayer" placeholder="What you prayed for"></div><div class="mf"><label class="mlab">Reflection</label><textarea class="mta" id="fh-refl" placeholder="One thought from your quiet time"></textarea></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-faith')">cancel</button><button class="mbs" onclick="saveFaith()">save</button></div></div></div>
 <div class="mo" id="m-family" onclick="closeModal('m-family',event)"><div class="modal"><div class="mtt">Family log</div><div class="mf"><label class="mlab">Who</label><input class="mi" id="fm-who" placeholder="Family member(s)"></div><div class="mf"><label class="mlab">What happened</label><textarea class="mta" id="fm-what" placeholder="What did you do or talk about?"></textarea></div><div class="mf"><label class="mlab">Memory worth keeping</label><input class="mi" id="fm-mem" placeholder="Optional"></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-family')">cancel</button><button class="mbs" onclick="saveFamily()">save</button></div></div></div>
 <div class="mo" id="m-health" onclick="closeModal('m-health',event)"><div class="modal"><div class="mtt">Health log</div><div class="mgr"><div class="mf"><label class="mlab">Exercise type</label><input class="mi" id="hl-type" placeholder="Walk, yoga..."></div><div class="mf"><label class="mlab">Duration (min)</label><input class="mi" id="hl-dur" type="number" placeholder="30"></div></div><div class="mgr"><div class="mf"><label class="mlab">Water (glasses)</label><input class="mi" id="hl-water" type="number" placeholder="8"></div><div class="mf"><label class="mlab">Sleep (hrs)</label><input class="mi" id="hl-sleep" type="number" placeholder="7"></div></div><div class="mf"><label class="mlab">Energy level</label><select class="msel" id="hl-energy"><option>low</option><option>medium</option><option>high</option></select></div><div class="mbtns"><button class="mbc" onclick="closeModal('m-health')">cancel</button><button class="mbs" onclick="saveHealth()">save</button></div></div></div>
 
 <script>
-const DB={dailyLog:'32dec4518a618096986cfd9475b0aa1a',taskMaster:'32dec4518a6180dc84cee6e65539f871',weeklyReview:'32dec4518a618028a71cc366512a4dfc',bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',readingSessions:'32dec4518a618071af88ca0f6e477a30',pianoSongs:'32dec4518a6180ae9debe795972c5854',pianoSessions:'32dec4518a61804fb394f39e16d9511f',finance:'32dec4518a6180f886c4db6651b69cec',health:'32dec4518a6180d78721f0b13c663478',faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',family:'32dec4518a618024b0edfd41dc2c6e39',habits:'32dec4518a618070a3c8e50e5a9224e8'};
+const DB={
+  dailyLog:'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions:'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:'PASTE_FINANCE_DB_ID',
+  health:'PASTE_HEALTH_DB_ID',
+  faith:'PASTE_FAITH_DB_ID',
+  family:'PASTE_FAMILY_DB_ID',
+  habits:'PASTE_HABIT_TRACKER_DB_ID',
+};
+
 const notion=async(m,p,b)=>{const r=await fetch('/api/notion'+p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return r.json();};
 const query=(db,f,s)=>notion('POST',`/databases/${db}/query`,{filter:f,sorts:s});
 const create=(db,p)=>notion('POST','/pages',{parent:{database_id:db},properties:p});
 const update=(id,p)=>notion('PATCH',`/pages/${id}`,{properties:p});
 const getBlocks=(id)=>notion('GET',`/blocks/${id}/children`);
 const addBlock=(id,b)=>notion('PATCH',`/blocks/${id}/children`,{children:b});
-const prop={title:v=>({title:[{text:{content:v||''}}]}),text:v=>({rich_text:[{text:{content:v||''}}]}),select:v=>({select:{name:v}}),date:v=>({date:{start:v}}),checkbox:v=>({checkbox:!!v}),number:v=>({number:parseFloat(v)||0})};
-const gTitle=p=>{for(const k in p.properties)if(p.properties[k].type==='title')return p.properties[k].title.map(t=>t.plain_text).join('')||''};
-const gText=(p,k)=>{const x=p.properties[k];if(!x)return'';if(x.type==='rich_text')return x.rich_text.map(t=>t.plain_text).join('');if(x.type==='title')return x.title.map(t=>t.plain_text).join('');return''};
-const gSel=(p,k)=>p.properties[k]?.select?.name||'';
-const gDate=(p,k)=>p.properties[k]?.date?.start||'';
-const gNum=(p,k)=>p.properties[k]?.number||0;
-const gCB=(p,k)=>p.properties[k]?.checkbox||false;
-const now=new Date(),today=now.toISOString().split('T')[0];
+
+const prop={
+  title:  v=>({title:[{text:{content:v||''}}]}),
+  text:   v=>({rich_text:[{text:{content:v||''}}]}),
+  select: v=>v?({select:{name:v}}):({select:null}),
+  date:   v=>({date:{start:v}}),
+  checkbox:v=>({checkbox:!!v}),
+  number: v=>({number:parseFloat(v)||0}),
+  url:    v=>({url:v||null}),
+};
+
+const gTitle=p=>{for(const k in p.properties)if(p.properties[k].type==='title')return p.properties[k].title.map(t=>t.plain_text).join('')||'';return'';};
+const gText=(p,k)=>{const x=p?.properties[k];if(!x)return'';if(x.type==='rich_text')return x.rich_text.map(t=>t.plain_text).join('');if(x.type==='title')return x.title.map(t=>t.plain_text).join('');return'';};
+const gSel= (p,k)=>p?.properties[k]?.select?.name||'';
+const gDate=(p,k)=>p?.properties[k]?.date?.start||'';
+const gNum= (p,k)=>p?.properties[k]?.number||0;
+const gCB=  (p,k)=>p?.properties[k]?.checkbox||false;
+
+const now=new Date(), today=now.toISOString().split('T')[0];
 const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const HDAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-const HABITS=['Read','Piano','Water','Walk','Journal','Pray','Family time'];
+const HABITS=['Read','Piano','Water','Workout','Journal','Skin Care','Devotion'];
+
 document.getElementById('td-day').textContent=DAYS[now.getDay()];
 document.getElementById('td-dt').textContent=`${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
 document.getElementById('tb-date').textContent=`${DAYS[now.getDay()]}, ${MONTHS[now.getMonth()]} ${now.getDate()}`;
 document.getElementById('fin-month-lbl').textContent=MONTHS[now.getMonth()].toLowerCase()+' '+now.getFullYear();
-const getMon=d=>{const m=new Date(d);m.setDate(m.getDate()-((m.getDay()+6)%7));return m};
+
+const getMon=d=>{const m=new Date(d);m.setDate(m.getDate()-((m.getDay()+6)%7));return m;};
 const monStr=d=>getMon(d).toISOString().split('T')[0];
-const fmtD=s=>{if(!s)return'';try{const d=new Date(s);return`${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}`}catch{return s}};
-const fmt=n=>n?`₱${Math.round(n).toLocaleString()}`:'—';
-let todayId=null,allBooks=[],allTasks=[],wrOffset=0,wrPageId=null;
+const fmtD=s=>{if(!s)return'';try{const d=new Date(s+'T00:00:00');return`${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}`;}catch{return s;}};
+const fmt=n=>n?`\u20B1${Math.round(n).toLocaleString()}`:'--';
+
+let todayId=null, allBooks=[], allTasks=[], wrOffset=0;
+
 const pTitles={dashboard:'Dashboard',journal:'Journal',tasks:'Task master',weekly:'Weekly review',reading:'Reading',piano:'Piano',health:'Health & fitness',finance:'Finance',faith:'Faith & family'};
 const pLoaders={journal:loadJournal,tasks:loadTasks,weekly:()=>loadWeeklyReview(0),reading:loadReading,piano:loadPiano,health:loadHealth,finance:loadFinance,faith:loadFaithFamily};
 const pLoaded=new Set(['dashboard']);
+
 function showPage(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   if(el)el.classList.add('active');
-  else{const txt=pTitles[id]?.toLowerCase();document.querySelectorAll('.ni').forEach(n=>{if(n.textContent.trim().toLowerCase().startsWith(txt?.slice(0,5)||'_'))n.classList.add('active');});}
   document.getElementById('tb-title').textContent=pTitles[id]||id;
   if(!pLoaded.has(id)&&pLoaders[id]){pLoaded.add(id);pLoaders[id]();}
 }
-// DASHBOARD
-async function loadDashboard(){await Promise.all([loadDailyLog(),loadDashTasks(),loadDashHabits(),loadDashRead(),loadDashPiano(),loadDashWeekly(),loadDashFaith(),loadDashFamily(),loadTheme()]);}
+
+// ── DASHBOARD ────────────────────────────────────────────────────────────
+async function loadDashboard(){
+  await Promise.all([loadDailyLog(),loadDashTasks(),loadDashHabits(),loadDashRead(),loadDashPiano(),loadDashWeekly(),loadDashFaith(),loadDashFamily(),loadTheme()]);
+}
+
 async function loadDailyLog(){
   try{
-    const res=await query(DB.dailyLog,{property:'Date',date:{equals:today}});
+    const res=await query(DB.dailyLog,{timestamp:'created_time',created_time:{equals:today}});
     const p=res.results?.[0];
-    if(p){todayId=p.id;renderMood(gSel(p,'Mood'));renderEnergy(gSel(p,'Energy'));const g=gText(p,'Gratitude');if(g){document.getElementById('grat-txt').textContent=g;document.getElementById('grat-block').style.display='block';}renderPri(p);}
-    else document.getElementById('p-list').innerHTML='<div class="empty">No log yet — click "edit log" to start</div>';
-  }catch{document.getElementById('p-list').innerHTML='<div class="err">Check DB ID · daily log</div>';}
+    if(p){
+      todayId=p.id;
+      renderMood(gSel(p,'Mood')); renderEnergy(gSel(p,'Energy'));
+      const g=gText(p,'Gratitude');
+      if(g){document.getElementById('grat-txt').textContent=g;document.getElementById('grat-block').style.display='block';}
+      renderLogCard(p);
+    } else {
+      document.getElementById('p-list').innerHTML='<div class="empty">No log yet -- click edit log to start</div>';
+    }
+  } catch(e){
+    console.error('DailyLog:',e);
+    document.getElementById('p-list').innerHTML='<div class="err">Check DB ID - daily log</div>';
+  }
 }
+
 function renderMood(m){document.querySelectorAll('#mood-pills .mp').forEach(e=>e.classList.toggle('sel',e.textContent===m));}
 function renderEnergy(e){document.querySelectorAll('#en-pills .mp').forEach(el=>el.classList.toggle('sel',el.textContent===e));}
-function renderPri(p){
-  const ps=['Priority 1','Priority 2','Priority 3'].map(k=>gText(p,k)).filter(Boolean);
-  if(!ps.length){document.getElementById('p-list').innerHTML='<div class="empty">No priorities set</div>';return;}
-  const c=[{bg:'var(--wkb)',c:'var(--wk)'},{bg:'var(--wkb)',c:'var(--wk)'},{bg:'var(--pib)',c:'var(--pi)'}];
-  document.getElementById('p-list').innerHTML=ps.map((t,i)=>`<div class="pi" onclick="this.classList.toggle('done')"><div class="pn" style="background:${c[i].bg};color:${c[i].c}">${i+1}</div><div class="pt">${t}</div></div>`).join('');
+
+function renderLogCard(p){
+  const g=gText(p,'Gratitude'), h=gText(p,'Highlight'), r=gText(p,'Reflection');
+  const items=[
+    g&&{label:g, bg:'var(--heb)', c:'var(--he)', icon:'\u2665'},
+    h&&{label:h, bg:'var(--pib)', c:'var(--pi)', icon:'\u2605'},
+    r&&{label:r, bg:'var(--c2)',  c:'var(--mid)',icon:'\u270f'},
+  ].filter(Boolean);
+  if(!items.length){document.getElementById('p-list').innerHTML='<div class="empty">Log started -- add gratitude, highlight or reflection</div>';return;}
+  document.getElementById('p-list').innerHTML=items.map(t=>`<div class="pi"><div class="pn" style="background:${t.bg};color:${t.c}">${t.icon}</div><div class="pt">${t.label}</div></div>`).join('');
 }
+
 async function loadDashTasks(){
   try{
-    const res=await query(DB.taskMaster,{and:[{property:'Scheduled',date:{equals:today}},{property:'Status',status:{does_not_equal:'Done'}}]});
+    const res=await query(DB.taskMaster,{and:[
+      {property:'Scheduled',date:{equals:today}},
+      {property:'Status',status:{does_not_equal:'Done'}},
+    ]});
     const uc={'Urgent':'#E24B4A','Important':'#BA7517','Routine':'var(--ht)'};
     const el=document.getElementById('t-list');
     if(!res.results?.length){el.innerHTML='<div class="empty">No tasks today</div>';return;}
     document.getElementById('task-cnt').textContent=res.results.length;
     el.innerHTML=res.results.slice(0,5).map(p=>`<div class="ti"><div class="ug" style="background:${uc[gSel(p,'Urgency')]||'var(--ht)'}"></div><div class="tn2">${gTitle(p)}</div><div class="tg">${gSel(p,'Category')}</div></div>`).join('');
-  }catch{document.getElementById('t-list').innerHTML='<div class="err">Check DB ID</div>';}
+  } catch(e){console.error('Tasks:',e);document.getElementById('t-list').innerHTML='<div class="err">Check DB ID - tasks</div>';}
 }
+
 async function loadDashHabits(){
   try{
     const res=await query(DB.habits,{property:'Week of',date:{equals:monStr(now)}});
-    const p=res.results?.[0];const di=(now.getDay()+6)%7;
+    const p=res.results?.[0]; const di=(now.getDay()+6)%7;
     document.getElementById('h-rows').innerHTML=HABITS.map(h=>{
-      const boxes=HDAYS.map((d,i)=>{const k=`${h} \u2014 ${d}`;const done=p?gCB(p,k):false;const it=i===di;return`<div class="hb ${done?'done':''} ${it?'td':''}" onclick="toggleHabit('${p?.id||''}','${k}',this)">${done?'&#10003;':''}</div>`;}).join('');
+      const boxes=HDAYS.map((d,i)=>{
+        const k=`${h} \u2014 ${d}`;
+        const done=p?gCB(p,k):false; const it=i===di;
+        return `<div class="hb ${done?'done':''} ${it?'td':''}" onclick="toggleHabit('${p?.id||''}','${k}',this)">${done?'&#10003;':''}</div>`;
+      }).join('');
       const streak=p?HDAYS.slice(0,di+1).filter(d=>gCB(p,`${h} \u2014 ${d}`)).length:0;
-      return`<div class="hr"><div class="hn">${h}</div><div class="hbs">${boxes}</div><div class="hst">${streak}</div></div>`;
+      return `<div class="hr"><div class="hn">${h}</div><div class="hbs">${boxes}</div><div class="hst">${streak}</div></div>`;
     }).join('');
-  }catch{document.getElementById('h-rows').innerHTML='<div class="err">Check DB ID</div>';}
+  } catch(e){console.error('Habits:',e);document.getElementById('h-rows').innerHTML='<div class="err">Check DB ID - habits</div>';}
 }
-async function toggleHabit(pid,key,el){if(!pid)return;const done=!el.classList.contains('done');el.classList.toggle('done',done);el.innerHTML=done?'&#10003;':'';;await update(pid,{[key]:prop.checkbox(done)});}
+
+async function toggleHabit(pid,key,el){
+  if(!pid)return;
+  const done=!el.classList.contains('done');
+  el.classList.toggle('done',done); el.innerHTML=done?'&#10003;':'';
+  await update(pid,{[key]:prop.checkbox(done)});
+}
+
 async function loadDashRead(){
   try{
-    const[c,a]=await Promise.all([query(DB.bookShelf,{property:'Status',select:{equals:'Reading'}}),query(DB.bookShelf,{})]);
+    const [c,a]=await Promise.all([
+      query(DB.bookShelf,{property:'Status',status:{equals:'Reading'}}),
+      query(DB.bookShelf,{}),
+    ]);
     const read=a.results?.filter(p=>gSel(p,'Status')==='Read').length||0;
     const unread=a.results?.filter(p=>gSel(p,'Status')==='Owned / unread').length||0;
     document.getElementById('read-cnt').textContent=read;
     const books=c.results?.slice(0,2).map(p=>`<div class="bi"><div class="bsp" style="background:var(--rd)"></div><div class="bif"><div class="bt">${gTitle(p)}</div><div class="ba">${gText(p,'Author')}</div></div></div>`).join('')||'<div class="empty">No books reading</div>';
     document.getElementById('db-read').innerHTML=`<div class="bl">${books}</div><div class="bst"><div class="bs"><div class="bsn">${read}</div><div class="bsl">read</div></div><div class="bs"><div class="bsn">${c.results?.length||0}</div><div class="bsl">reading</div></div><div class="bs"><div class="bsn">${unread}</div><div class="bsl">unread</div></div></div>`;
-  }catch{document.getElementById('db-read').innerHTML='<div class="err">Check DB ID</div>';}
+  } catch(e){console.error('Read:',e);document.getElementById('db-read').innerHTML='<div class="err">Check DB ID - bookshelf</div>';}
 }
+
 async function loadDashPiano(){
   try{
-    const s=await query(DB.pianoSongs,{or:[{property:'Status',select:{equals:'In progress'}},{property:'Status',select:{equals:'Learning'}}]});
-    const sc={'In progress':'var(--pi)','Learning':'var(--pi)'};const sb={'In progress':'var(--pib)','Learning':'var(--pib)'};
+    const s=await query(DB.pianoSongs,{or:[
+      {property:'Status',status:{equals:'In progress'}},
+      {property:'Status',status:{equals:'Learning'}},
+    ]});
+    const sc={'In progress':'var(--pi)','Learning':'var(--pi)'};
+    const sb={'In progress':'var(--pib)','Learning':'var(--pib)'};
     document.getElementById('db-piano').innerHTML=`<div class="sl">${s.results?.slice(0,3).map(p=>{const st=gSel(p,'Status');return`<div class="si"><div class="sd" style="background:${sc[st]||'var(--ht)'}"></div><div class="sn">${gTitle(p)}</div><div class="sbg" style="background:${sb[st]||'var(--bg2)'};color:${sc[st]||'var(--lt)'}">${st}</div></div>`;}).join('')||'<div class="empty">No active songs</div>'}</div>`;
-  }catch{document.getElementById('db-piano').innerHTML='<div class="err">Check DB ID</div>';}
+  } catch(e){console.error('Piano:',e);document.getElementById('db-piano').innerHTML='<div class="err">Check DB ID - piano</div>';}
 }
+
 async function loadDashWeekly(){
   try{
-    const mon=monStr(now);
-    const[wr,hab]=await Promise.all([query(DB.weeklyReview,{property:'Week of',date:{equals:mon}}),query(DB.habits,{property:'Week of',date:{equals:mon}})]);
-    const p=wr.results?.[0];const hp=hab.results?.[0];
-    const wins=p?gText(p,'Wins'):'';const carry=p?gText(p,'Carry Forward'):'';const theme=p?gText(p,'Focus Theme'):'';
-    const habitSummary=hp?HABITS.map(h=>{const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;const pct=Math.round(count/7*100);return`<div class="wp-hchip" style="background:${pct>=70?'var(--heb)':(pct>=40?'var(--c2)':'var(--bg2)')};color:${pct>=70?'var(--he)':(pct>=40?'var(--mid)':'var(--lt)')}"><span style="font-size:.56rem">${h.slice(0,4)}</span> ${count}/7</div>`;}).join(''):'';
+    const [wr,hab]=await Promise.all([
+      query(DB.weeklyReview,{property:'Week of',title:{equals:monStr(now)}}),
+      query(DB.habits,{property:'Week of',date:{equals:monStr(now)}}),
+    ]);
+    const p=wr.results?.[0]; const hp=hab.results?.[0];
+    const wins=p?gText(p,'Wins'):''; const carry=p?gText(p,'Carry Forward'):'';
+    const chips=hp?HABITS.map(h=>{
+      const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;
+      const pct=Math.round(count/7*100);
+      return `<div class="wp-hchip" style="background:${pct>=70?'var(--heb)':pct>=40?'var(--c2)':'var(--bg2)'};color:${pct>=70?'var(--he)':pct>=40?'var(--mid)':'var(--lt)'};font-family:var(--mono);font-size:.56rem;padding:2px 7px;border-radius:20px">${h.slice(0,4)} ${count}/7</div>`;
+    }).join(''):'';
     document.getElementById('db-weekly').innerHTML=`
       <div class="wp-grid">
         <div class="wp-item"><div class="wp-label">wins</div><div class="wp-val">${wins||'<span style="color:var(--ht)">not filled yet</span>'}</div></div>
         <div class="wp-item"><div class="wp-label">carry forward</div><div class="wp-val">${carry||'<span style="color:var(--ht)">not filled yet</span>'}</div></div>
       </div>
-      ${habitSummary?`<div class="wp-habits">${habitSummary}</div>`:''}`;
-  }catch{document.getElementById('db-weekly').innerHTML='<div class="err">Check DB ID</div>';}
+      ${chips?`<div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px solid var(--bd)">${chips}</div>`:''}`;
+  } catch(e){console.error('Weekly:',e);document.getElementById('db-weekly').innerHTML='<div class="err">Check DB ID - weekly</div>';}
 }
-async function loadDashFaith(){try{const r=await query(DB.faith,{},[{property:'Date',direction:'descending'}]);document.getElementById('db-faith').innerHTML=renderLogs(r.results?.slice(0,2),'Verse / passage','Reflection')||'<div class="empty">No entries yet</div>';}catch{document.getElementById('db-faith').innerHTML='<div class="err">Check DB ID</div>';}}
-async function loadDashFamily(){try{const r=await query(DB.family,{},[{property:'Date',direction:'descending'}]);document.getElementById('db-family').innerHTML=renderLogs(r.results?.slice(0,2),'What we did / talked about',null,'Who')||'<div class="empty">No entries yet</div>';}catch{document.getElementById('db-family').innerHTML='<div class="err">Check DB ID</div>';}}
-async function loadTheme(){try{const r=await query(DB.weeklyReview,{property:'Week of',date:{equals:monStr(now)}});document.getElementById('theme-text').textContent=r.results?.[0]?gText(r.results[0],'Focus Theme')||'one day at a time':'one day at a time';}catch{document.getElementById('theme-text').textContent='one day at a time';}}
-function renderLogs(pages,mk,sk,pk){if(!pages?.length)return'';return pages.map(p=>{const main=gText(p,mk),sub=sk?gText(p,sk):'',pre=pk?gText(p,pk):'',date=gDate(p,'Date');return`<div class="le"><div class="ld">${fmtD(date)}${pre?' · '+pre:''}</div><div class="lx">${main}${sub?' · '+sub:''}</div></div>`;}).join('');}
-// JOURNAL
+
+function renderLogs(pages,mk,sk,pk){
+  if(!pages?.length)return'';
+  return pages.map(p=>{
+    const main=gText(p,mk), sub=sk?gText(p,sk):'', pre=pk?gTitle(p):'';
+    const date=gDate(p,'Date')||p.created_time?.split('T')[0]||'';
+    return `<div class="le"><div class="ld">${fmtD(date)}${pre?' \u00b7 '+pre:''}</div><div class="lx">${main}${sub?' \u00b7 '+sub:''}</div></div>`;
+  }).join('');
+}
+
+async function loadDashFaith(){
+  try{
+    const r=await query(DB.faith,{},[{property:'Date',direction:'descending'}]);
+    // Faith title is "Feelings Name", verse is "Verse", reflection is "Reflection"
+    document.getElementById('db-faith').innerHTML=renderLogs(r.results?.slice(0,2),'Scripture','Reflection')||'<div class="empty">No entries yet</div>';
+  } catch(e){document.getElementById('db-faith').innerHTML='<div class="err">Check DB ID - faith</div>';}
+}
+
+async function loadDashFamily(){
+  try{
+    const r=await query(DB.family,{},[{property:'Date',direction:'descending'}]);
+    // Family title is "Who", main content is "Moment"
+    document.getElementById('db-family').innerHTML=r.results?.slice(0,2).map(p=>{
+      const who=gTitle(p), moment=gText(p,'Moment'), date=gDate(p,'Date');
+      return `<div class="le"><div class="ld">${fmtD(date)}${who?' \u00b7 '+who:''}</div><div class="lx">${moment}</div></div>`;
+    }).join('')||'<div class="empty">No entries yet</div>';
+  } catch(e){document.getElementById('db-family').innerHTML='<div class="err">Check DB ID - family</div>';}
+}
+
+async function loadTheme(){
+  try{
+    const r=await query(DB.weeklyReview,{property:'Week of',title:{equals:monStr(now)}});
+    document.getElementById('theme-text').textContent=r.results?.[0]?gText(r.results[0],'Focus Theme')||'one day at a time':'one day at a time';
+  } catch(e){document.getElementById('theme-text').textContent='one day at a time';}
+}
+
+// ── JOURNAL ──────────────────────────────────────────────────────────────
 async function loadJournal(){
   try{
-    const res=await query(DB.dailyLog,{},[{property:'Date',direction:'descending'}]);
-    if(!res.results?.length){document.getElementById('journal-list').innerHTML='<div class="empty" style="padding:20px">No entries yet</div>';return;}
+    const res=await query(DB.dailyLog,{},[{timestamp:'created_time',direction:'descending'}]);
+    if(!res.results?.length){document.getElementById('journal-list').innerHTML='<div class="empty" style="padding:20px">No journal entries yet</div>';return;}
     const items=await Promise.all(res.results.slice(0,30).map(async p=>{
-      const date=gDate(p,'Date'),d=date?new Date(date):null;
-      const mood=gSel(p,'Mood'),grat=gText(p,'Gratitude'),hl=gText(p,'Highlight');
+      const date=p.created_time?.split('T')[0]||'';
+      const d=date?new Date(date+'T00:00:00'):null;
+      const mood=gSel(p,'Mood'), grat=gText(p,'Gratitude'), hl=gText(p,'Highlight');
       let bodyHtml='';
-      try{const blks=await getBlocks(p.id);bodyHtml=blks.results?.map(b=>{const t=b.type,rt=b[t]?.rich_text?.map(x=>x.plain_text).join('')||'';
-if(!rt)return'';if(t==='heading_1')return`<h1>${rt}</h1>`;if(t==='heading_2')return`<h2>${rt}</h2>`;if(t==='heading_3')return`<h3>${rt}</h3>`;return`<p>${rt}</p>`;}).join('')||'';}catch{}
-      const mc={'low':'var(--fab);color:var(--fa)','okay':'var(--bg2);color:var(--lt)','good':'var(--heb);color:var(--he)','great':'var(--heb);color:var(--he)','peak':'var(--gnp);color:var(--gn)'};
-      const ms=mc[mood]||'var(--bg2);color:var(--lt)';const hasBody=bodyHtml.trim().length>0;
-      return`<div class="ji"><div class="jp" onclick="toggleJ('${p.id}')"><div class="jdc"><div class="jdn">${d?d.getDate():'?'}</div><div class="jdd">${d?DAYS[d.getDay()].slice(0,3):''}</div><div class="jdm">${d?MONTHS[d.getMonth()].slice(0,3)+' '+d.getFullYear():''}</div></div><div class="jdv"></div><div class="jc">${mood?`<div class="jmo" style="background:${ms}">${mood}</div>`:''}<div class="jg">${grat?`&ldquo;${grat}&rdquo;`:''}</div><div class="jhl">${hl||''}</div>${hasBody?'<div class="jhb">&#9655; journal entry</div>':''}</div></div>${hasBody?`<div class="jex" id="je-${p.id}"><div class="jbd">${bodyHtml}</div></div>`:''}</div>`;
+      try{
+        const blks=await getBlocks(p.id);
+        bodyHtml=blks.results?.map(b=>{
+          const t=b.type, rt=b[t]?.rich_text?.map(x=>x.plain_text).join('')||'';
+          if(!rt)return'';
+          if(t==='heading_1')return`<h1>${rt}</h1>`;
+          if(t==='heading_2')return`<h2>${rt}</h2>`;
+          if(t==='heading_3')return`<h3>${rt}</h3>`;
+          return`<p>${rt}</p>`;
+        }).join('')||'';
+      }catch{}
+      const mc={low:'var(--fab);color:var(--fa)',okay:'var(--bg2);color:var(--lt)',good:'var(--heb);color:var(--he)',great:'var(--heb);color:var(--he)',peak:'var(--gnp);color:var(--gn)'};
+      const ms=mc[mood]||'var(--bg2);color:var(--lt)';
+      const hasBody=bodyHtml.trim().length>0;
+      return `<div class="ji"><div class="jp" onclick="toggleJ('${p.id}')"><div class="jdc"><div class="jdn">${d?d.getDate():'?'}</div><div class="jdd">${d?DAYS[d.getDay()].slice(0,3):''}</div><div class="jdm">${d?MONTHS[d.getMonth()].slice(0,3)+' '+d.getFullYear():''}</div></div><div class="jdv"></div><div class="jc">${mood?`<div class="jmo" style="background:${ms}">${mood}</div>`:''}<div class="jg">${grat?`&ldquo;${grat}&rdquo;`:''}</div><div class="jhl">${hl||''}</div>${hasBody?'<div class="jhb">&#9655; journal entry</div>':''}</div></div>${hasBody?`<div class="jex" id="je-${p.id}"><div class="jbd">${bodyHtml}</div></div>`:''}</div>`;
     }));
     document.getElementById('journal-list').innerHTML=items.join('');
-  }catch{document.getElementById('journal-list').innerHTML='<div class="err">Check DB ID</div>';}
+  } catch(e){console.error('Journal:',e);document.getElementById('journal-list').innerHTML='<div class="err">Check DB ID - daily log</div>';}
 }
+
 function toggleJ(id){const e=document.getElementById('je-'+id);if(e)e.classList.toggle('open');}
-// TASKS PAGE
+
+// ── TASKS PAGE ────────────────────────────────────────────────────────────
 async function loadTasks(){
   try{
     const res=await query(DB.taskMaster,{},[{property:'Urgency',direction:'ascending'},{property:'Scheduled',direction:'ascending'}]);
     allTasks=res.results||[];
     document.getElementById('task-cnt').textContent=allTasks.filter(p=>gSel(p,'Status')!=='Done').length;
     renderTasks('today');
-  }catch{document.getElementById('task-full-list').innerHTML='<div class="err">Check DB ID</div>';}
+  } catch(e){console.error('Tasks:',e);document.getElementById('task-full-list').innerHTML='<div class="err">Check DB ID - tasks</div>';}
 }
-function filterTasks(f,el){document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderTasks(f);}
+
+function filterTasks(f,el){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderTasks(f);
+}
+
 function renderTasks(f){
   const uc={'Urgent':'#E24B4A','Important':'#BA7517','Routine':'var(--ht)'};
-  const mon=monStr(now).toISOString?.()?.split('T')?.[0]||monStr(now);
+  const mon=getMon(now); const endOfWeek=new Date(mon); endOfWeek.setDate(endOfWeek.getDate()+6);
+  const eow=endOfWeek.toISOString().split('T')[0];
   let filtered=allTasks.filter(p=>{
-    const s=gSel(p,'Status'),sch=gDate(p,'Scheduled'),due=gDate(p,'Due Date');
-    if(f==='today')return sch===today&&s!=='Done';
-    if(f==='week'){const m=getMon(now);const e=new Date(m);e.setDate(e.getDate()+6);const ed=e.toISOString().split('T')[0];return sch>=monStr(now)&&sch<=ed&&s!=='Done';}
+    const s=gSel(p,'Status'), sch=gDate(p,'Scheduled'), due=gDate(p,'Due Date');
+    if(f==='today')  return sch===today&&s!=='Done';
+    if(f==='week')   return sch>=monStr(now)&&sch<=eow&&s!=='Done';
     if(f==='overdue')return due&&due<today&&s!=='Done';
     if(f==='someday')return gCB(p,'Someday');
     return s!=='Done'&&s!=='Dropped';
   });
   if(!filtered.length){document.getElementById('task-full-list').innerHTML='<div class="empty" style="padding:12px">No tasks in this view</div>';return;}
+  const tagStyle=cat=>{
+    if(cat==='Property mgmt')return'background:var(--wkb);color:var(--wk)';
+    if(cat==='ESL')return'background:var(--heb);color:var(--he)';
+    if(cat==='Piano')return'background:var(--pib);color:var(--pi)';
+    if(cat==='Reading')return'background:var(--rdb);color:var(--rd)';
+    return'background:var(--bg2);color:var(--lt)';
+  };
   document.getElementById('task-full-list').innerHTML=filtered.map(p=>{
-    const urg=gSel(p,'Urgency'),cat=gSel(p,'Category'),notes=gText(p,'Notes'),due=gDate(p,'Due Date'),sch=gDate(p,'Scheduled');
-    const tagStyle=cat==='Property mgmt'?'background:var(--wkb);color:var(--wk)':cat==='ESL'?'background:var(--heb);color:var(--he)':cat==='Piano'?'background:var(--pib);color:var(--pi)':cat==='Reading'?'background:var(--rdb);color:var(--rd)':'background:var(--bg2);color:var(--lt)';
-    return`<div class="tfi"><div class="tfi-check" onclick="this.classList.toggle('checked')"></div><div class="tfi-body"><div class="tfi-name">${gTitle(p)}</div><div class="tfi-meta"><div class="tfi-tag" style="${tagStyle}">${cat}</div><div class="tfi-urg" style="color:${uc[urg]||'var(--lt)'}">${urg}</div>${due?`<div class="tfi-urg">due ${fmtD(due)}</div>`:''}</div>${notes?`<div class="tfi-notes">${notes}</div>`:''}</div></div>`;
+    const urg=gSel(p,'Urgency'), cat=gSel(p,'Category'), notes=gText(p,'Notes'), due=gDate(p,'Due Date');
+    return `<div class="tfi"><div class="tfi-check" onclick="this.classList.toggle('checked')"></div><div class="tfi-body"><div class="tfi-name">${gTitle(p)}</div><div class="tfi-meta"><div class="tfi-tag" style="${tagStyle(cat)}">${cat}</div><div class="tfi-urg" style="color:${uc[urg]||'var(--lt)'}">${urg}</div>${due?`<div class="tfi-urg">due ${fmtD(due)}</div>`:''}</div>${notes?`<div class="tfi-notes">${notes}</div>`:''}</div></div>`;
   }).join('');
 }
-// WEEKLY REVIEW PAGE
+
+// ── WEEKLY REVIEW ─────────────────────────────────────────────────────────
 async function loadWeeklyReview(offset){
-  wrOffset=offset;
-  const baseDate=new Date(now);baseDate.setDate(baseDate.getDate()+offset*7);
-  const mon=getMon(baseDate);const monStr2=mon.toISOString().split('T')[0];
-  const sunDate=new Date(mon);sunDate.setDate(sunDate.getDate()+6);
-  document.getElementById('wr-week-lbl').textContent=`${MONTHS[mon.getMonth()].slice(0,3)} ${mon.getDate()} — ${MONTHS[sunDate.getMonth()].slice(0,3)} ${sunDate.getDate()}, ${sunDate.getFullYear()}`;
+  wrOffset=offset||0;
+  const base=new Date(now); base.setDate(base.getDate()+wrOffset*7);
+  const mon=getMon(base); const monS=mon.toISOString().split('T')[0];
+  const sun=new Date(mon); sun.setDate(sun.getDate()+6);
+  document.getElementById('wr-week-lbl').textContent=`${MONTHS[mon.getMonth()].slice(0,3)} ${mon.getDate()} \u2014 ${MONTHS[sun.getMonth()].slice(0,3)} ${sun.getDate()}, ${sun.getFullYear()}`;
   try{
-    const[wr,hab]=await Promise.all([query(DB.weeklyReview,{property:'Week of',date:{equals:monStr2}}),query(DB.habits,{property:'Week of',date:{equals:monStr2}})]);
-    const p=wr.results?.[0];const hp=hab.results?.[0];wrPageId=p?.id||null;
+    // Weekly Review title is the week date string
+    const [wr,hab]=await Promise.all([
+      query(DB.weeklyReview,{property:'Week of',title:{contains:monS}}),
+      query(DB.habits,{property:'Week of',date:{equals:monS}}),
+    ]);
+    const p=wr.results?.[0]; const hp=hab.results?.[0];
     const theme=p?gText(p,'Focus Theme'):'';
     if(theme){document.getElementById('wr-theme').style.display='block';document.getElementById('wr-theme-val').textContent=theme;}
     else document.getElementById('wr-theme').style.display='none';
-    const cards=[{key:'Wins',label:'wins this week',dot:'var(--he)'},{key:'Carry Forward',label:'carry forward',dot:'var(--wk)'},{key:'One Thing to Improve',label:'one thing to improve',dot:'var(--rd)'},{key:'Grateful For',label:'grateful for',dot:'var(--fa)'}];
+    const cards=[
+      {key:'Wins',label:'wins this week',dot:'var(--he)'},
+      {key:'Carry Forward',label:'carry forward',dot:'var(--wk)'},
+      {key:'One Thing to Improve',label:'one thing to improve',dot:'var(--rd)'},
+      {key:'Grateful For',label:'grateful for',dot:'var(--fa)'},
+    ];
     document.getElementById('wr-cards').innerHTML=cards.map(c=>`<div class="wr-card"><div class="wr-card-title"><div class="wr-card-dot" style="background:${c.dot}"></div>${c.label}</div><div class="wr-field">${p&&gText(p,c.key)||'<span style="color:var(--ht)">not filled yet</span>'}</div></div>`).join('');
     if(hp){
       document.getElementById('wr-habits').innerHTML=HABITS.map(h=>{
-        const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;const pct=Math.round(count/7*100);
-        return`<div class="wr-hrow"><div class="wr-hname">${h}</div><div class="wr-hbar"><div class="wr-hfill" style="width:${pct}%"></div></div><div class="wr-hcount">${count}/7</div></div>`;
+        const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;
+        const pct=Math.round(count/7*100);
+        return `<div class="wr-hrow"><div class="wr-hname">${h}</div><div class="wr-hbar"><div class="wr-hfill" style="width:${pct}%"></div></div><div class="wr-hcount">${count}/7</div></div>`;
       }).join('');
-    }else document.getElementById('wr-habits').innerHTML='<div class="empty">No habit data for this week</div>';
-  }catch{document.getElementById('wr-cards').innerHTML='<div class="err">Check DB ID</div>';}
+    } else document.getElementById('wr-habits').innerHTML='<div class="empty">No habit data this week</div>';
+  } catch(e){console.error('Weekly:',e);document.getElementById('wr-cards').innerHTML='<div class="err">Check DB ID - weekly review</div>';}
 }
+
 function changeWeek(dir){loadWeeklyReview(wrOffset+dir);}
-// READING PAGE
+
+// ── READING PAGE ──────────────────────────────────────────────────────────
 async function loadReading(){
   try{
-    const[books,sess]=await Promise.all([query(DB.bookShelf,{},[{property:'Title',direction:'ascending'}]),query(DB.readingSessions,{},[{property:'Date',direction:'descending'}])]);
+    const [books,sess]=await Promise.all([
+      query(DB.bookShelf,{},[{property:'Title',direction:'ascending'}]),
+      query(DB.readingSessions,{},[{property:'Date',direction:'descending'}]),
+    ]);
     allBooks=books.results||[];
-    const stats=[...new Set(allBooks.map(p=>gSel(p,'Status')).filter(Boolean))];
-    document.getElementById('rf').innerHTML=['All',...stats].map(s=>`<div onclick="filterBooks('${s}',this)" class="ftab ${s==='Reading'?'active':''}" ${s==='Reading'?'style="background:var(--gn);color:white;border-color:var(--gn)"':''}>${s}</div>`).join('');
+    const statuses=[...new Set(allBooks.map(p=>gSel(p,'Status')).filter(Boolean))];
+    document.getElementById('rf').innerHTML=['All',...statuses].map(s=>`<div onclick="filterBooks('${s}',this)" class="ftab ${s==='Reading'?'active':''}" ${s==='Reading'?'style="background:var(--gn);color:white;border-color:var(--gn)"':''}>${s}</div>`).join('');
     renderBooks('Reading');
-    document.getElementById('read-sessions').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Book</th><th>Pages</th><th>Duration</th><th>Notes</th></tr></thead><tbody>${sess.results?.slice(0,15).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gText(p,'Book')}</td><td>${gNum(p,'Pages start')} — ${gNum(p,'Pages end')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gText(p,'Notes')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No sessions logged yet</td></tr>'}</tbody></table>`;
-  }catch{document.getElementById('rg').innerHTML='<div class="err">Check DB ID</div>';}
+    document.getElementById('read-sessions').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Book</th><th>Pages</th><th>Duration</th><th>Notes</th></tr></thead><tbody>${sess.results?.slice(0,15).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gTitle(p)}</td><td>${gNum(p,'Page start')} \u2014 ${gNum(p,'Page end')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gText(p,'Notes')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No sessions yet</td></tr>'}</tbody></table>`;
+  } catch(e){console.error('Reading:',e);document.getElementById('rg').innerHTML='<div class="err">Check DB ID - bookshelf</div>';}
 }
-function filterBooks(s,el){document.querySelectorAll('#rf .ftab').forEach(b=>{b.style.background='';b.style.color='var(--mid)';b.style.borderColor='var(--bd)';});el.style.background='var(--gn)';el.style.color='white';el.style.borderColor='var(--gn)';renderBooks(s);}
+
+function filterBooks(s,el){
+  document.querySelectorAll('#rf .ftab').forEach(b=>{b.style.background='';b.style.color='var(--mid)';b.style.borderColor='var(--bd)';});
+  el.style.background='var(--gn)';el.style.color='white';el.style.borderColor='var(--gn)';
+  renderBooks(s);
+}
+
 function renderBooks(s){
   const f=s==='All'?allBooks:allBooks.filter(p=>gSel(p,'Status')===s);
-  const sc={'Read':'var(--heb);color:var(--he)','Reading':'var(--rdb);color:var(--rd)','Owned / unread':'var(--bg2);color:var(--lt)','DNF':'var(--fab);color:var(--fa)'};
-  document.getElementById('rg').innerHTML=f.map(p=>`<div class="bc"><div class="bct">${gTitle(p)}</div><div class="bca">${gText(p,'Author')}</div><div class="bcr">${gText(p,'Rating')}</div><div class="bcs" style="background:${sc[gSel(p,'Status')]||'var(--bg2);color:var(--lt)'}">${gSel(p,'Status')}</div></div>`).join('')||'<div class="empty">No books here</div>';
+  const sc={'Read':'var(--heb);color:var(--he)','Reading':'var(--rdb);color:var(--rd)','Owned / unread':'var(--bg2);color:var(--lt)','DNF':'var(--fab);color:var(--fa)','Paused':'var(--c2);color:var(--mid)'};
+  document.getElementById('rg').innerHTML=f.map(p=>`<div class="bc"><div class="bct">${gTitle(p)}</div><div class="bca">${gText(p,'Author')}</div><div class="bcr">${gSel(p,'Rating')}</div><div class="bcs" style="background:${sc[gSel(p,'Status')]||'var(--bg2);color:var(--lt)'}">${gSel(p,'Status')}</div></div>`).join('')||'<div class="empty">No books here</div>';
 }
-// PIANO PAGE
+
+// ── PIANO PAGE ────────────────────────────────────────────────────────────
 async function loadPiano(){
   try{
-    const[songs,sess]=await Promise.all([query(DB.pianoSongs),query(DB.pianoSessions,{},[{property:'Date',direction:'descending'}])]);
+    const [songs,sess]=await Promise.all([
+      query(DB.pianoSongs),
+      query(DB.pianoSessions,{},[{property:'Date',direction:'descending'}]),
+    ]);
     const so={'In progress':0,'Learning':1,'Queued':2,'Someday':3};
     const sorted=songs.results?.sort((a,b)=>(so[gSel(a,'Status')]||9)-(so[gSel(b,'Status')]||9));
     const sc={'In progress':'var(--pi)','Learning':'var(--pi)','Queued':'var(--ht)','Someday':'var(--ht)'};
-    document.getElementById('piano-songs').innerHTML=sorted?.filter(p=>['In progress','Learning','Queued'].includes(gSel(p,'Status'))).map(p=>`<div class="sc" style="border-left-color:${sc[gSel(p,'Status')]||'var(--pi)'}"><div class="scs">${gTitle(p)}</div><div class="sca">${gText(p,'Artist')}</div><div class="scp">${gText(p,'Purpose')}</div><div class="scc">${gText(p,'Chords / Key')}</div></div>`).join('')||'<div class="empty">No active songs</div>';
-    document.getElementById('piano-sess').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Song</th><th>Duration</th><th>Focus</th><th>Notes</th></tr></thead><tbody>${sess.results?.slice(0,10).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gText(p,'Song practiced')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gText(p,'Focus')}</td><td>${gText(p,'Progress notes')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No sessions yet</td></tr>'}</tbody></table>`;
-  }catch{document.getElementById('piano-songs').innerHTML='<div class="err">Check DB ID</div>';}
+    document.getElementById('piano-songs').innerHTML=sorted?.filter(p=>['In progress','Learning','Queued'].includes(gSel(p,'Status'))).map(p=>`<div class="sc" style="border-left-color:${sc[gSel(p,'Status')]||'var(--pi)'}"><div class="scs">${gTitle(p)}</div><div class="sca">${gText(p,'Artist')}</div><div class="scp">${gSel(p,'Purpose')}</div><div class="scc">${gText(p,'Chords / Key')}</div></div>`).join('')||'<div class="empty">No active songs</div>';
+    // Practice Session: title is "Song practiced", song relation is "Song Name"
+    document.getElementById('piano-sess').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Song</th><th>Duration</th><th>Focus</th><th>Notes</th></tr></thead><tbody>${sess.results?.slice(0,10).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gTitle(p)}</td><td>${gNum(p,'Duration(min)')} min</td><td>${gText(p,'Focus')}</td><td>${gText(p,'Progress notes')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No sessions yet</td></tr>'}</tbody></table>`;
+  } catch(e){console.error('Piano:',e);document.getElementById('piano-songs').innerHTML='<div class="err">Check DB ID - piano</div>';}
 }
-// HEALTH PAGE
+
+// ── HEALTH PAGE ───────────────────────────────────────────────────────────
 async function loadHealth(){
   try{
-    const res=await query(DB.health,{},[{property:'Date',direction:'descending'}]);
-    const entries=res.results||[];const latest=entries[0];
-    document.getElementById('health-latest').innerHTML=latest?`<div class="hs"><div class="hss"><div class="hsv">${gNum(latest,'Duration (min)')}</div><div class="hsl">min</div></div><div class="hss"><div class="hsv">${gNum(latest,'Water (glasses)')}</div><div class="hsl">glasses</div></div><div class="hss"><div class="hsv">${gNum(latest,'Sleep (hrs)')}</div><div class="hsl">hrs sleep</div></div></div><div style="font-size:.78rem;color:var(--mid)">${gText(latest,'Exercise type')} · ${gSel(latest,'Energy level')} energy · ${fmtD(gDate(latest,'Date'))}</div>`:'<div class="empty">No entries yet</div>';
-    const week=entries.slice(0,7);const avg=(key)=>week.length?Math.round(week.reduce((s,p)=>s+gNum(p,key),0)/week.length):0;
-    document.getElementById('health-avg').innerHTML=`<div class="hs"><div class="hss"><div class="hsv">${avg('Duration (min)')}</div><div class="hsl">min avg</div></div><div class="hss"><div class="hsv">${avg('Water (glasses)')}</div><div class="hsl">glasses avg</div></div><div class="hss"><div class="hsv">${avg('Sleep (hrs)')}</div><div class="hsl">hrs sleep avg</div></div></div>`;
-    document.getElementById('health-list').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Exercise</th><th>Duration</th><th>Water</th><th>Sleep</th><th>Energy</th></tr></thead><tbody>${entries.slice(0,14).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gText(p,'Exercise type')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gNum(p,'Water (glasses)')} glasses</td><td>${gNum(p,'Sleep (hrs)')} hrs</td><td>${gSel(p,'Energy level')}</td></tr>`).join('')||'<tr><td colspan="6" style="color:var(--lt);font-style:italic">No entries yet</td></tr>'}</tbody></table>`;
-  }catch{document.getElementById('health-latest').innerHTML='<div class="err">Check DB ID</div>';}
+    const res=await query(DB.health,{},[{property:'Day',direction:'descending'}]);
+    const entries=res.results||[]; const latest=entries[0];
+    document.getElementById('health-latest').innerHTML=latest?`<div class="hs"><div class="hss"><div class="hsv">${gNum(latest,'Duration (min)')}</div><div class="hsl">min</div></div><div class="hss"><div class="hsv">${gNum(latest,'Water (glasses)')}</div><div class="hsl">glasses</div></div><div class="hss"><div class="hsv">${gNum(latest,'Sleep (hrs)')}</div><div class="hsl">hrs sleep</div></div></div><div style="font-size:.78rem;color:var(--mid)">${gSel(latest,'Exercise Type')} \u00b7 ${gSel(latest,'Energy level')} energy</div>`:'<div class="empty">No entries yet</div>';
+    const week=entries.slice(0,7);
+    const avg=key=>week.length?Math.round(week.reduce((s,p)=>s+gNum(p,key),0)/week.length):0;
+    document.getElementById('health-avg').innerHTML=`<div class="hs"><div class="hss"><div class="hsv">${avg('Duration (min)')}</div><div class="hsl">min avg</div></div><div class="hss"><div class="hsv">${avg('Water (glasses)')}</div><div class="hsl">glasses avg</div></div><div class="hss"><div class="hsv">${avg('Sleep (hrs)')}</div><div class="hsl">hrs avg</div></div></div>`;
+    document.getElementById('health-list').innerHTML=`<table class="st"><thead><tr><th>Day</th><th>Exercise</th><th>Duration</th><th>Water</th><th>Sleep</th><th>Energy</th></tr></thead><tbody>${entries.slice(0,14).map(p=>`<tr><td>${gTitle(p)}</td><td>${gSel(p,'Exercise Type')}</td><td>${gNum(p,'Duration (min)')} min</td><td>${gNum(p,'Water (glasses)')} glasses</td><td>${gNum(p,'Sleep (hrs)')} hrs</td><td>${gSel(p,'Energy level')}</td></tr>`).join('')||'<tr><td colspan="6" style="color:var(--lt);font-style:italic">No entries yet</td></tr>'}</tbody></table>`;
+  } catch(e){console.error('Health:',e);document.getElementById('health-latest').innerHTML='<div class="err">Check DB ID - fitness</div>';}
 }
-// FINANCE PAGE
+
+// ── FINANCE PAGE ──────────────────────────────────────────────────────────
 async function loadFinance(){
   try{
-    const res=await query(DB.finance,{},[{property:'Date',direction:'descending'}]);
+    const res=await query(DB.finance,{},[{property:'Date of Transaction',direction:'descending'}]);
     let inc=0,exp=0,sav=0;
-    res.results?.filter(p=>gText(p,'Month')||gDate(p,'Date')?.startsWith(`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`)).forEach(p=>{const t=gSel(p,'Type'),a=gNum(p,'Amount (PHP)');if(t==='Income')inc+=a;else if(t==='Expense')exp+=a;else if(t==='Savings')sav+=a;});
+    const thisMonth=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    res.results?.filter(p=>gDate(p,'Date of Transaction')?.startsWith(thisMonth)).forEach(p=>{
+      const t=gSel(p,'Type'), a=gNum(p,'Amount');
+      if(t==='Income')inc+=a; else if(t==='Expense')exp+=a; else if(t==='Savings')sav+=a;
+    });
     document.getElementById('fin-summary').innerHTML=`<div class="fs"><div class="fst"><div class="fsl">income</div><div class="fsv" style="color:var(--he)">${fmt(inc)}</div></div><div class="fst"><div class="fsl">expense</div><div class="fsv" style="color:var(--fa)">${fmt(exp)}</div></div><div class="fst"><div class="fsl">saved</div><div class="fsv" style="color:var(--wk)">${fmt(sav)}</div></div></div>`;
-    document.getElementById('fin-all').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Type</th><th>Category</th><th>Amount</th><th>Description</th></tr></thead><tbody>${res.results?.slice(0,20).map(p=>{const t=gSel(p,'Type');const c=t==='Income'?'var(--he)':t==='Savings'?'var(--wk)':'var(--fa)';return`<tr><td>${fmtD(gDate(p,'Date'))}</td><td style="color:${c};font-family:var(--mono);font-size:.75rem">${t}</td><td>${gSel(p,'Category')}</td><td style="font-family:var(--mono);color:${c}">${t==='Expense'?'-':'+'}${fmt(gNum(p,'Amount (PHP)'))}</td><td>${gText(p,'Description')}</td></tr>`;}).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No entries yet</td></tr>'}</tbody></table>`;
-  }catch{document.getElementById('fin-summary').innerHTML='<div class="err">Check DB ID</div>';}
+    document.getElementById('fin-all').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Type</th><th>Category</th><th>Amount</th><th>Description</th></tr></thead><tbody>${res.results?.slice(0,20).map(p=>{const t=gSel(p,'Type');const c=t==='Income'?'var(--he)':t==='Savings'?'var(--wk)':'var(--fa)';return`<tr><td>${fmtD(gDate(p,'Date of Transaction'))}</td><td style="color:${c};font-family:var(--mono);font-size:.75rem">${t}</td><td>${gSel(p,'Category')}</td><td style="font-family:var(--mono);color:${c}">${t==='Expense'?'-':'+'}${fmt(gNum(p,'Amount'))}</td><td>${gText(p,'Description')}</td></tr>`;}).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No entries yet</td></tr>'}</tbody></table>`;
+  } catch(e){console.error('Finance:',e);document.getElementById('fin-summary').innerHTML='<div class="err">Check DB ID - finance</div>';}
 }
-// FAITH & FAMILY PAGE
+
+// ── FAITH & FAMILY PAGE ───────────────────────────────────────────────────
 async function loadFaithFamily(){
   try{
-    const[faith,fam]=await Promise.all([query(DB.faith,{},[{property:'Date',direction:'descending'}]),query(DB.family,{},[{property:'Date',direction:'descending'}])]);
-    document.getElementById('faith-list').innerHTML=faith.results?.slice(0,10).map(p=>`<div class="le"><div class="ld">${fmtD(gDate(p,'Date'))}</div><div class="lx">${gText(p,'Verse / passage')}${gText(p,'Reflection')?'<br><span style="font-size:.8rem">'+gText(p,'Reflection')+'</span>':''}</div></div>`).join('')||'<div class="empty">No faith entries yet</div>';
-    document.getElementById('family-list').innerHTML=fam.results?.slice(0,10).map(p=>`<div class="le"><div class="ld">${fmtD(gDate(p,'Date'))}${gText(p,'Who')?' · '+gText(p,'Who'):''}</div><div class="lx">${gText(p,'What we did / talked about')}${gText(p,'Memory worth keeping')?'<br><span style="color:var(--fa)">'+gText(p,'Memory worth keeping')+'</span>':''}</div></div>`).join('')||'<div class="empty">No family entries yet</div>';
-  }catch{document.getElementById('faith-list').innerHTML='<div class="err">Check DB ID</div>';}
+    const [faith,fam]=await Promise.all([
+      query(DB.faith,{},[{timestamp:'created_time',direction:'descending'}]),
+      query(DB.family,{},[{property:'Date',direction:'descending'}]),
+    ]);
+    // Faith: title="Feelings Name", verse="Verse", reflection="Reflection"
+    document.getElementById('faith-list').innerHTML=faith.results?.slice(0,10).map(p=>`<div class="le"><div class="ld">${fmtD(p.created_time?.split('T')[0]||'')} \u00b7 ${gTitle(p)}</div><div class="lx">${gText(p,'Scripture')}${gText(p,'Reflection')?'<br><span style="font-size:.8rem">'+gText(p,'Reflection')+'</span>':''}</div></div>`).join('')||'<div class="empty">No faith entries yet</div>';
+    // Family: title="Who", content="Moment", memory="Memory bank"
+    document.getElementById('family-list').innerHTML=fam.results?.slice(0,10).map(p=>`<div class="le"><div class="ld">${fmtD(gDate(p,'Date'))} \u00b7 ${gTitle(p)}</div><div class="lx">${gText(p,'Moment')}${gText(p,'Memory bank')?'<br><span style="color:var(--fa)">'+gText(p,'Memory bank')+'</span>':''}</div></div>`).join('')||'<div class="empty">No family entries yet</div>';
+  } catch(e){console.error('Faith/Family:',e);}
 }
-// MOOD/ENERGY
+
+// ── MOOD / ENERGY ─────────────────────────────────────────────────────────
 async function setMood(m){renderMood(m);if(todayId)await update(todayId,{Mood:prop.select(m)});}
 async function setEnergy(e){renderEnergy(e);if(todayId)await update(todayId,{Energy:prop.select(e)});}
-// SAVE
-async function saveTask(){const t=document.getElementById('cap-task').value.trim();if(!t)return;await create(DB.taskMaster,{Task:prop.title(t),Status:prop.select('Not started'),Category:prop.select(document.getElementById('cap-cat').value),Urgency:prop.select(document.getElementById('cap-urg').value),Notes:prop.text(document.getElementById('cap-notes').value),Scheduled:prop.date(today)});closeModal('m-capture');loadDashTasks();if(pLoaded.has('tasks'))loadTasks();}
-async function saveDailyLog(){
-  const p1=document.getElementById('dl-p1').value.trim(),p2=document.getElementById('dl-p2').value.trim(),p3=document.getElementById('dl-p3').value.trim(),g=document.getElementById('dl-grat').value.trim(),f=document.getElementById('dl-faith').value.trim(),hl=document.getElementById('dl-hl').value.trim(),body=document.getElementById('dl-body').value.trim();
-  const props={Day:prop.title(DAYS[now.getDay()]),Date:prop.date(today),'Priority 1':prop.text(p1),'Priority 2':prop.text(p2),'Priority 3':prop.text(p3),Gratitude:prop.text(g),'Faith note':prop.text(f),Highlight:prop.text(hl),Week:prop.text(monStr(now))};
-  let pid=todayId;
-  if(pid)await update(pid,props);else{const pg=await create(DB.dailyLog,props);pid=pg.id;todayId=pg.id;}
-  if(body&&pid)await addBlock(pid,[{object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:body}}]}}]);
-  closeModal('m-daily');loadDailyLog();
+
+// ── SAVE FUNCTIONS ────────────────────────────────────────────────────────
+async function saveTask(){
+  const t=document.getElementById('cap-task').value.trim(); if(!t)return;
+  await create(DB.taskMaster,{
+    Task:prop.title(t),
+    Status:prop.select('Not started'),
+    Category:prop.select(document.getElementById('cap-cat').value),
+    Urgency:prop.select(document.getElementById('cap-urg').value),
+    Notes:prop.text(document.getElementById('cap-notes').value),
+    Scheduled:prop.date(today),
+  });
+  closeModal('m-capture'); loadDashTasks(); if(pLoaded.has('tasks'))loadTasks();
 }
-async function saveReadSession(){const b=document.getElementById('rs-book').value.trim();if(!b)return;await create(DB.readingSessions,{Session:prop.title(`${b} — p.${document.getElementById('rs-start').value}–${document.getElementById('rs-end').value}`),Date:prop.date(today),Book:prop.text(b),'Pages start':prop.number(document.getElementById('rs-start').value),'Pages end':prop.number(document.getElementById('rs-end').value),'Pages read':prop.number(document.getElementById('rs-end').value-document.getElementById('rs-start').value),Notes:prop.text(document.getElementById('rs-notes').value)});closeModal('m-readsess');if(pLoaded.has('reading'))loadReading();}
-async function savePianoSession(){const s=document.getElementById('ps-song').value.trim();if(!s)return;await create(DB.pianoSessions,{Session:prop.title(`${s} — ${document.getElementById('ps-dur').value} min`),Date:prop.date(today),'Song practiced':prop.text(s),'Duration (min)':prop.number(document.getElementById('ps-dur').value),Focus:prop.text(document.getElementById('ps-focus').value),'Progress notes':prop.text(document.getElementById('ps-notes').value)});closeModal('m-piano');if(pLoaded.has('piano'))loadPiano();}
-async function saveFinance(){const a=document.getElementById('fn-amt').value;if(!a)return;const t=document.getElementById('fn-type').value;await create(DB.finance,{Date:prop.title(today),Type:prop.select(t),Category:prop.select(document.getElementById('fn-cat').value),'Amount (PHP)':prop.number(a),Description:prop.text(document.getElementById('fn-desc').value),Month:prop.text(`${MONTHS[now.getMonth()]} ${now.getFullYear()}`)});closeModal('m-finance');loadDashWeekly();if(pLoaded.has('finance'))loadFinance();}
-async function saveFaith(){await create(DB.faith,{Date:prop.title(today),'Verse / passage':prop.text(document.getElementById('fh-verse').value),'Prayer intention':prop.text(document.getElementById('fh-prayer').value),Reflection:prop.text(document.getElementById('fh-refl').value),'Devotion done':prop.checkbox(true)});closeModal('m-faith');loadDashFaith();if(pLoaded.has('faith'))loadFaithFamily();}
-async function saveFamily(){await create(DB.family,{Date:prop.title(today),Who:prop.text(document.getElementById('fm-who').value),'What we did / talked about':prop.text(document.getElementById('fm-what').value),'Memory worth keeping':prop.text(document.getElementById('fm-mem').value)});closeModal('m-family');loadDashFamily();if(pLoaded.has('faith'))loadFaithFamily();}
-async function saveHealth(){await create(DB.health,{Date:prop.title(today),'Exercise type':prop.text(document.getElementById('hl-type').value),'Duration (min)':prop.number(document.getElementById('hl-dur').value),'Water (glasses)':prop.number(document.getElementById('hl-water').value),'Sleep (hrs)':prop.number(document.getElementById('hl-sleep').value),'Energy level':prop.select(document.getElementById('hl-energy').value)});closeModal('m-health');if(pLoaded.has('health'))loadHealth();}
-// MODALS
-function openCapture(){document.getElementById('m-capture').classList.add('open');}
-function openDailyLog(){document.getElementById('m-daily').classList.add('open');}
-function openAddSession(){document.getElementById('m-piano').classList.add('open');}
+
+async function saveDailyLog(){
+  const g=document.getElementById('dl-grat').value.trim();
+  const f=document.getElementById('dl-faith').value.trim();
+  const hl=document.getElementById('dl-hl').value.trim();
+  const refl=document.getElementById('dl-refl').value.trim();
+  const fam=document.getElementById('dl-family').value.trim();
+  const water=document.getElementById('dl-water').checked;
+  const exercise=document.getElementById('dl-exercise').checked;
+  const sleep=document.getElementById('dl-sleep').value;
+  const body=document.getElementById('dl-body').value.trim();
+
+  const props={
+    Log:prop.title(DAYS[now.getDay()]+' '+now.getDate()),
+    Mood:prop.select(document.querySelector('#mood-pills .mp.sel')?.textContent||''),
+    Energy:prop.select(document.querySelector('#en-pills .mp.sel')?.textContent||''),
+    Gratitude:prop.text(g),
+    'Faith Note':prop.text(f),
+    Highlight:prop.text(hl),
+    Reflection:prop.text(refl),
+    'Family Note':prop.text(fam),
+    Water:prop.checkbox(water),
+    Exercise:prop.checkbox(exercise),
+    'Sleep hrs':prop.number(sleep),
+  };
+
+  let pid=todayId;
+  if(pid) await update(pid,props);
+  else { const pg=await create(DB.dailyLog,props); pid=pg.id; todayId=pg.id; }
+  if(body&&pid) await addBlock(pid,[{object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:body}}]}}]);
+  closeModal('m-daily'); loadDailyLog();
+}
+
+async function saveReadSession(){
+  const b=document.getElementById('rs-book').value.trim(); if(!b)return;
+  const start=document.getElementById('rs-start').value;
+  const end=document.getElementById('rs-end').value;
+  await create(DB.readingSessions,{
+    Session:prop.title(b+' p.'+start+'-'+end),
+    Date:prop.date(today),
+    'Page start':prop.number(start),
+    'Page end':prop.number(end),
+    'Duration (min)':prop.number(document.getElementById('rs-dur')?.value||0),
+    Notes:prop.text(document.getElementById('rs-notes').value),
+  });
+  closeModal('m-readsess'); if(pLoaded.has('reading'))loadReading();
+}
+
+async function savePianoSession(){
+  const s=document.getElementById('ps-song').value.trim(); if(!s)return;
+  await create(DB.pianoSessions,{
+    'Song practiced':prop.title(s+' - '+document.getElementById('ps-dur').value+' min'),
+    Date:prop.date(today),
+    'Duration(min)':prop.number(document.getElementById('ps-dur').value),
+    Focus:prop.text(document.getElementById('ps-focus').value),
+    'Progress notes':prop.text(document.getElementById('ps-notes').value),
+    Mood:prop.select('good'),
+  });
+  closeModal('m-piano'); if(pLoaded.has('piano'))loadPiano();
+}
+
+async function saveFinance(){
+  const a=document.getElementById('fn-amt').value; if(!a)return;
+  await create(DB.finance,{
+    Item:prop.title(document.getElementById('fn-desc').value||document.getElementById('fn-cat').value),
+    'Date of Transaction':prop.date(today),
+    Type:prop.select(document.getElementById('fn-type').value),
+    Category:prop.select(document.getElementById('fn-cat').value),
+    Amount:prop.number(a),
+    Description:prop.text(document.getElementById('fn-desc').value),
+  });
+  closeModal('m-finance'); loadDashWeekly(); if(pLoaded.has('finance'))loadFinance();
+}
+
+async function saveFaith(){
+  await create(DB.faith,{
+    'Feelings Name':prop.title(document.getElementById('fh-scripture').value.slice(0,30)||'Entry'),
+    'Devotion Done':prop.checkbox(true),
+    'Prayer Intention':prop.text(document.getElementById('fh-prayer').value),
+    Scripture:prop.text(document.getElementById('fh-scripture').value),
+    Reflection:prop.text(document.getElementById('fh-refl').value),
+  });
+  closeModal('m-faith'); loadDashFaith(); if(pLoaded.has('faith'))loadFaithFamily();
+}
+
+async function saveFamily(){
+  await create(DB.family,{
+    Who:prop.title(document.getElementById('fm-who').value||'Family'),
+    Date:prop.date(today),
+    Moment:prop.text(document.getElementById('fm-what').value),
+    'Memory bank':prop.text(document.getElementById('fm-mem').value),
+  });
+  closeModal('m-family'); loadDashFamily(); if(pLoaded.has('faith'))loadFaithFamily();
+}
+
+async function saveHealth(){
+  await create(DB.health,{
+    Day:prop.title(DAYS[now.getDay()]+' '+now.getDate()),
+    'Exercise Type':prop.select(document.getElementById('hl-type').value),
+    'Duration (min)':prop.number(document.getElementById('hl-dur').value),
+    'Water (glasses)':prop.number(document.getElementById('hl-water').value),
+    'Sleep (hrs)':prop.number(document.getElementById('hl-sleep').value),
+    'Energy level':prop.select(document.getElementById('hl-energy').value),
+  });
+  closeModal('m-health'); if(pLoaded.has('health'))loadHealth();
+}
+
+// ── MODALS ────────────────────────────────────────────────────────────────
+function openCapture()       {document.getElementById('m-capture').classList.add('open');}
+function openDailyLog()      {document.getElementById('m-daily').classList.add('open');}
+function openAddSession()    {document.getElementById('m-piano').classList.add('open');}
 function openAddReadSession(){document.getElementById('m-readsess').classList.add('open');}
-function openAddFinance(){document.getElementById('m-finance').classList.add('open');}
-function openAddFaith(){document.getElementById('m-faith').classList.add('open');}
-function openAddFamily(){document.getElementById('m-family').classList.add('open');}
-function openAddHealth(){document.getElementById('m-health').classList.add('open');}
-function editTheme(){const t=prompt('This week\'s focus theme:',document.getElementById('theme-text').textContent);if(t)document.getElementById('theme-text').textContent=t;}
-function closeModal(id,e){if(!e||e.target.classList.contains('mo'))document.getElementById(id).classList.remove('open');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));});
+function openAddFinance()    {document.getElementById('m-finance').classList.add('open');}
+function openAddFaith()      {document.getElementById('m-faith').classList.add('open');}
+function openAddFamily()     {document.getElementById('m-family').classList.add('open');}
+function openAddHealth()     {document.getElementById('m-health').classList.add('open');}
+
+function editTheme(){
+  const t=prompt('This week\'s focus theme:',document.getElementById('theme-text').textContent);
+  if(t)document.getElementById('theme-text').textContent=t;
+}
+
+function closeModal(id,e){
+  if(!e||e.target.classList.contains('mo'))document.getElementById(id).classList.remove('open');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
+});
+
 loadDashboard();
 </script>
 </body>
