@@ -265,7 +265,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
     <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
     <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
-  <div class="sb-ft">Robinee Mae &middot; is Here</div>
+  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
 </aside>
 
 <div class="main">
@@ -436,18 +436,18 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 
 <script>
 const DB={
-  dailyLog:'32dec4518a618096986cfd9475b0aa1a',
-  taskMaster:'32dec4518a6180dc84cee6e65539f871',
-  weeklyReview:'32dec4518a618028a71cc366512a4dfc',
-  bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',
-  readingSessions:'32dec4518a618071af88ca0f6e477a30',
-  pianoSongs:'32dec4518a6180ae9debe795972c5854',
-  pianoSessions:'32dec4518a61804fb394f39e16d9511f',
-  finance:'32dec4518a6180f886c4db6651b69cec',
-  health:'32dec4518a6180d78721f0b13c663478',
-  faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',
-  family:'32dec4518a618024b0edfd41dc2c6e39',
-  habits:'32dec4518a618070a3c8e50e5a9224e8',
+  dailyLog:'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions:'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:'PASTE_FINANCE_DB_ID',
+  health:'PASTE_HEALTH_DB_ID',
+  faith:'PASTE_FAITH_DB_ID',
+  family:'PASTE_FAMILY_DB_ID',
+  habits:'PASTE_HABIT_TRACKER_DB_ID',
 };
 
 const notion=async(m,p,b)=>{const r=await fetch('/api/notion'+p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return r.json();};
@@ -559,8 +559,11 @@ async function loadDashTasks(){
 
 async function loadDashHabits(){
   try{
-    const res=await query(DB.habits,{property:'Week of',date:{equals:monStr(now)}});
-    const p=res.results?.[0]; const di=(now.getDay()+6)%7;
+    const res=await query(DB.habits,{},[{timestamp:'created_time',direction:'descending'}]);
+    // Match this week's entry by title containing Monday date
+    const mon=monStr(now);
+    const p=res.results?.find(r=>gTitle(r).includes(mon))||res.results?.[0];
+    const di=(now.getDay()+6)%7;
     document.getElementById('h-rows').innerHTML=HABITS.map(h=>{
       const boxes=HDAYS.map((d,i)=>{
         const k=`${h} \u2014 ${d}`;
@@ -596,10 +599,7 @@ async function loadDashRead(){
 
 async function loadDashPiano(){
   try{
-    const s=await query(DB.pianoSongs,{or:[
-      {property:'Status',status:{equals:'In progress'}},
-      {property:'Status',status:{equals:'Learning'}},
-    ]});
+    const s=await query(DB.pianoSongs,{property:'Status',status:{equals:'In progress'}});
     const sc={'In progress':'var(--pi)','Learning':'var(--pi)'};
     const sb={'In progress':'var(--pib)','Learning':'var(--pib)'};
     document.getElementById('db-piano').innerHTML=`<div class="sl">${s.results?.slice(0,3).map(p=>{const st=gSel(p,'Status');return`<div class="si"><div class="sd" style="background:${sc[st]||'var(--ht)'}"></div><div class="sn">${gTitle(p)}</div><div class="sbg" style="background:${sb[st]||'var(--bg2)'};color:${sc[st]||'var(--lt)'}">${st}</div></div>`;}).join('')||'<div class="empty">No active songs</div>'}</div>`;
@@ -609,10 +609,11 @@ async function loadDashPiano(){
 async function loadDashWeekly(){
   try{
     const [wr,hab]=await Promise.all([
-      query(DB.weeklyReview,{property:'Week of',title:{equals:monStr(now)}}),
-      query(DB.habits,{property:'Week of',date:{equals:monStr(now)}}),
+      query(DB.weeklyReview,{property:'Week of',title:{contains:monStr(now)}}),
+      query(DB.habits,{},[{timestamp:'created_time',direction:'descending'}]),
     ]);
-    const p=wr.results?.[0]; const hp=hab.results?.[0];
+    const p=wr.results?.[0];
+    const hp=hab.results?.find(r=>gTitle(r).includes(monStr(now)))||hab.results?.[0];
     const wins=p?gText(p,'Wins'):''; const carry=p?gText(p,'Carry Forward'):'';
     const chips=hp?HABITS.map(h=>{
       const count=HDAYS.filter(d=>gCB(hp,`${h} \u2014 ${d}`)).length;
@@ -639,7 +640,7 @@ function renderLogs(pages,mk,sk,pk){
 
 async function loadDashFaith(){
   try{
-    const r=await query(DB.faith,{},[{property:'Date',direction:'descending'}]);
+    const r=await query(DB.faith,{},[{timestamp:'created_time',direction:'descending'}]);
     // Faith title is "Feelings Name", verse is "Verse", reflection is "Reflection"
     document.getElementById('db-faith').innerHTML=renderLogs(r.results?.slice(0,2),'Scripture','Reflection')||'<div class="empty">No entries yet</div>';
   } catch(e){document.getElementById('db-faith').innerHTML='<div class="err">Check DB ID - faith</div>';}
@@ -658,7 +659,7 @@ async function loadDashFamily(){
 
 async function loadTheme(){
   try{
-    const r=await query(DB.weeklyReview,{property:'Week of',title:{equals:monStr(now)}});
+    const r=await query(DB.weeklyReview,{property:'Week of',title:{contains:monStr(now)}});
     document.getElementById('theme-text').textContent=r.results?.[0]?gText(r.results[0],'Focus Theme')||'one day at a time':'one day at a time';
   } catch(e){document.getElementById('theme-text').textContent='one day at a time';}
 }
@@ -748,9 +749,10 @@ async function loadWeeklyReview(offset){
     // Weekly Review title is the week date string
     const [wr,hab]=await Promise.all([
       query(DB.weeklyReview,{property:'Week of',title:{contains:monS}}),
-      query(DB.habits,{property:'Week of',date:{equals:monS}}),
+      query(DB.habits,{},[{timestamp:'created_time',direction:'descending'}]),
     ]);
-    const p=wr.results?.[0]; const hp=hab.results?.[0];
+    const p=wr.results?.[0];
+    const hp=hab.results?.find(r=>gTitle(r).includes(monS))||hab.results?.[0];
     const theme=p?gText(p,'Focus Theme'):'';
     if(theme){document.getElementById('wr-theme').style.display='block';document.getElementById('wr-theme-val').textContent=theme;}
     else document.getElementById('wr-theme').style.display='none';
@@ -819,7 +821,7 @@ async function loadPiano(){
 // ── HEALTH PAGE ───────────────────────────────────────────────────────────
 async function loadHealth(){
   try{
-    const res=await query(DB.health,{},[{property:'Day',direction:'descending'}]);
+    const res=await query(DB.health,{},[{timestamp:'created_time',direction:'descending'}]);
     const entries=res.results||[]; const latest=entries[0];
     document.getElementById('health-latest').innerHTML=latest?`<div class="hs"><div class="hss"><div class="hsv">${gNum(latest,'Duration (min)')}</div><div class="hsl">min</div></div><div class="hss"><div class="hsv">${gNum(latest,'Water (glasses)')}</div><div class="hsl">glasses</div></div><div class="hss"><div class="hsv">${gNum(latest,'Sleep (hrs)')}</div><div class="hsl">hrs sleep</div></div></div><div style="font-size:.78rem;color:var(--mid)">${gSel(latest,'Exercise Type')} \u00b7 ${gSel(latest,'Energy level')} energy</div>`:'<div class="empty">No entries yet</div>';
     const week=entries.slice(0,7);
