@@ -265,7 +265,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
     <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
     <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
-  <div class="sb-ft">Robinee Mae &middot; is Here</div>
+  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
 </aside>
 
 <div class="main">
@@ -439,18 +439,18 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 // YOUR NOTION DATABASE IDs — PASTE YOURS BELOW (no dashes)
 // ═══════════════════════════════════════════════════════════════
 const DB={
- dailyLog:'32dec4518a618096986cfd9475b0aa1a',
-  taskMaster:'32dec4518a6180dc84cee6e65539f871',
-  weeklyReview:'32dec4518a618028a71cc366512a4dfc',
-  bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',
-  readingSessions:'32dec4518a618071af88ca0f6e477a30',
-  pianoSongs:'32dec4518a6180ae9debe795972c5854',
-  pianoSessions:'32dec4518a61804fb394f39e16d9511f',
-  finance:'32dec4518a6180f886c4db6651b69cec',
-  health:'32dec4518a6180d78721f0b13c663478',
-  faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',
-  family:'32dec4518a618024b0edfd41dc2c6e39',
-  habits:'32dec4518a618070a3c8e50e5a9224e8',
+  dailyLog:        'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:      'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:    'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:       'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions: 'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:      'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:   'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:         'PASTE_FINANCE_DB_ID',
+  health:          'PASTE_HEALTH_DB_ID',
+  faith:           'PASTE_FAITH_DB_ID',
+  family:          'PASTE_FAMILY_DB_ID',
+  habits:          'PASTE_HABIT_TRACKER_DB_ID',
 };
 // ═══════════════════════════════════════════════════════════════
 
@@ -525,7 +525,7 @@ function weekLabel(d){
   return ms+' '+mon.getDate()+' - '+ss+' '+sun.getDate()+', '+sun.getFullYear();
 }
 
-let todayId=null, allBooks=[], allTasks=[], wrOffset=0;
+let todayId=null, allBooks=[], allTasks=[], wrOffset=0, bookDataMap={}, songDataMap={};
 
 const pTitles={dashboard:'Dashboard',journal:'Journal',tasks:'Task master',weekly:'Weekly review',reading:'Reading',piano:'Piano',health:'Health & fitness',finance:'Finance',faith:'Faith & family'};
 const pLoaders={journal:loadJournal,tasks:loadTasks,weekly:()=>loadWeeklyReview(0),reading:loadReading,piano:loadPiano,health:loadHealth,finance:loadFinance,faith:loadFaithFamily};
@@ -594,9 +594,7 @@ async function loadDashHabits(){
     const res=await query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]);
     // Match by Day title "Mar 23 - 29, 2026"
     const thisWeekLabel=weekLabel(now);
-    const p=res.results?.find(r=>gTitle(r)===thisWeekLabel)||
-             res.results?.find(r=>gTitle(r).includes(monStr(now)))||
-             res.results?.[0];
+    const p=res.results?.find(r=>gTitle(r)===thisWeekLabel)||null;
     console.log('Habit row found:', gTitle(p), '| Looking for:', thisWeekLabel);
     const di=(now.getDay()+6)%7;
     document.getElementById('h-rows').innerHTML=HABITS.map(h=>{
@@ -643,7 +641,7 @@ async function loadDashRead(){
 
 async function loadDashPiano(){
   try{
-    const s=await query(DB.pianoSongs,null);
+    const s=await queryAll(DB.pianoSongs,null);
     const sc={'In progress':'var(--pi)','Learning':'var(--pi)'};
     const sb={'In progress':'var(--pib)','Learning':'var(--pib)'};
     document.getElementById('db-piano').innerHTML=`<div class="sl">${s.results?.filter(p=>['In progress','Learning'].includes(gSel(p,'Status'))).slice(0,3).map(p=>{const st=gSel(p,'Status');return`<div class="si"><div class="sd" style="background:${sc[st]||'var(--ht)'}"></div><div class="sn">${gTitle(p)}</div><div class="sbg" style="background:${sb[st]||'var(--bg2)'};color:${sc[st]||'var(--lt)'}">${st}</div></div>`;}).join('')||'<div class="empty">No active songs</div>'}</div>`;
@@ -658,7 +656,7 @@ async function loadDashWeekly(){
     ]);
     const p=wr.results?.[0];
     const dashWeekLabel=weekLabel(now);
-    const hp=hab.results?.find(r=>gTitle(r)===dashWeekLabel)||hab.results?.find(r=>gTitle(r).includes(monStr(now)))||hab.results?.[0];
+    const hp=hab.results?.find(r=>gTitle(r)===dashWeekLabel)||null;
     const wins=p?gText(p,'Wins'):''; const carry=p?gText(p,'Carry Forward'):'';
     const chips=hp?HABITS.map(h=>{
       const count=HDAYS.filter(d=>gCB(hp,`${h} - ${d}`)).length;
@@ -801,7 +799,7 @@ async function loadWeeklyReview(offset){
     ]);
     const p=wr.results?.[0];
     const wrWeekLabel=weekLabel(base);
-    const hp=hab.results?.find(r=>gTitle(r)===wrWeekLabel)||hab.results?.find(r=>gTitle(r).includes(monS))||hab.results?.[0];
+    const hp=hab.results?.find(r=>gTitle(r)===wrWeekLabel)||null;
     const theme=p?gText(p,'Focus Theme'):'';
     if(theme){document.getElementById('wr-theme').style.display='block';document.getElementById('wr-theme-val').textContent=theme;}
     else document.getElementById('wr-theme').style.display='none';
@@ -866,7 +864,13 @@ function filterBooks(s,el){
 function renderBooks(s){
   const f=s==='All'?allBooks:allBooks.filter(p=>gSel(p,'Status')===s||(!gSel(p,'Status')&&s==='No status'));
   const sc={'Read':'var(--heb);color:var(--he)','Reading':'var(--rdb);color:var(--rd)','To read':'var(--bg2);color:var(--lt)','DNF':'var(--fab);color:var(--fa)','Paused':'var(--c2);color:var(--mid)'};
-  document.getElementById('rg').innerHTML=f.map(p=>`<div class="bc"><div class="bct">${gTitle(p)}</div><div class="bca">${gText(p,'Author')}</div><div class="bcr">${gSel(p,'Rating')}</div><div class="bcs" style="background:${sc[gSel(p,'Status')]||'var(--bg2);color:var(--lt)'}">${gSel(p,'Status')}</div></div>`).join('')||'<div class="empty">No books here</div>';
+  // Store book data in a map, use id-based click handler
+  bookDataMap={};
+  document.getElementById('rg').innerHTML=f.map(p=>{
+    const bid=p.id, bs=gSel(p,'Status'), br=gSel(p,'Rating');
+    bookDataMap[bid]=p;
+    return `<div class="bc" onclick="openBookEditById('${bid}')"><div class="bct">${gTitle(p)}</div><div class="bca">${gText(p,'Author')}</div><div class="bcr">${br||''}</div><div class="bcs" style="background:${sc[bs]||'var(--bg2);color:var(--lt)'}">${bs||'no status'}</div></div>`;
+  }).join('')||'<div class="empty">No books here</div>';
 }
 
 // ── PIANO PAGE ────────────────────────────────────────────────────────────
@@ -879,7 +883,12 @@ async function loadPiano(){
     const so={'In progress':0,'Learning':1,'Queued':2,'Not started':3,'Someday':4,'Done':5};
     const sorted=songs.results?.sort((a,b)=>(so[gSel(a,'Status')]||9)-(so[gSel(b,'Status')]||9));
     const sc={'In progress':'var(--pi)','Learning':'var(--pi)','Queued':'var(--ht)','Not started':'var(--ht)','Someday':'var(--ht)','Done':'var(--he)'};
-    document.getElementById('piano-songs').innerHTML=sorted?.filter(p=>['In progress','Learning','Queued','Not started'].includes(gSel(p,'Status'))).map(p=>`<div class="sc" style="border-left-color:${sc[gSel(p,'Status')]||'var(--pi)'}"><div class="scs">${gTitle(p)}</div><div class="sca">${gText(p,'Artist')}</div><div class="scp">${gSel(p,'Purpose')}</div><div class="scc">${gText(p,'Chords / Key')}</div></div>`).join('')||'<div class="empty">No active songs</div>';
+    songDataMap={};
+    document.getElementById('piano-songs').innerHTML=sorted?.filter(p=>['In progress','Learning','Queued','Not started'].includes(gSel(p,'Status'))).map(p=>{
+    const sid=p.id, ss=gSel(p,'Status');
+    songDataMap[sid]=p;
+    return `<div class="sc" style="border-left-color:${sc[ss]||'var(--pi)'};cursor:pointer" onclick="openSongEditById('${sid}')"><div class="scs">${gTitle(p)}</div><div class="sca">${gText(p,'Artist')}</div><div class="scp">${gSel(p,'Purpose')}</div><div class="scc">${gText(p,'Chords / Key')}</div></div>`;
+  }).join('')||'<div class="empty">No active songs</div>';
     // Practice Session: title is "Song practiced", song relation is "Song Name"
     document.getElementById('piano-sess').innerHTML=`<table class="st"><thead><tr><th>Date</th><th>Song</th><th>Duration</th><th>Focus</th><th>Notes</th></tr></thead><tbody>${sess.results?.slice(0,10).map(p=>`<tr><td>${fmtD(gDate(p,'Date'))}</td><td>${gTitle(p)}</td><td>${gNum(p,'Duration(min)')} min</td><td>${gText(p,'Focus')}</td><td>${gText(p,'Progress notes')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--lt);font-style:italic">No sessions yet</td></tr>'}</tbody></table>`;
   } catch(e){console.error('Piano:',e);document.getElementById('piano-songs').innerHTML='<div class="err">Check DB ID - piano</div>';}
@@ -1054,6 +1063,76 @@ async function saveHealth(){
 }
 
 // ── MODALS ────────────────────────────────────────────────────────────────
+function openBookEditById(id){
+  const p=bookDataMap[id]; if(!p)return;
+  document.getElementById('m-book-id').value=id;
+  document.getElementById('m-book-title').textContent=gTitle(p);
+  document.getElementById('m-book-status').value=gSel(p,'Status')||'To read';
+  document.getElementById('m-book-rating').value=gSel(p,'Rating')||'';
+  document.getElementById('m-book-started').value=gDate(p,'Started')||'';
+  document.getElementById('m-book-finished').value=gDate(p,'Finished')||'';
+  document.getElementById('m-book-format').value=gSel(p,'Format')||'';
+  document.getElementById('m-book-pages').value=gNum(p,'Pages')||'';
+  document.getElementById('m-book-genre').value=gText(p,'Genre / Mood')||'';
+  document.getElementById('m-book-quote').value=gText(p,'Fave quote')||'';
+  document.getElementById('m-book-notes').value=gText(p,'My Notes')||'';
+  document.getElementById('m-book').classList.add('open');
+}
+async function saveBookEdit(){
+  const id=document.getElementById('m-book-id').value;
+  const status=document.getElementById('m-book-status').value;
+  const rating=document.getElementById('m-book-rating').value;
+  const started=document.getElementById('m-book-started').value;
+  const finished=document.getElementById('m-book-finished').value;
+  const format=document.getElementById('m-book-format').value;
+  const pages=document.getElementById('m-book-pages').value;
+  const props={
+    Status:prop.status(status),
+    'Genre / Mood':prop.text(document.getElementById('m-book-genre').value),
+    'Fave quote':prop.text(document.getElementById('m-book-quote').value),
+    'My Notes':prop.text(document.getElementById('m-book-notes').value),
+    ...(rating?{Rating:prop.select(rating)}:{}),
+    ...(started?{Started:prop.date(started)}:{}),
+    ...(finished?{Finished:prop.date(finished)}:{}),
+    ...(format?{Format:prop.select(format)}:{}),
+    ...(pages?{Pages:prop.number(pages)}:{}),
+  };
+  try{
+    await update(id,props);
+    closeModal('m-book');
+    if(pLoaded.has('reading'))loadReading();
+    loadDashRead();
+  }catch(e){alert('Error saving book: '+e.message);}
+}
+function openSongEditById(id){
+  const p=songDataMap[id]; if(!p)return;
+  document.getElementById('m-song-id').value=id;
+  document.getElementById('m-song-title').textContent=gTitle(p);
+  document.getElementById('m-song-status').value=gSel(p,'Status')||'Not started';
+  document.getElementById('m-song-diff').value=gSel(p,'Difficulty')||'';
+  document.getElementById('m-song-chords').value=gText(p,'Chords / Key')||'';
+  document.getElementById('m-song-notes').value=gText(p,'Notes')||'';
+  document.getElementById('m-song-perf').value=gCB(p,'Performance ready')?'true':'';
+  document.getElementById('m-song').classList.add('open');
+}
+async function saveSongEdit(){
+  const id=document.getElementById('m-song-id').value;
+  const diff=document.getElementById('m-song-diff').value;
+  const perf=document.getElementById('m-song-perf').value;
+  const props={
+    Status:prop.status(document.getElementById('m-song-status').value),
+    'Chords / Key':prop.text(document.getElementById('m-song-chords').value),
+    Notes:prop.text(document.getElementById('m-song-notes').value),
+    'Performance ready':prop.checkbox(perf==='true'),
+    ...(diff?{Difficulty:prop.select(diff)}:{}),
+  };
+  try{
+    await update(id,props);
+    closeModal('m-song');
+    if(pLoaded.has('piano'))loadPiano();
+    loadDashPiano();
+  }catch(e){alert('Error saving song: '+e.message);}
+}
 function openCapture()       {document.getElementById('m-capture').classList.add('open');}
 function openDailyLog()      {document.getElementById('m-daily').classList.add('open');}
 function openAddSession()    {document.getElementById('m-piano').classList.add('open');}
@@ -1078,5 +1157,67 @@ document.addEventListener('keydown',e=>{
 
 loadDashboard();
 </script>
+
+<div class="mo" id="m-book" onclick="closeModal('m-book',event)">
+  <div class="modal" style="width:520px;max-width:95vw">
+    <div class="mtt" id="m-book-title">Edit book</div>
+    <input type="hidden" id="m-book-id">
+    <div class="mgr">
+      <div class="mf"><label class="mlab">Status</label>
+        <select class="msel" id="m-book-status">
+          <option>To read</option><option>Reading</option><option>Paused</option><option>Read</option><option>DNF</option>
+        </select>
+      </div>
+      <div class="mf"><label class="mlab">Rating</label>
+        <select class="msel" id="m-book-rating">
+          <option value="">-</option><option>1</option><option>1.5</option><option>2</option><option>2.5</option><option>3</option><option>3.5</option><option>4</option><option>4.5</option><option>5</option>
+        </select>
+      </div>
+    </div>
+    <div class="mgr">
+      <div class="mf"><label class="mlab">Started</label><input class="mi" type="date" id="m-book-started"></div>
+      <div class="mf"><label class="mlab">Finished</label><input class="mi" type="date" id="m-book-finished"></div>
+    </div>
+    <div class="mgr">
+      <div class="mf"><label class="mlab">Format</label>
+        <select class="msel" id="m-book-format">
+          <option value="">-</option><option>Paperback</option><option>Hardcover</option><option>E-book</option><option>Audiobook</option>
+        </select>
+      </div>
+      <div class="mf"><label class="mlab">Pages</label><input class="mi" type="number" id="m-book-pages" placeholder="0"></div>
+    </div>
+    <div class="mf"><label class="mlab">Genre / Mood</label><input class="mi" id="m-book-genre" placeholder="e.g. cozy mystery, dark fantasy"></div>
+    <div class="mf"><label class="mlab">Fave quote</label><input class="mi" id="m-book-quote" placeholder="A line that stuck with you"></div>
+    <div class="mf"><label class="mlab">My notes / review</label><textarea class="mta" id="m-book-notes" placeholder="What did you think?"></textarea></div>
+    <div class="mbtns"><button class="mbc" onclick="closeModal('m-book')">cancel</button><button class="mbs" onclick="saveBookEdit()">save</button></div>
+  </div>
+</div>
+
+<div class="mo" id="m-song" onclick="closeModal('m-song',event)">
+  <div class="modal">
+    <div class="mtt" id="m-song-title">Edit song</div>
+    <input type="hidden" id="m-song-id">
+    <div class="mf"><label class="mlab">Status</label>
+      <select class="msel" id="m-song-status">
+        <option>Not started</option><option>Learning</option><option>In progress</option><option>Queued</option><option>Someday</option><option>Done</option>
+      </select>
+    </div>
+    <div class="mgr">
+      <div class="mf"><label class="mlab">Difficulty</label>
+        <select class="msel" id="m-song-diff">
+          <option value="">-</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+        </select>
+      </div>
+      <div class="mf"><label class="mlab">Performance ready</label>
+        <select class="msel" id="m-song-perf">
+          <option value="">No</option><option value="true">Yes</option>
+        </select>
+      </div>
+    </div>
+    <div class="mf"><label class="mlab">Chords / Key</label><input class="mi" id="m-song-chords" placeholder="e.g. G major — G, C, D, Em"></div>
+    <div class="mf"><label class="mlab">Notes</label><textarea class="mta" id="m-song-notes" placeholder="Practice notes, tips..."></textarea></div>
+    <div class="mbtns"><button class="mbc" onclick="closeModal('m-song')">cancel</button><button class="mbs" onclick="saveSongEdit()">save</button></div>
+  </div>
+</div>
 </body>
 </html>
