@@ -265,7 +265,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
     <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
     <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
-  <div class="sb-ft">Robinee Mae &middot; is Here</div>
+  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
 </aside>
 
 <div class="main">
@@ -439,28 +439,44 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 // YOUR NOTION DATABASE IDs — PASTE YOURS BELOW (no dashes)
 // ═══════════════════════════════════════════════════════════════
 const DB={
- dailyLog:'32dec4518a618096986cfd9475b0aa1a',
-  taskMaster:'32dec4518a6180dc84cee6e65539f871',
-  weeklyReview:'32dec4518a618028a71cc366512a4dfc',
-  bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',
-  readingSessions:'32dec4518a618071af88ca0f6e477a30',
-  pianoSongs:'32dec4518a6180ae9debe795972c5854',
-  pianoSessions:'32dec4518a61804fb394f39e16d9511f',
-  finance:'32dec4518a6180f886c4db6651b69cec',
-  health:'32dec4518a6180d78721f0b13c663478',
-  faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',
-  family:'32dec4518a618024b0edfd41dc2c6e39',
-  habits:'32dec4518a618070a3c8e50e5a9224e8',
+  dailyLog:        'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:      'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:    'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:       'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions: 'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:      'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:   'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:         'PASTE_FINANCE_DB_ID',
+  health:          'PASTE_HEALTH_DB_ID',
+  faith:           'PASTE_FAITH_DB_ID',
+  family:          'PASTE_FAMILY_DB_ID',
+  habits:          'PASTE_HABIT_TRACKER_DB_ID',
 };
 // ═══════════════════════════════════════════════════════════════
 
 const notion=async(m,p,b)=>{const r=await fetch('/api/notion'+p,{method:m,headers:{'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});return r.json();};
-const query=(db,f,s)=>{
-  const body={};
+const query=(db,f,s,pageSize)=>{
+  const body={page_size:pageSize||100};
   if(f&&Object.keys(f).length)body.filter=f;
   if(s&&s.length)body.sorts=s;
   return notion('POST',`/databases/${db}/query`,body);
 };
+
+// Fetch ALL pages from a Notion database (handles pagination)
+async function queryAll(db,f,s){
+  let results=[], cursor=undefined, safety=0;
+  while(safety++<20){
+    const body={page_size:100};
+    if(f&&Object.keys(f).length)body.filter=f;
+    if(s&&s.length)body.sorts=s;
+    if(cursor)body.start_cursor=cursor;
+    const res=await notion('POST',`/databases/${db}/query`,body);
+    if(res.results)results=results.concat(res.results);
+    if(!res.has_more)break;
+    cursor=res.next_cursor;
+  }
+  return {results};
+}
 const create=(db,p)=>notion('POST','/pages',{parent:{database_id:db},properties:p});
 const update=(id,p)=>notion('PATCH',`/pages/${id}`,{properties:p});
 const getBlocks=(id)=>notion('GET',`/blocks/${id}/children`);
@@ -499,6 +515,15 @@ const getMon=d=>{const m=new Date(d);m.setDate(m.getDate()-((m.getDay()+6)%7));r
 const monStr=d=>getMon(d).toISOString().split('T')[0];
 const fmtD=s=>{if(!s)return'';try{const d=new Date(s+'T00:00:00');return`${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}`;}catch{return s;}};
 const fmt=n=>n?`\u20B1${Math.round(n).toLocaleString()}`:'--';
+
+function weekLabel(d){
+  const mon=getMon(d);
+  const sun=new Date(mon); sun.setDate(sun.getDate()+6);
+  const ms=MONTHS[mon.getMonth()].slice(0,3);
+  const ss=MONTHS[sun.getMonth()].slice(0,3);
+  if(ms===ss)return ms+' '+mon.getDate()+' - '+sun.getDate()+', '+sun.getFullYear();
+  return ms+' '+mon.getDate()+' - '+ss+' '+sun.getDate()+', '+sun.getFullYear();
+}
 
 let todayId=null, allBooks=[], allTasks=[], wrOffset=0;
 
@@ -603,7 +628,7 @@ async function toggleHabit(pid,key,el){
 
 async function loadDashRead(){
   try{
-    const all=await query(DB.bookShelf,null,[{property:'Title',direction:'ascending'}]);
+    const all=await queryAll(DB.bookShelf,null,[{property:'Title',direction:'ascending'}]);
     console.log('Bookshelf raw:', JSON.stringify(all.results?.slice(0,2).map(p=>({title:gTitle(p),statusRaw:p.properties?.Status,statusParsed:gSel(p,'Status')}))));
     const a={results:all.results};
     const c={results:all.results?.filter(p=>gSel(p,'Status')==='Reading')};
@@ -820,7 +845,7 @@ function changeWeek(dir){loadWeeklyReview(wrOffset+dir);}
 async function loadReading(){
   try{
     const [books,sess]=await Promise.all([
-      query(DB.bookShelf,null,[{property:'Title',direction:'ascending'}]),
+      queryAll(DB.bookShelf,null,[{property:'Title',direction:'ascending'}]),
       query(DB.readingSessions,null,[{property:'Date',direction:'descending'}]),
     ]);
     allBooks=books.results||[];
@@ -839,7 +864,7 @@ function filterBooks(s,el){
 }
 
 function renderBooks(s){
-  const f=s==='All'?allBooks:allBooks.filter(p=>gSel(p,'Status')===s);
+  const f=s==='All'?allBooks:allBooks.filter(p=>gSel(p,'Status')===s||(!gSel(p,'Status')&&s==='No status'));
   const sc={'Read':'var(--heb);color:var(--he)','Reading':'var(--rdb);color:var(--rd)','To read':'var(--bg2);color:var(--lt)','DNF':'var(--fab);color:var(--fa)','Paused':'var(--c2);color:var(--mid)'};
   document.getElementById('rg').innerHTML=f.map(p=>`<div class="bc"><div class="bct">${gTitle(p)}</div><div class="bca">${gText(p,'Author')}</div><div class="bcr">${gSel(p,'Rating')}</div><div class="bcs" style="background:${sc[gSel(p,'Status')]||'var(--bg2);color:var(--lt)'}">${gSel(p,'Status')}</div></div>`).join('')||'<div class="empty">No books here</div>';
 }
