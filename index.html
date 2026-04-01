@@ -265,7 +265,7 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
     <div class="ni" onclick="showPage('finance',this)"><div class="nd" style="background:var(--fn)"></div>Finance</div>
     <div class="ni" onclick="showPage('faith',this)"><div class="nd" style="background:var(--fa)"></div>Faith &amp; family</div>
   </nav>
-  <div class="sb-ft">Robinee Mae &middot; is Here</div>
+  <div class="sb-ft">Robinee Mae &middot; Baguio</div>
 </aside>
 
 <div class="main">
@@ -439,18 +439,18 @@ body{font-family:var(--body);font-weight:300;font-size:15px;background:var(--bg)
 // YOUR NOTION DATABASE IDs — PASTE YOURS BELOW (no dashes)
 // ═══════════════════════════════════════════════════════════════
 const DB={
-  dailyLog:'32dec4518a618096986cfd9475b0aa1a',
-  taskMaster:'32dec4518a6180dc84cee6e65539f871',
-  weeklyReview:'32dec4518a618028a71cc366512a4dfc',
-  bookShelf:'32dec4518a6180bba8b9f6ff3dfe246e',
-  readingSessions:'32dec4518a618071af88ca0f6e477a30',
-  pianoSongs:'32dec4518a6180ae9debe795972c5854',
-  pianoSessions:'32dec4518a61804fb394f39e16d9511f',
-  finance:'32dec4518a6180f886c4db6651b69cec',
-  health:'32dec4518a6180d78721f0b13c663478',
-  faith:'32dec4518a6180c8ab0dc8a3f2c81fa0',
-  family:'32dec4518a618024b0edfd41dc2c6e39',
-  habits:'32dec4518a618070a3c8e50e5a9224e8',
+  dailyLog:        'PASTE_DAILY_LOG_DB_ID',
+  taskMaster:      'PASTE_TASK_MASTER_DB_ID',
+  weeklyReview:    'PASTE_WEEKLY_REVIEW_DB_ID',
+  bookShelf:       'PASTE_BOOK_SHELF_DB_ID',
+  readingSessions: 'PASTE_READING_SESSIONS_DB_ID',
+  pianoSongs:      'PASTE_PIANO_SONGS_DB_ID',
+  pianoSessions:   'PASTE_PIANO_SESSIONS_DB_ID',
+  finance:         'PASTE_FINANCE_DB_ID',
+  health:          'PASTE_HEALTH_DB_ID',
+  faith:           'PASTE_FAITH_DB_ID',
+  family:          'PASTE_FAMILY_DB_ID',
+  habits:          'PASTE_HABIT_TRACKER_DB_ID',
 };
 // ═══════════════════════════════════════════════════════════════
 
@@ -591,7 +591,7 @@ async function loadDashTasks(){
 
 async function loadDashHabits(){
   try{
-    const res=await query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]);
+    const res=await query(DB.habits,null,null);
     // Match by Day title "Mar 23 - 29, 2026"
     const thisWeekLabel=weekLabel(now);
     const p=res.results?.find(r=>gTitle(r)===thisWeekLabel)||null;
@@ -652,7 +652,7 @@ async function loadDashWeekly(){
   try{
     const [wr,hab]=await Promise.all([
       query(DB.weeklyReview,{property:'Week of',title:{contains:monStr(now)}}),
-      query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]),
+      query(DB.habits,null,null),
     ]);
     const p=wr.results?.[0];
     const dashWeekLabel=weekLabel(now);
@@ -795,7 +795,7 @@ async function loadWeeklyReview(offset){
     // Weekly Review title is the week date string
     const [wr,hab]=await Promise.all([
       query(DB.weeklyReview,{property:'Week of',title:{contains:monS}}),
-      query(DB.habits,null,[{timestamp:'created_time',direction:'descending'}]),
+      query(DB.habits,null,null),
     ]);
     const p=wr.results?.[0];
     const wrWeekLabel=weekLabel(base);
@@ -983,7 +983,11 @@ async function saveDailyLog(){
   try {
     if(pid){ await update(pid,props); }
     else { const pg=await create(DB.dailyLog,props); if(pg.id){pid=pg.id;todayId=pg.id;}else{console.error('Create failed:',pg);alert('Could not save log: '+JSON.stringify(pg?.message||pg));return;} }
-    if(body&&pid) await addBlock(pid,[{object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:body}}]}}]);
+    const blocks=[];
+    if(body) blocks.push({object:'block',type:'paragraph',paragraph:{rich_text:[{type:'text',text:{content:body}}]}});
+    const imgUrl=document.getElementById('dl-img').value.trim();
+    if(imgUrl) blocks.push({object:'block',type:'image',image:{type:'external',external:{url:imgUrl}}});
+    if(blocks.length&&pid) await addBlock(pid,blocks);
     closeModal('m-daily'); loadDailyLog();
   } catch(e){ console.error('saveDailyLog error:',e); alert('Error saving log: '+e.message); }
 }
@@ -1098,7 +1102,17 @@ async function saveBookEdit(){
     ...(pages?{Pages:prop.number(pages)}:{}),
   };
   try{
-    await update(id,props);
+    const res=await update(id,props);
+    if(res.object==='error'){
+      alert('Notion error: '+res.message);
+      console.error('Book update error:',JSON.stringify(res));
+      return;
+    }
+    // Append image URL as a block if provided
+    const imgUrl=document.getElementById('m-book-img').value.trim();
+    if(imgUrl){
+      await addBlock(id,[{object:'block',type:'image',image:{type:'external',external:{url:imgUrl}}}]);
+    }
     closeModal('m-book');
     if(pLoaded.has('reading'))loadReading();
     loadDashRead();
@@ -1189,6 +1203,7 @@ loadDashboard();
     <div class="mf"><label class="mlab">Genre / Mood</label><input class="mi" id="m-book-genre" placeholder="e.g. cozy mystery, dark fantasy"></div>
     <div class="mf"><label class="mlab">Fave quote</label><input class="mi" id="m-book-quote" placeholder="A line that stuck with you"></div>
     <div class="mf"><label class="mlab">My notes / review</label><textarea class="mta" id="m-book-notes" placeholder="What did you think?"></textarea></div>
+    <div class="mf"><label class="mlab" style="color:var(--lt)">Image URL (optional)</label><input class="mi" id="m-book-img" placeholder="Paste an image URL to attach to notes"></div>
     <div class="mbtns"><button class="mbc" onclick="closeModal('m-book')">cancel</button><button class="mbs" onclick="saveBookEdit()">save</button></div>
   </div>
 </div>
